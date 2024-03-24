@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
 import { Airport } from '@/models/airport.model';
 
 @Entity()
@@ -33,9 +33,9 @@ export class Flight {
   @Column({ type: 'text', nullable: true })
   description!: string | null;
 
-  @Column({ type: 'datetime' })
+  @CreateDateColumn()
   createAt!: Date;
 
-  @Column({ type: 'datetime' })
+  @UpdateDateColumn()
   updateAt!: Date;
 }

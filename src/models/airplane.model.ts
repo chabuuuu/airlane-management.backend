@@ -1,9 +1,9 @@
-import { Entity, PrimaryColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
 import { Flight } from '@/models/flight.model';
 
 @Entity()
 export class Airplane {
-  @PrimaryColumn({ type: 'uuid' })
+  @Column({ type: 'uuid', primary: true })
   airplaneId!: string;
 
   @Column({ unique: true })

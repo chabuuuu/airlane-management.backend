@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class Airport {
@@ -26,9 +26,9 @@ export class Airport {
   @Column({ type: 'text', nullable: true })
   airportPicture!: string | null;
 
-  @Column({ type: 'datetime' })
+  @CreateDateColumn()
   create_at!: Date;
 
-  @Column({ type: 'datetime' })
+  @UpdateDateColumn()
   update_at!: Date;
 }

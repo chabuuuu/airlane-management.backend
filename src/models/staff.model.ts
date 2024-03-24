@@ -1,5 +1,4 @@
-// src/models/staff.model.ts
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column } from 'typeorm';
 
 @Entity()
 export class Staff {
@@ -24,9 +23,9 @@ export class Staff {
   @Column({ type: 'enum', enum: ["Staff_LV1", "Staff_LV2"], default: "Staff_LV1" })
   role!: "Staff_LV1" | "Staff_LV2";
 
-  @Column({ type: 'datetime' })
-  creatAt!: Date;
+  @CreateDateColumn()
+  createAt!: Date;
 
-  @Column({ type: 'datetime' })
+  @UpdateDateColumn()
   updateAt!: Date;
 }

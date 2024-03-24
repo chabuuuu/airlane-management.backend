@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
 import { Flight } from '@/models/flight.model';
 import { Staff } from '@/models/staff.model';
 
@@ -22,9 +22,10 @@ export class Ticket {
   @Column({ type: 'enum', enum: ['Booked', 'Selled', 'Cancelled'] })
   status!: 'Booked' | 'Selled' | 'Cancelled';
 
-  @Column({ type: 'datetime', nullable: true })
-  sellAt!: Date | null;
+  @CreateDateColumn({ type: 'datetime' })
+  sellAt!: Date;
 
-  @Column({ type: 'datetime' })
+  @UpdateDateColumn({ type: 'datetime' })
   updateAt!: Date;
 }
+

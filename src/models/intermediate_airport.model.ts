@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Entity, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, PrimaryColumn } from 'typeorm';
 import { Flight } from '@/models/flight.model';
 import { Airport } from '@/models/airport.model';
 
@@ -22,9 +22,9 @@ export class IntermediateAirport {
   @Column({ type: 'text', nullable: true })
   notes!: string | null;
 
-  @Column({ type: 'datetime' })
+  @CreateDateColumn()
   createAt!: Date;
 
-  @Column({ type: 'datetime' })
+  @UpdateDateColumn()
   updateAt!: Date;
 }

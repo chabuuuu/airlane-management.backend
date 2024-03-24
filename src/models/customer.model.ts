@@ -29,7 +29,7 @@ export class Customer {
     @Column("varchar", { length: 50, unique: true })
     cccd!: string;
 
-    @Column("text", { unique: true })
+    @Column("text")
     cccdPicture!: string;
 
     @Column("text", { nullable: true })

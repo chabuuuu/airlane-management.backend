@@ -7,7 +7,7 @@ accountRouter
 
 /**
  * @swagger
- * /api/v1/account/create:
+ * /account/create:
  *   post:
  *     summary: Create a account user.
  *     requestBody:
@@ -15,15 +15,14 @@ accountRouter
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/CreateAccountDto'
- *    responses:
- *      200:
- *       description: The account was successfully created.
- *      content:
- *       application/json:
- *        schema:
- *        $ref: '#/components/schemas/CreateAccountDto'
- *         ...
+ *             $ref: "#/components/schemas/CreateAccountDto"
+ *     responses:
+ *       200:
+ *         description: The account was successfully created.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/CreateAccount200Response"
 */
   .post(
     "/create",

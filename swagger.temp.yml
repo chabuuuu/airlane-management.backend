@@ -4,6 +4,36 @@ info:
   version: '1.0'
 servers:
   - url: https://api.server.test/v1
+
+components:
+  schemas:
+    UpdateFlightDto:
+      properties:
+        flightCode:
+          type: string
+        departureAirportId:
+          type: number
+        arrivalAirportId:
+          type: number
+        departureTime:
+          pattern: "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d.\\d+Z?"
+          type: string
+        flightDuration:
+          type: number
+        economyPrice:
+          type: number
+        businessPrice:
+          type: number
+        status:
+          enum:
+          - Chưa khởi hành
+          - Đang bay
+          - Đã hoàn thành
+          type: string
+        description:
+          type: string
+      type: object
+
 paths:
   /test:
     get:
@@ -22,3 +52,29 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  phone:
+                    type: string
+                  website:
+                    type: string
+                  company:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      catchPhrase:
+                        type: string
+                      bs:
+                        type: string
+                        
+

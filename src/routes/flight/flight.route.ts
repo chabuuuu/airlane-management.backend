@@ -1,20 +1,18 @@
-import { CreateAirplaneDto } from '@/dto/airplane/create-airplane.dto'
-import { UpdateAirplaneDto } from '@/dto/airplane/update-airplane.dto'
+import { CreateFlightDto } from '@/dto/flight/create-flight.dto'
+import { UpdateFlightDto } from '@/dto/flight/update-flight.dto'
 import { classValidate } from '@/middleware/class-validate.middleware'
 import express from 'express'
 
-const airplaneRouter = express.Router()
+const flightRouter = express.Router()
 
-
-airplaneRouter
-
+flightRouter
 /**
  * @openapi
- * /airplane:
+ * /flight:
  *   post:
- *     summary: "Create a new airplane"
+ *     summary: "Create a new flight"
  *     tags: 
- *      - airplane 
+ *      - flight 
  *     description: ""
  *     parameters: []
  *     requestBody:
@@ -22,55 +20,55 @@ airplaneRouter
  *       content:
  *         application/json:
  *           schema:
- *             $ref: "#/components/schemas/CreateAirplaneDto"
+ *             $ref: "#/components/schemas/CreateFlightDto"
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/AirplaneSuccessResponse"
+ *               $ref: "#/components/schemas/CreateFlightSuccessResponse"
  */
-.post('/', classValidate(CreateAirplaneDto))
+.post('/', classValidate(CreateFlightDto))
 
 /**
  * @openapi
- * /airplane/:id:
+ * /flight/:id:
  *   put:
- *     summary: "Update a airplane by id"
+ *     summary: "Update a flight by id"
  *     tags: 
- *      - airplane 
- *     description: "Update airplane infomation by id"
+ *      - flight 
+ *     description: "Update flight infomation by id"
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: integer
  *         required: true
- *         description: Numeric airplane ID to update
+ *         description: Flight ID to update
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: "#/components/schemas/UpdareAirplaneDto"
+ *             $ref: "#/components/schemas/UpdateFlightDto"
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/AirplaneSuccessResponse"
+ *               $ref: "#/components/schemas/UpdateFlightSuccessResponse"
  */
-.put('/:id', classValidate(UpdateAirplaneDto))
+.put('/:id', classValidate(UpdateFlightDto))
 
 /**
  * @openapi
- * /airplane/:id:
+ * /flight/:id:
  *   delete:
- *     summary: "Delete a airplane by id"
+ *     summary: "Delete a flight by id"
  *     tags: 
- *      - airplane 
+ *      - flight 
  *     description: ""
  *     parameters:
  *       - in: path
@@ -78,25 +76,24 @@ airplaneRouter
  *         schema:
  *           type: integer
  *         required: true
- *         description: Numeric airplane ID to delete
+ *         description: Flight ID to delete
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/AirplaneSuccessResponse"
+ *               $ref: "#/components/schemas/DeleteFlightSuccessResponse"
  */
-.delete('/:id')
-
+.delete('/:id', classValidate(CreateFlightDto))
 
 /**
  * @openapi
- * /airplane/:id:
+ * /flight/:id:
  *   get:
- *     summary: "Get a airplane info by id"
+ *     summary: "Get a flight info by id"
  *     tags: 
- *      - airplane 
+ *      - flight 
  *     description: ""
  *     parameters:
  *       - in: path
@@ -104,25 +101,25 @@ airplaneRouter
  *         schema:
  *           type: integer
  *         required: true
- *         description: Numeric airplane ID to get
+ *         description: Flight ID to get
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/AirplaneSuccessResponse"
+ *               $ref: "#/components/schemas/GetOneFlightSuccessResponse"
  */
 .get('/:id')
 
 /**
  * @openapi
- * /airplane:
+ * /flight:
  *   get:
- *     summary: "Get all airplane"
+ *     summary: "Get all flights"
  *     tags: 
- *      - airplane 
- *     description: "Get all airplane"
+ *      - flight 
+ *     description: "Get all flights"
  *     responses:
  *       "200":
  *         description: OK
@@ -131,8 +128,8 @@ airplaneRouter
  *             schema:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/AirplaneSuccessResponse"
+ *                 $ref: "#/components/schemas/GetOneFlightSuccessResponse"
  */
-.get('/', )
+.get('/')
 
-export default airplaneRouter
+export default flightRouter;

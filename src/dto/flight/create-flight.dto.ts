@@ -1,32 +1,50 @@
 // src/dto/create-flight.dto.ts
-import { IsDateString, IsDecimal, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsDateString, IsDecimal, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateFlightDto {
   @IsString()
   @IsNotEmpty()
   flightCode!: string;
 
-  @IsUUID()
+  
+  @IsNotEmpty()
+  @Type(() => Number)
+  @IsNumber()
   departureAirportId!: string;
 
-  @IsUUID()
+
+  @IsNotEmpty()
+  @Type(() => Number)
+  @IsNumber()
   arrivalAirportId!: string;
 
   @IsDateString()
-  departureTime!: string;
+  departureTime!: Date;
 
-  @IsDecimal()
+
+  @IsNotEmpty()
+  @Type(() => Number)
+  @IsNumber()
   flightDuration!: number;
 
-  @IsDecimal()
+
+  @IsNotEmpty()
+  @Type(() => Number)
+  @IsNumber()
   economyPrice!: number;
 
-  @IsDecimal()
+
+  @IsNotEmpty()
+  @Type(() => Number)
+  @IsNumber()
   businessPrice!: number;
 
-  @IsString()
-  status!: string;
+  @IsOptional()
+  @IsEnum(['Chưa khởi hành', 'Đang bay', 'Đã hoàn thành'])
+  status?: string;
 
+  @IsOptional()
   @IsString()
   description?: string;
 }

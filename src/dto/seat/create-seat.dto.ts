@@ -1,5 +1,5 @@
 // src/dto/create-seat.dto.ts
-import { IsEnum, IsNotEmpty, IsUUID } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsSemVer, IsString, IsUUID } from 'class-validator';
 
 enum SeatClass {
   Economy = 'Economy',
@@ -7,10 +7,7 @@ enum SeatClass {
 }
 
 export class CreateSeatDto {
-  @IsUUID()
   @IsNotEmpty()
+  @IsString()
   seatId!: string;
-
-  @IsEnum(SeatClass)
-  seatClass!: SeatClass;
 }

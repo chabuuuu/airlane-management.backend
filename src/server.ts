@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import { errorHanlder } from '@/middleware/error.middleware';
 import { route } from '@/routes';
 import { AppDataSource } from '@/database/db.datasource';
+import { swaggerInit } from '@/utils/documentation/swagger.util';
 const cors = require('cors')
 const config = require('config');
 const morgan = require('morgan')
@@ -28,6 +29,9 @@ app.use(cors(corsOption))
 if (useHelmet) {
   app.use(helmet());
 }
+
+//Swagger init
+swaggerInit(app, root_api, server_config.port || 3000)
 
 //Route
 route(app, root_api);

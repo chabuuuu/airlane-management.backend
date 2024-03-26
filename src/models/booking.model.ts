@@ -6,7 +6,7 @@ export class Booking {
   @PrimaryColumn({ type: 'uuid' })
   bookingId!: string;
 
-  @ManyToOne(() => Ticket, (ticket) => ticket.ticketID)
+  @ManyToOne(() => Ticket, (ticket) => ticket.ticketId)
   @JoinColumn({ name: 'ticketId' })
   ticket!: Ticket;
 
@@ -16,7 +16,7 @@ export class Booking {
   @Column({ type: 'boolean', default: false })
   paymentStatus!: boolean;
 
-  @Column({ type: 'enum', enum: ['Đã lấy vé', 'Chưa lấy vé', 'Hủy đặt vé'] })
+  @Column({ type: 'enum', enum: ['Đã lấy vé', 'Chưa lấy vé', 'Hủy đặt vé'], default:  'Chưa lấy vé'})
   bookingStatus!: 'Đã lấy vé' | 'Chưa lấy vé' | 'Hủy đặt vé';
 
   @CreateDateColumn({ type: 'datetime' })

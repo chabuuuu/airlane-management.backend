@@ -1,5 +1,5 @@
 // src/dto/create-airport.dto.ts
-import { IsNotEmpty, IsString, MaxLength, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, MaxLength, IsOptional, MAX, IsEnum } from 'class-validator';
 
 export class CreateAirportDto {
   @IsString()
@@ -9,18 +9,21 @@ export class CreateAirportDto {
 
   @IsString()
   @IsNotEmpty()
+  @MaxLength(255)
   airportName!: string;
 
   @IsString()
   @IsNotEmpty()
+  @MaxLength(100)
   city!: string;
 
   @IsString()
   @IsNotEmpty()
+  @MaxLength(100)
   country!: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsOptional()
+  @IsEnum(["Đang hoạt động", "Đang bảo trì", "Đang tạm dừng", "Đã dừng hoạt động"])
   status!: string;
 
   @IsString()

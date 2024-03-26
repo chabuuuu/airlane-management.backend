@@ -1,5 +1,6 @@
 // src/dto/update-ticket.dto.ts
-import { IsDecimal, IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsDateString, IsDecimal, IsEnum, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
 
 enum TicketStatus {
   Booked = 'Booked',
@@ -8,27 +9,29 @@ enum TicketStatus {
 }
 
 export class UpdateTicketDto {
-  @IsUUID()
+  @IsString()
   @IsOptional()
-  flightID?: string;
+  flightID!: string;
 
   @IsString()
   @IsOptional()
-  passengerId?: string;
+  passengerId!: string;
 
-  @IsDecimal()
+
   @IsOptional()
-  price?: number;
+  @Type(() => Number)
+  @IsNumber()
+  price!: number;
 
   @IsString()
   @IsOptional()
-  sellerId?: string;
+  sellerId!: string;
 
   @IsEnum(TicketStatus)
   @IsOptional()
-  status?: TicketStatus;
+  status!: TicketStatus;
 
-  @IsString()
+  @IsDateString()
   @IsOptional()
-  sellAt?: string;
+  sellAt?: string; 
 }

@@ -1,5 +1,6 @@
 // src/dto/update-staff.dto.ts
-import { IsDate, IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
+import { ValidateMessage } from '@/dto/validate-message.enum';
+import { IsDate, IsDateString, IsEmail, IsEnum, IsOptional, IsPhoneNumber, IsString, IsStrongPassword, MaxLength } from 'class-validator';
 
 enum StaffRole {
   Staff_LV1 = "Staff_LV1",
@@ -9,25 +10,30 @@ enum StaffRole {
 export class UpdateStaffDto {
   @IsString()
   @IsOptional()
-  username?: string;
+  @MaxLength(30)
+  username!: string;
 
   @IsEmail()
   @IsOptional()
-  email?: string;
+  email!: string;
 
-  @IsString()
+  @IsPhoneNumber(undefined, {
+    message: ValidateMessage.IsPhoneNumber
+  })
   @IsOptional()
-  phoneNumber?: string;
+  phoneNumber!: string;
 
-  @IsString()
+  @IsStrongPassword(undefined, {
+    message: ValidateMessage.IsStrongPassword
+  })
   @IsOptional()
-  password?: string;
+  password!: string;
 
-  @IsDate()
   @IsOptional()
-  birthday?: Date;
+  @IsDateString()
+  birthday!: Date;
 
   @IsEnum(StaffRole)
   @IsOptional()
-  role?: StaffRole;
+  role!: StaffRole;
 }

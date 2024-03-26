@@ -9,17 +9,17 @@ enum SeatClass {
 export class UpdateSeatAirplaneDto {
   @IsString()
   @IsOptional()
-  seatId?: string;
+  seatId!: string;
 
-  @IsUUID()
+  @IsString()
   @IsOptional()
-  airplaneId?: string;
+  airplaneId!: string;
 
-  @IsUUID()
+  @IsString()
   @IsOptional()
-  ticketId?: string;
+  ticketId!: string;
 
   @IsEnum(SeatClass)
   @IsOptional()
-  seatClass?: SeatClass;
+  class!: SeatClass;
 }

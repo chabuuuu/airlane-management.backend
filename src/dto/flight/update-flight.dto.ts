@@ -1,40 +1,51 @@
 // src/dto/update-flight.dto.ts
-import { IsDateString, IsDecimal, IsOptional, IsString, IsUUID } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsDateString, IsDecimal, IsEnum, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class UpdateFlightDto {
   @IsString()
   @IsOptional()
   flightCode?: string;
 
-  @IsUUID()
+  
   @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
   departureAirportId?: string;
 
-  @IsUUID()
+
   @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
   arrivalAirportId?: string;
 
   @IsDateString()
   @IsOptional()
-  departureTime?: string;
+  departureTime?: Date;
 
-  @IsDecimal()
+
   @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
   flightDuration?: number;
 
-  @IsDecimal()
+
   @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
   economyPrice?: number;
 
-  @IsDecimal()
+
   @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
   businessPrice?: number;
 
-  @IsString()
   @IsOptional()
+  @IsEnum(['Chưa khởi hành', 'Đang bay', 'Đã hoàn thành'])
   status?: string;
 
-  @IsString()
   @IsOptional()
+  @IsString()
   description?: string;
 }

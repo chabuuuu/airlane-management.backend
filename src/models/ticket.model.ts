@@ -1,14 +1,18 @@
-import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { Flight } from '@/models/flight.model';
 import { Staff } from '@/models/staff.model';
 
 @Entity()
 export class Ticket {
-  @PrimaryColumn({ type: 'uuid' })
-  ticketID!: string;
+  @PrimaryGeneratedColumn('uuid')
+  ticketId!: string;
 
   @ManyToOne(() => Flight, (flight) => flight.flightId)
-  flightID!: Flight;
+  @JoinColumn({name: 'flightId'})
+  flight!: Flight;
+
+  @Column()
+  flightId!: number
 
   @Column()
   passengerId!: string;
@@ -17,7 +21,11 @@ export class Ticket {
   price!: number;
 
   @ManyToOne(() => Staff, (staff) => staff.staffId)
-  sellerId!: Staff;
+  @JoinColumn({name: 'sellerId'})
+  seller!: Staff;
+
+  @Column()
+  sellerId!: string
 
   @Column({ type: 'enum', enum: ['Booked', 'Selled', 'Cancelled'] })
   status!: 'Booked' | 'Selled' | 'Cancelled';

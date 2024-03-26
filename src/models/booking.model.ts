@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { Ticket } from '@/models/ticket.model';
 
 @Entity()
@@ -7,7 +7,11 @@ export class Booking {
   bookingId!: string;
 
   @ManyToOne(() => Ticket, (ticket) => ticket.ticketID)
-  ticketID!: Ticket;
+  @JoinColumn({ name: 'ticketId' })
+  ticket!: Ticket;
+
+  @Column({nullable: true})
+  ticketId!: string;
 
   @Column({ type: 'boolean', default: false })
   paymentStatus!: boolean;

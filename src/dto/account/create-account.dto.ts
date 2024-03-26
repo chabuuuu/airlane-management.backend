@@ -1,5 +1,4 @@
 import { IsDateString, IsNotEmpty, IsString, IsStrongPassword } from "class-validator"
-import { validationMetadatasToSchemas } from 'class-validator-jsonschema'
 
 /** 
  * @openapi
@@ -108,6 +107,3 @@ export class CreateAccountDto {
     @IsDateString()
     birthday! : Date
 }
-
-// const schemas = validationMetadatasToSchemas()
-// console.log(JSON.stringify(schemas))

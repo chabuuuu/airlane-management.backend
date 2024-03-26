@@ -6,11 +6,11 @@ export class Airplane {
   @Column({ type: 'uuid', primary: true })
   airplaneId!: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   flightId!: number;
 
   @OneToOne(() => Flight)
-  @JoinColumn()
+  @JoinColumn({name: 'flightId'})
   flight!: Flight;
 
   @Column({ type: 'varchar', length: 20 })

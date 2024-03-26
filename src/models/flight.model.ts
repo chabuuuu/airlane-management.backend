@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { Airport } from '@/models/airport.model';
 
 @Entity()
@@ -10,10 +10,18 @@ export class Flight {
   flightCode!: string;
 
   @ManyToOne(() => Airport, (airport) => airport.airportId)
-  departureAirportId!: Airport;
+  @JoinColumn({ name: 'departureAirportId' })
+  departureAirport!: Airport;
+
+  @Column()
+  departureAirportId!: number;
 
   @ManyToOne(() => Airport, (airport) => airport.airportId)
-  arrivalAirportId!: Airport;
+  @JoinColumn({ name: 'arrivalAirportId' })
+  arrivalAirport!: Airport;
+
+  @Column()
+  arrivalAirportId!: number;
 
   @Column({ type: 'datetime' })
   departureTime!: Date;

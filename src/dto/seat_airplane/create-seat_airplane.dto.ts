@@ -1,5 +1,5 @@
 // src/dto/create-seat-airplane.dto.ts
-import { IsEnum, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 
 enum SeatClass {
   Economy = 'Economy',
@@ -11,12 +11,15 @@ export class CreateSeatAirplaneDto {
   @IsNotEmpty()
   seatId!: string;
 
-  @IsUUID()
+  @IsString()
+  @IsNotEmpty()
   airplaneId!: string;
 
-  @IsUUID()
+  @IsString()
+  @IsOptional()
   ticketId!: string;
 
   @IsEnum(SeatClass)
-  seatClass!: SeatClass;
+  @IsNotEmpty()
+  class!: SeatClass;
 }

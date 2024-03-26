@@ -1,17 +1,24 @@
 // src/dto/update-intermediate-airport.dto.ts
-import { IsDecimal, IsOptional, IsString, IsUUID } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsDecimal, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class UpdateIntermediateAirportDto {
-  @IsUUID()
-  @IsOptional()
-  flightID?: string;
 
-  @IsUUID()
   @IsOptional()
-  airportID?: string;
+  @Type(() => Number)
+  @IsNumber()
+  flightID?: number;
 
-  @IsDecimal()
+
   @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  airportID?: number;
+
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
   duration?: number;
 
   @IsString()

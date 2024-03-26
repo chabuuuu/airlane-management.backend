@@ -1,15 +1,18 @@
 // src/dto/create-airplane.dto.ts
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsUUID, Max } from 'class-validator';
 
 export class CreateAirplaneDto {
-  @IsUUID()
+  @IsOptional()
+  @IsString()
   flightId!: string;
 
   @IsString()
   @IsNotEmpty()
+  @Max(20)
   airplaneModel!: string;
 
   @IsString()
   @IsNotEmpty()
+  @Max(30)
   airlines!: string;
 }

@@ -19,10 +19,10 @@ export class SeatAirplane {
   @JoinColumn({ name: 'airplaneId' })
   airplane!: Airplane;
 
-  @Column({ type: 'uuid', unique: true })
-  ticketId!: string;
+  @Column({ type: 'uuid', unique: true, nullable: true })
+  ticketId?: string;
 
-  @ManyToOne(() => Ticket, (ticket) => ticket.ticketID)
+  @ManyToOne(() => Ticket, (ticket) => ticket.ticketId)
   @JoinColumn({ name: 'ticketId' })
   ticket!: Ticket;
 

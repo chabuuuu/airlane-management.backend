@@ -1,38 +1,42 @@
 // src/dto/update-customer.dto.ts
-import { IsBoolean, IsDate, IsEmail, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsDate, IsDateString, IsEmail, IsOptional, IsPhoneNumber, IsString, IsStrongPassword, MaxLength } from 'class-validator';
 
 export class UpdateCustomerDto {
   @IsEmail()
   @IsOptional()
-  email?: string;
+  email!: string;
 
-  @IsString()
+  @IsPhoneNumber()
   @IsOptional()
-  phoneNumber?: string;
+  phoneNumber!: string;
 
-  @IsString()
+  @IsStrongPassword()
+  @MaxLength(30)
   @IsOptional()
-  password?: string;
+  password!: string;
 
-  @IsDate()
+  @IsDateString()
   @IsOptional()
-  birthday?: Date;
-
-  @IsString()
-  @IsOptional()
-  address?: string;
-
-  @IsString()
-  @IsOptional()
-  nationality?: string;
+  birthday!: Date;
 
   @IsBoolean()
   @IsOptional()
-  emailValidated?: boolean;
+  emailValidated!: boolean;
 
   @IsString()
   @IsOptional()
-  cccd?: string;
+  @MaxLength(50)
+  address!: string;
+
+  @IsString()
+  @IsOptional()
+  @MaxLength(50)
+  nationality!: string;
+
+  @IsString()
+  @IsOptional()
+  @MaxLength(50)
+  cccd!: string;
 
   @IsString()
   @IsOptional()

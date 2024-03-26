@@ -1,17 +1,9 @@
 // src/dto/update-seat.dto.ts
-import { IsEnum, IsOptional, IsUUID } from 'class-validator';
+import { IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
 
-enum SeatClass {
-  Economy = 'Economy',
-  Business = 'Business'
-}
 
 export class UpdateSeatDto {
-  @IsUUID()
+  @IsString()
   @IsOptional()
   seatId?: string;
-
-  @IsEnum(SeatClass)
-  @IsOptional()
-  seatClass?: SeatClass;
 }

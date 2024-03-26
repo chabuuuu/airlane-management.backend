@@ -1,41 +1,41 @@
 // src/dto/create-customer.dto.ts
-import { IsBoolean, IsDate, IsEmail, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsBoolean, IsDateString, IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, IsString, IsStrongPassword, IsUUID, Max, MaxLength } from 'class-validator';
 
 export class CreateCustomerDto {
   @IsEmail()
   @IsNotEmpty()
   email!: string;
 
-  @IsString()
+  @IsPhoneNumber()
   @IsNotEmpty()
   phoneNumber!: string;
 
-  @IsString()
+  @IsStrongPassword()
+  @MaxLength(30)
   @IsNotEmpty()
   password!: string;
 
-  @IsDate()
+  @IsDateString()
   @IsNotEmpty()
   birthday!: Date;
 
   @IsString()
   @IsNotEmpty()
+  @MaxLength(50)
   address!: string;
 
   @IsString()
   @IsNotEmpty()
+  @MaxLength(50)
   nationality!: string;
 
-  @IsBoolean()
-  @IsOptional()
-  emailValidated?: boolean;
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(50)
+  cccd!: string;
 
   @IsString()
-  @IsOptional()
-  cccd?: string;
-
-  @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   cccdPicture?: string;
 
   @IsString()

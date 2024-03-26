@@ -2,7 +2,6 @@
 import { IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class UpdateAirplaneDto {
-  @IsUUID()
   @IsOptional()
   flightId?: string;
 

@@ -1,5 +1,5 @@
 // src/dto/create-booking.dto.ts
-import { IsBoolean, IsEnum, IsNotEmpty, IsUUID } from 'class-validator';
+import { IsBoolean, IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 
 enum BookingStatus {
   Booked = 'Đã lấy vé',
@@ -8,12 +8,15 @@ enum BookingStatus {
 }
 
 export class CreateBookingDto {
-  @IsUUID()
+  @IsNotEmpty()
+  @IsString()
   ticketID!: string;
 
   @IsBoolean()
+  @IsOptional()
   paymentStatus!: boolean;
 
   @IsEnum(BookingStatus)
+  @IsOptional()
   bookingStatus!: BookingStatus;
 }

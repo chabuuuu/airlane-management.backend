@@ -1,0 +1,24 @@
+openapi: '3.0.2'
+info:
+  title: API Title
+  version: '1.0'
+servers:
+  - url: https://api.server.test/v1
+paths:
+  /test:
+    get:
+      responses:
+        '200':
+          description: OK
+    put:
+      description: ''
+      parameters: 
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID
+      responses:
+        '200':
+          description: OK

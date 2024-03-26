@@ -24,7 +24,7 @@ import { IsNotEmpty, IsOptional, IsString, IsUUID, Max } from 'class-validator';
  *       required:
  *         - airplaneModel
  *         - airlines
- *     Create&UpdateAirplaneSuccess:
+ *     AirplaneSuccessResponse:
  *       properties:
  *         flightId:
  *           type: string
@@ -60,8 +60,3 @@ export class CreateAirplaneDto {
   @Max(30)
   airlines!: string;
 }
-
-import { validationMetadatasToSchemas } from 'class-validator-jsonschema'
-
-const schemas = validationMetadatasToSchemas()
-console.log(JSON.stringify(schemas))

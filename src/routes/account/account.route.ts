@@ -7,7 +7,7 @@ accountRouter
 
 /**
  * @swagger
- * /api/v1/account/create:
+ * /account/create:
  *   post:
  *     summary: Create a account user.
  *     requestBody:

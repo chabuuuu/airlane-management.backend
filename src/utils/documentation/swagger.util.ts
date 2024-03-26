@@ -5,10 +5,10 @@ const options = {
     definition: {
       openapi: "3.1.0",
       info: {
-        title: "Loan service API Documentation",
+        title: "Airline management API Documentation",
         version: "0.1.0",
         description:
-          "This is Loan Service CRUD API application made with Express and documented with Swagger",
+          "This is airline manageement CRUD API application made with Express and documented with Swagger",
         license: {
           name: "MIT",
           url: "https://spdx.org/licenses/MIT.html",
@@ -20,7 +20,7 @@ const options = {
       },
       servers: [
         {
-          url: "http://localhost:3000",
+          url: "http://localhost:3000/api/v1",
         },
       ],
     },

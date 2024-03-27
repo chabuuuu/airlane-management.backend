@@ -36,4 +36,15 @@ export class CustomerRepository extends BaseRepository<Customer> implements ICus
             throw error
         }
     }
+    async _findOneIncludePassword(params: { where?: any; }): Promise<any> {
+        try {
+            const { where } = params;
+            const result = await this._model.findOne({
+              where,
+            });
+            return result
+          } catch (error) {
+            throw error
+          }
+    }
 }

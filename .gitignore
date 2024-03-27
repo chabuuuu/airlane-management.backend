@@ -1,4 +1,5 @@
 dist
 node_modules
 .env
-swagger.temp.yaml
+swagger.temp.yml
+swagger.yml

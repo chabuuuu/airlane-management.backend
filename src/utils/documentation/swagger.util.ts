@@ -8,7 +8,7 @@ const options = {
         title: "Airline management API Documentation",
         version: "0.1.0",
         description:
-          "This is airline manageement CRUD API application made with Express and documented with Swagger",
+          "This is airline manageement   CRUD API application made with Express and documented with Swagger",
         license: {
           name: "MIT",
           url: "https://spdx.org/licenses/MIT.html",

@@ -192,7 +192,7 @@ export class UpdateFlightDto {
   description?: string;
 }
 
-import { validationMetadatasToSchemas } from 'class-validator-jsonschema'
+// import { validationMetadatasToSchemas } from 'class-validator-jsonschema'
 
-const schemas = validationMetadatasToSchemas()
-console.log(JSON.stringify(schemas))
+// const schemas = validationMetadatasToSchemas()
+// console.log(JSON.stringify(schemas))

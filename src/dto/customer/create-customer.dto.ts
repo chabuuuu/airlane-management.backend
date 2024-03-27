@@ -36,7 +36,7 @@ export class CreateCustomerDto {
 
   @IsString()
   @IsNotEmpty()
-  cccdPicture?: string;
+  cccdPicture!: string;
 
   @IsString()
   @IsOptional()

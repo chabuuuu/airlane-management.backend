@@ -14,12 +14,13 @@ export class BaseRepository<T extends any> implements IBaseRepository<T> {
     try {
       const { where, data } = params;
       await this._model.findOneByOrFail(where);
-      const result = await this._model.update(where, data);
+      const result = await this._model.update(where, data);      
       return Object.assign({ updateData: data }, { where: where }, result)
     } catch (error) {
       if (error instanceof EntityNotFoundError) {
         throw new BaseError(404, 'fail', "Entity not found")
-      }
+      }      
+      throw error
     }
   }
   async _delete(params: { where: any }): Promise<any> {
@@ -39,9 +40,13 @@ export class BaseRepository<T extends any> implements IBaseRepository<T> {
   async _findOne(params: { where?: any }): Promise<any> {
     try {
       const { where } = params;
-      return await this._model.findOne({
+      const result = await this._model.findOne({
         where,
       });
+      if (result.hasOwnProperty("password")){
+        delete result.password
+      }
+      return result
     } catch (error) {
       throw error
     }
@@ -69,8 +74,12 @@ export class BaseRepository<T extends any> implements IBaseRepository<T> {
     try {
       const { data } = params;
       const newInstance = await this._model.create(data);
-      return await this._model.save(newInstance);
-    } catch (error) {
+      const result = await this._model.save(newInstance);
+      if (result.hasOwnProperty("password")){
+        delete result.password
+      }
+      return result
+    } catch (error) {      
       throw error
     }
   }

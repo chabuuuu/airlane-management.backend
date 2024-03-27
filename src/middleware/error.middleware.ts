@@ -8,7 +8,8 @@ import {
 
 export const errorHanlder = (error: any, req: any, res: any, next: any) => {
   console.log("Error::: " + error);
-
+  console.log('error detail', error.detail);
+  
   let message = (error as any).message.message;
   let code = "HttpException";
   let status = StatusCodes.INTERNAL_SERVER_ERROR;

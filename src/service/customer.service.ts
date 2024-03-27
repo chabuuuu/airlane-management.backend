@@ -14,9 +14,17 @@ export class CustomerService
   constructor(@inject(ITYPES.Repository) repository: ICustomerService<any>) {
     super(repository);
   }
+  async findOneIncludePassword(params: any): Promise<any> {
+    try {
+        return await this.repository._findOneIncludePassword(params);
+    } catch (error) {
+        throw error
+    }
+  }
+
   async login(params: any): Promise<any> {
     try {
-      const { email, password } = params;      
+      const { email, password } = params;
       const customer = await this.repository._findOneIncludePassword({
         where: { email: email },
       });
@@ -56,7 +64,7 @@ export class CustomerService
       return {
         status: "suscess",
         customer: customer,
-        token: 'Bearer ' + token,
+        token: "Bearer " + token,
       } as any;
     } catch (error) {
       throw error;

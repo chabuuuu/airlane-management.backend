@@ -31,7 +31,10 @@ if (useHelmet) {
 }
 
 //Swagger init
-swaggerInit(app, root_api, server_config.port || 3000)
+const swaggerEnable = config.get('swagger');
+if (swaggerEnable){
+  swaggerInit(app, root_api, server_config.port || 3000)
+}
 
 //Route
 route(app, root_api);

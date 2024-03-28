@@ -6,4 +6,5 @@ export interface ICustomerController<T> extends IBaseController<T>{
     sendVertificationEmail(req: any, res: any, next: any): Promise<any>
     verifyEmailToken(req: any, res: any, next: any): Promise<any>
     loginWithGoogle(req: any, res: any, next: any): Promise<any>
+    loginWithGoogleCallback(req: any, res: any, next: any): Promise<any>
 }

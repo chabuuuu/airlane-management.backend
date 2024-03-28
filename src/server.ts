@@ -8,6 +8,7 @@ import { AppDataSource } from '@/database/db.datasource';
 import { swaggerInit } from '@/utils/documentation/swagger.util';
 const cors = require('cors')
 const config = require('config');
+const session = require('express-session')
 const morgan = require('morgan')
 const corsOption = config.get('cors');
 const useHelmet = config.get('helmet');
@@ -29,6 +30,8 @@ app.use(cors(corsOption))
 if (useHelmet) {
   app.use(helmet());
 }
+app.use(session({ secret: process.env.JWT_SECRET, cookie: { maxAge: 60000 }}))
+
 
 //Swagger init
 const swaggerEnable = config.get('swagger');

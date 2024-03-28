@@ -5,4 +5,6 @@ export interface ICustomerService<T> extends IBaseService<T>{
     findOneIncludePassword(params: any): Promise<any>
     sendVertificationEmail(email: string): Promise<any>
     verifyEmailToken(email: string, token: string): Promise<any>
+    loginWithGoogle(): Promise<any>
+    loginWithGoogleCallback(params: any): Promise<any>
 }

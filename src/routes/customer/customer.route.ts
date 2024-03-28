@@ -12,10 +12,17 @@ import express from "express";
 const customerRouter = express.Router();
 
 customerRouter
-
+.get(
+    "/google-oauth2callback",
+    customerController.loginWithGoogleCallback.bind(customerController)
+  )
   .post(
     "/send-verify-email",
     customerController.sendVertificationEmail.bind(customerController)
+  )
+  .get(
+    "/login-with-google",
+    customerController.loginWithGoogle.bind(customerController)
   )
   .post(
     "/login",

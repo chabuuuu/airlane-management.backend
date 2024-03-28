@@ -3,6 +3,7 @@ import { ICustomerController } from "@/controller/interface/customer.controller"
 import { ICustomerService } from "@/service/interface/i.customer.service";
 import { ITYPES } from "@/types/interface.types";
 import BaseError from "@/utils/error/base.error";
+import oauth2Client from "@/utils/google-api/google-oauth2.client.util";
 import { StatusCodes } from "http-status-codes";
 import { inject, injectable } from "inversify";
 
@@ -14,11 +15,36 @@ export class CustomerController
   constructor(@inject(ITYPES.Service) service: ICustomerService<any>) {
     super(service);
   }
+  async loginWithGoogleCallback(req: any, res: any, next: any): Promise<any> {
+    try {
+      const query = req.query
+      console.log('query:', query);
+      console.log('callback state: ', query.state);
+      const callBackToken = req.query.state;
+      const sessionToken = req.session.loginWithGoogleToken;
+      if (callBackToken !== sessionToken){
+        throw new BaseError(StatusCodes.BAD_REQUEST, 'fail', 'Login by google failed! Invalid state')
+      }
+      if (query.error){
+          console.log('Error:' + query.error);
+          res.status(400).json({error: query.error})
+      }
+      let { tokens } = await oauth2Client.getToken(query.code);
+      console.log('token:::', tokens);
+      console.log('session state:::', req.session.loginWithGoogleToken);
+      const result = await this.service.loginWithGoogleCallback(tokens)
+      return res.json(result)
+    } catch (error) {
+      next(error)
+    }
+  }
   async loginWithGoogle(req: any, res: any, next: any): Promise<any> {
     try {
-      throw new Error("Method not implemented.");
+        const {token, authorizationUrl} = await this.service.loginWithGoogle();
+        req.session.loginWithGoogleToken = token;
+        res.redirect(authorizationUrl)
     } catch (error) {
-      
+      next(error)
     }
   }
 

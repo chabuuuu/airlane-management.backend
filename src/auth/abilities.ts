@@ -1,3 +1,5 @@
+import { Subject } from "@/auth/subjects"
+
 let StaffLV0 : any = {level: 0}
 let StaffLV1 : any = {level: 1}
 let Customer : any = {level: 2}

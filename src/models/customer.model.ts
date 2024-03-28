@@ -11,6 +11,9 @@ export class Customer {
     @Column("varchar", { length: 15, unique: true })
     phoneNumber!: string;
 
+    @Column("varchar", {length: 50})
+    fullname!: string;
+
     @Column("varchar", { length: 30 })
     password!: string;
 

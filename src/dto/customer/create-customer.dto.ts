@@ -10,6 +10,11 @@ export class CreateCustomerDto {
   @IsNotEmpty()
   phoneNumber!: string;
 
+  @IsString()
+  @MaxLength(50)
+  @IsNotEmpty()
+  fullname!: string;
+
   @IsStrongPassword()
   @MaxLength(30)
   @IsNotEmpty()

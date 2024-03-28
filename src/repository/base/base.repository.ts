@@ -43,7 +43,7 @@ export class BaseRepository<T extends any> implements IBaseRepository<T> {
       const result = await this._model.findOne({
         where,
       });
-      if (result.hasOwnProperty("password")){
+      if (result && result.hasOwnProperty("password")){
         delete result.password
       }
       return result

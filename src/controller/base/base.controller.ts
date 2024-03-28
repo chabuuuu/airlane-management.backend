@@ -23,7 +23,17 @@ export class BaseController implements IBaseController<any>{
     }
     async findAll(req: any, res: any, next: any): Promise<any> {
         try {
-            const result = await this.service.findAll({});
+            let skip 
+            let take
+            const {page} = req.query;
+            if (page) {
+                skip = (page - 1) * 10;
+                take = 10;
+            }
+            const result = await this.service.findAll({
+                skip,
+                take
+            });
             res.json(result);
         } catch (error) {
             next(error)

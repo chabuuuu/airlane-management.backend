@@ -39,6 +39,7 @@ export async function authenticateJWT(req: any, res: any, next: any) {
                   if (findUser.email_verified == false) {
                     throw new BaseError(StatusCodes.BAD_REQUEST, 'fail', 'Email not verified')
                   }
+                  findUser.role = 'Customer';
                   console.log('User Login:::', findUser);
                   req.user = findUser;
                 break;

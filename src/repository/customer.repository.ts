@@ -47,4 +47,39 @@ export class CustomerRepository extends BaseRepository<Customer> implements ICus
             throw error
           }
     }
+
+    async _findAll(params: {
+        skip?: number;
+        take?: number;
+        where?: any;
+        order?: any;
+      }): Promise<any> {
+        try {
+          const { skip, take, where, order } = params;
+    
+          return this._model.find({
+            skip,
+            take,
+            where,
+            select: {
+                customerId: true,
+                email: true,
+                fullname: true,
+                phoneNumber: true,
+                birthday: true,
+                address: true,
+                nationality: true,
+                emailValidated: true,
+                cccd: true,
+                cccdPicture: true,
+                profilePicture: true,
+                createAt: true,
+                updateAt: true
+            },
+            order,
+          })
+        } catch (error) {
+          throw error
+        }
+      }
 }

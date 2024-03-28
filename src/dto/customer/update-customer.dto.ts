@@ -15,6 +15,11 @@ export class UpdateCustomerDto {
   @IsOptional()
   password!: string;
 
+  @IsString()
+  @MaxLength(50)
+  @IsOptional()
+  fullname!: string;
+
   @IsDateString()
   @IsOptional()
   birthday!: Date;

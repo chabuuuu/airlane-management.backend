@@ -1,26 +1,26 @@
-import { Entity, PrimaryColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryColumn, PrimaryGeneratedColumn, JoinColumn, Column, ManyToOne, OneToOne } from 'typeorm';
 import { Airplane } from '@/models/airplane.model';
 import { Seat } from '@/models/seat.model';
 import { Ticket } from '@/models/ticket.model';
 
 @Entity()
 export class SeatAirplane {
-  @PrimaryColumn()
+  @PrimaryColumn({ type: 'varchar' }) //xem lại có mấy thuộc tính cần làm khóa chính
   seatId!: string;
 
-  @ManyToOne(() => Seat, (seat) => seat.seatId)
-  seat!: Seat;
-
-  @PrimaryColumn()
+  @PrimaryColumn() //xem lại có mấy thuộc tính cần làm khóa chính
   airplaneId!: string;
 
-  @ManyToOne(() => Airplane, (airplane) => airplane.airplaneId)
+  @ManyToOne(() => Seat, seat => seat.seatAirplanes) 
+  @JoinColumn({ name: 'seatId' })   //sửa ở đây nè thịnh
+  seat!: Seat;
+
+  @ManyToOne(() => Airplane, airplane => airplane.seatAirplanes) //da check
+  @JoinColumn({ name: 'airplaneId' })  
   airplane!: Airplane;
 
-  @Column({ type: 'uuid', unique: true })
-  ticketId!: string;
-
-  @ManyToOne(() => Ticket, (ticket) => ticket.ticketID)
+  @OneToOne(() => Ticket, ticket => ticket.seatAirplane)  //da check
+  @JoinColumn({ name: 'ticketId' })
   ticket!: Ticket;
 
   @Column({ type: 'enum', enum: ['Economy', 'Business'], default: 'Economy' })

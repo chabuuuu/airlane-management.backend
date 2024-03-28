@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
+import { Ticket } from '@/models/ticket.model';
 
 @Entity()
 export class Customer {
@@ -7,6 +8,9 @@ export class Customer {
 
     @Column("varchar", { length: 50, unique: true })
     email!: string;
+
+    @Column({ type: 'varchar', length: 50})
+    fullname!: string;
 
     @Column("varchar", { length: 15, unique: true })
     phoneNumber!: string;
@@ -40,4 +44,7 @@ export class Customer {
 
     @UpdateDateColumn()
     updateAt!: Date;
+
+    @OneToMany(() => Ticket, ticket => ticket.passenger) //da check
+    tickets!: Ticket[];
 }

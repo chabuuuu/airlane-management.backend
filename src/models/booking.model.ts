@@ -1,13 +1,14 @@
-import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import { Entity, JoinColumn, Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, OneToOne } from 'typeorm';
 import { Ticket } from '@/models/ticket.model';
 
 @Entity()
 export class Booking {
-  @PrimaryColumn({ type: 'uuid' })
+  @PrimaryGeneratedColumn('uuid')
   bookingId!: string;
 
-  @ManyToOne(() => Ticket, (ticket) => ticket.ticketID)
-  ticketID!: Ticket;
+  @OneToOne(() => Ticket, ticket => ticket.bookings)   //da check
+  @JoinColumn({ name: 'ticketID' })
+  ticket!: Ticket;  
 
   @Column({ type: 'boolean', default: false })
   paymentStatus!: boolean;

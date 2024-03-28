@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, UpdateDateColumn } from 'typeorm';
+import { Flight } from '@/models/flight.model';
+import { IntermediateAirport } from '@/models/intermediate_airport.model';
 
 @Entity()
 export class Airport {
@@ -31,4 +33,13 @@ export class Airport {
 
   @UpdateDateColumn()
   update_at!: Date;
+
+  @OneToMany(() => Flight, flight => flight.departureAirport) //da check
+  departures!: Flight[];
+
+  @OneToMany(() => Flight, flight => flight.arrivalAirport) //da check
+  arrivals!: Flight[];
+
+  @OneToMany(() => IntermediateAirport, intermediate => intermediate.airport) //da check
+  intermediateStops!: IntermediateAirport[];
 }

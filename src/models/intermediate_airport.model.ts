@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, PrimaryColumn } from 'typeorm';
+import { Entity, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, JoinColumn, PrimaryColumn } from 'typeorm';
 import { Flight } from '@/models/flight.model';
 import { Airport } from '@/models/airport.model';
 
@@ -10,10 +10,12 @@ export class IntermediateAirport {
   @PrimaryColumn()
   airportID!: number;
 
-  @ManyToOne(() => Flight, (flight) => flight.flightId)
+  @ManyToOne(() => Flight, flight => flight.intermediateAirports) //da check
+  @JoinColumn({ name: 'flightID' })
   flight!: Flight;
 
-  @ManyToOne(() => Airport, (airport) => airport.airportId)
+  @ManyToOne(() => Airport, airport => airport.intermediateStops) //da check
+  @JoinColumn({ name: 'airportID' })
   airport!: Airport;
 
   @Column({ type: 'decimal', precision: 5, scale: 1 })

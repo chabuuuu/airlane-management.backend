@@ -1,5 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToOne, UpdateDateColumn, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Airport } from '@/models/airport.model';
+import { Airplane } from '@/models/airplane.model';
+import { Ticket } from '@/models/ticket.model';
+import { IntermediateAirport } from '@/models/intermediate_airport.model';
 
 @Entity()
 export class Flight {
@@ -9,11 +12,13 @@ export class Flight {
   @Column({ unique: true })
   flightCode!: string;
 
-  @ManyToOne(() => Airport, (airport) => airport.airportId)
-  departureAirportId!: Airport;
+  @ManyToOne(() => Airport, airport => airport.departures) //da check
+  @JoinColumn({ name: 'departureAirportId' }) 
+  departureAirport!: Airport;
 
-  @ManyToOne(() => Airport, (airport) => airport.airportId)
-  arrivalAirportId!: Airport;
+  @ManyToOne(() => Airport, airport => airport.arrivals) //da check
+  @JoinColumn({ name: 'arrivalAirportId' })
+  arrivalAirport!: Airport;
 
   @Column({ type: 'datetime' })
   departureTime!: Date;
@@ -38,4 +43,13 @@ export class Flight {
 
   @UpdateDateColumn()
   updateAt!: Date;
+
+  @OneToMany(() => Ticket, ticket => ticket.flight) //da check
+  tickets!: Ticket[]; 
+
+  @OneToMany(() => IntermediateAirport, intermediate => intermediate.flight) //da check
+  intermediateAirports!: IntermediateAirport[];
+
+  @OneToOne(() => Airplane, airplane => airplane.flight)   //da check
+  airplane!: Airplane;
 }

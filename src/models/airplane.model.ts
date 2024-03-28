@@ -1,16 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Flight } from '@/models/flight.model';
+import { SeatAirplane } from '@/models/seat_airplane.model';
 
 @Entity()
 export class Airplane {
-  @Column({ type: 'uuid', primary: true })
+  @PrimaryGeneratedColumn('uuid')
   airplaneId!: string;
 
-  @Column({ unique: true })
-  flightId!: number;
-
-  @OneToOne(() => Flight)
-  @JoinColumn()
+  @OneToOne(() => Flight, flight => flight.airplane)  //da check
+  @JoinColumn({ name: 'flightID' })
   flight!: Flight;
 
   @Column({ type: 'varchar', length: 20 })
@@ -18,4 +16,7 @@ export class Airplane {
 
   @Column({ type: 'varchar', length: 30 })
   airlines!: string;
+
+  @OneToMany(() => SeatAirplane, seatAirplane => seatAirplane.airplane)  //da check
+  seatAirplanes!: SeatAirplane[];
 }

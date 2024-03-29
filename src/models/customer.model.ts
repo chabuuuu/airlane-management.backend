@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Ticket } from "@/models/ticket.model";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
 
 @Entity()
 export class Customer {
@@ -43,4 +44,8 @@ export class Customer {
 
     @UpdateDateColumn()
     updateAt!: Date;
+
+    //FKs:
+    @OneToMany(() => Ticket, ticket => ticket.passenger)
+    tickets!: Ticket[];
 }

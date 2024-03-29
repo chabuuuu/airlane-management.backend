@@ -27,11 +27,14 @@ export class CustomerService
     }
     const {data} = await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${access_token}`);         
     console.log('data:', data);
-    if (!data.email){
-      throw new BaseError(StatusCodes.BAD_REQUEST, 'fail', 'Login by google failed! Can not get email')
+    if (!data.hasOwnProperty("email")){
+      throw new BaseError(StatusCodes.BAD_REQUEST, 'fail', 'Login by google failed! Account does not exists')
     }
     const email = data.email;
     const user = await this.repository._findOneIncludePassword({ where: { email: email } });
+    if (!user){
+      throw new BaseError(StatusCodes.BAD_REQUEST, 'fail', 'Login by google failed! Account does not exists')
+    }
     return await this.login({email: user.email, password: user.password})
   } 
   async loginWithGoogle(): Promise<any> {

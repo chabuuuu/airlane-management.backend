@@ -1,15 +1,12 @@
 import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { Flight } from '@/models/flight.model';
 import { Staff } from '@/models/staff.model';
+import { Customer } from '@/models/customer.model';
 
 @Entity()
 export class Ticket {
   @PrimaryGeneratedColumn('uuid')
   ticketId!: string;
-
-  @ManyToOne(() => Flight, (flight) => flight.flightId)
-  @JoinColumn({name: 'flightId'})
-  flight!: Flight;
 
   @Column()
   flightId!: number
@@ -19,10 +16,6 @@ export class Ticket {
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   price!: number;
-
-  @ManyToOne(() => Staff, (staff) => staff.staffId)
-  @JoinColumn({name: 'sellerId'})
-  seller!: Staff;
 
   @Column()
   sellerId!: string
@@ -35,5 +28,18 @@ export class Ticket {
 
   @UpdateDateColumn({ type: 'datetime' })
   updateAt!: Date;
+
+  //FKs:
+  @ManyToOne(() => Customer, (passenger) => passenger.tickets) 
+  @JoinColumn({ name: 'passengerId' })
+  passenger!: Customer;
+
+  @ManyToOne(() => Staff, (staff) => staff.tickets)
+  @JoinColumn({name: 'sellerId'})
+  seller!: Staff;
+
+  @ManyToOne(() => Flight, (flight) => flight.tickets)
+  @JoinColumn({name: 'flightId'})
+  flight!: Flight;
 }
 

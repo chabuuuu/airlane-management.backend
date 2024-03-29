@@ -10,14 +10,6 @@ export class IntermediateAirport {
   @PrimaryColumn()
   airportId!: number;
 
-  @ManyToOne(() => Flight, (flight) => flight.flightId)
-  @JoinColumn({ name: 'flightId' })
-  flight!: Flight;
-
-  @ManyToOne(() => Airport, (airport) => airport.airportId)
-  @JoinColumn({ name: 'airportId' })
-  airport!: Airport;
-
   @Column({ type: 'decimal', precision: 5, scale: 1 })
   duration!: number;
 
@@ -29,4 +21,13 @@ export class IntermediateAirport {
 
   @UpdateDateColumn()
   updateAt!: Date;
+
+  //FKs:
+  @ManyToOne(() => Flight, (flight) => flight.intermediateAirports)
+  @JoinColumn({ name: 'flightId' })
+  flight!: Flight;
+
+  @ManyToOne(() => Airport, (airport) => airport.intermediateStops)
+  @JoinColumn({ name: 'airportId' })
+  airport!: Airport;
 }

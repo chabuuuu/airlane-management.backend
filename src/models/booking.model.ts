@@ -1,14 +1,10 @@
-import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
 import { Ticket } from '@/models/ticket.model';
 
 @Entity()
 export class Booking {
   @PrimaryColumn({ type: 'uuid' })
   bookingId!: string;
-
-  @ManyToOne(() => Ticket, (ticket) => ticket.ticketId)
-  @JoinColumn({ name: 'ticketId' })
-  ticket!: Ticket;
 
   @Column({nullable: true})
   ticketId!: string;
@@ -24,4 +20,9 @@ export class Booking {
 
   @UpdateDateColumn({ type: 'datetime' })
   updateAt!: Date;
+
+  //FKs:
+  @OneToOne(() => Ticket)
+  @JoinColumn({ name: 'ticketId' })
+  ticket!: Ticket;  
 }

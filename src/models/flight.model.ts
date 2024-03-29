@@ -1,22 +1,24 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Airport } from '@/models/airport.model';
+import { IntermediateAirport } from '@/models/intermediate_airport.model';
+import { Ticket } from '@/models/ticket.model';
 
 @Entity()
 export class Flight {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   flightId!: number;
 
   @Column({ unique: true })
   flightCode!: string;
 
-  @ManyToOne(() => Airport, (airport) => airport.airportId)
+  @ManyToOne(() => Airport, (airport) => airport.departures)
   @JoinColumn({ name: 'departureAirportId' })
-  departureAirport!: Airport;
+  departureAirport!: Airport; 
 
   @Column()
   departureAirportId!: number;
 
-  @ManyToOne(() => Airport, (airport) => airport.airportId)
+  @ManyToOne(() => Airport, (airport) => airport.arrivals)
   @JoinColumn({ name: 'arrivalAirportId' })
   arrivalAirport!: Airport;
 
@@ -46,4 +48,11 @@ export class Flight {
 
   @UpdateDateColumn()
   updateAt!: Date;
+
+  //FKs:
+  @OneToMany(() => IntermediateAirport, intermediate => intermediate.flight) 
+  intermediateAirports!: IntermediateAirport[];
+
+  @OneToMany(() => Ticket, ticket => ticket.flight) 
+  tickets!: Ticket[]; 
 }

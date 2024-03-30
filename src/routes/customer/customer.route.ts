@@ -42,8 +42,8 @@ customerRouter
   )
   .delete(
     "/:id",
-    checkRole("delete", Subject.Customer),
     authenticateJWT,
+    checkRole("delete", Subject.Customer),
     customerController.delete.bind(customerController)
   )
   .get(
@@ -57,8 +57,8 @@ customerRouter
   )
   .get(
     "/:id",
-    checkRole("read", Subject.Customer),
     authenticateJWT,
+    checkRole("read", Subject.Customer),
     customerController.findOne.bind(customerController)
   )
   .get(

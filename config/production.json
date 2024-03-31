@@ -12,5 +12,6 @@
         "allowedHeaders": ["X-Requested-With", "X-HTTP-Method-Override", "Content-Type", "Accept", "Observe", "Authorization"]
     },
     "helmet": true,
-    "enviroment": "production"
+    "enviroment": "production",
+    "swagger": false
 }

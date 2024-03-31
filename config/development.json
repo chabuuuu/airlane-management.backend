@@ -8,5 +8,6 @@
         "allowedHeaders": ["X-Requested-With", "X-HTTP-Method-Override", "Content-Type", "Accept", "Observe", "Authorization"]
     },
     "helmet": false,
-    "enviroment": "development"
+    "enviroment": "development",
+    "swagger": true
 }

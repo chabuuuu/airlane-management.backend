@@ -7,43 +7,100 @@ servers:
 
 components:
   schemas:
-    UpdateFlightDto:
+    CreateTicketDto:
       properties:
-        flightCode:
+        flightId:
+          example: "VN123"
+          minLength: 1
           type: string
-        departureAirportId:
-          type: number
-        arrivalAirportId:
-          type: number
-        departureTime:
-          pattern: "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d.\\d+Z?"
+        passengerId:
+          minLength: 1
+          example: "ceasdsa-dcxzcx21312"
           type: string
-        flightDuration:
-          type: number
-        economyPrice:
-          type: number
-        businessPrice:
-          type: number
+        price:
+          example: 1000000
+          type: string
+          minLength: 1
+        sellerId:
+          example: "ceasdsa-kwtsadas"
+          minLength: 1
+          type: string
         status:
+          example: "Booked"
+          minLength: 1
+          type: string
           enum:
-          - Chưa khởi hành
-          - Đang bay
-          - Đã hoàn thành
-          type: string
-        description:
+            - Booked
+            - Selled
+            - Cancelled
+        sellAt:
+          example: "2021-09-01T00:00:00.000Z"
           type: string
       type: object
+      required:
+        - flightID
+        - passengerId
+        - price
+        - sellerId
+        - status
 
-    DeleteSuccess:
+    UpdateTicketDto:
       properties:
-        deleteData:
-          type: object
-          description: "Data of deleted item, example: {id: 1, name: 'John Doe'}"
-        where:
-          type: object
-          description: "Where condition of deleted item, example: {id: 1}"
+        flightId:
+          type: string
+        passengerId:
+          type: string
+        price:
+          type: number
+        sellerId:
+          type: string
+        status:
+          example: "Selled"
+          enum:
+            - Booked
+            - Selled
+            - Cancelled
+          type: string
+        sellAt:
+          type: string
       type: object
 
+    GetTicketById:
+      properties:
+        flightId:
+          example: "VN123"
+          minLength: 1
+          type: string
+        passengerId:
+          minLength: 1
+          example: "ceasdsa-dcxzcx21312"
+          type: string
+        price:
+          example: 1000000
+          type: string
+          minLength: 1
+        sellerId:
+          example: "ceasdsa-kwtsadas"
+          minLength: 1
+          type: string
+        status:
+          example: "Booked"
+          minLength: 1
+          type: string
+          enum:
+            - Booked
+            - Selled
+            - Cancelled
+        sellAt:
+          example: "2021-09-01T00:00:00.000Z"
+          type: string
+      type: object
+      required:
+        - flightID
+        - passengerId
+        - price
+        - sellerId
+        - status
 
 
 
@@ -56,11 +113,10 @@ paths:
     put:
       description: ''
       parameters: 
-        - in: path
+        - in: query
           name: userId
           schema:
             type: integer
-          required: true
           description: Numeric ID
       responses:
         '200':

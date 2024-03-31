@@ -11,7 +11,7 @@ enum TicketStatus {
 export class UpdateTicketDto {
   @IsString()
   @IsOptional()
-  flightID!: string;
+  flightId!: string;
 
   @IsString()
   @IsOptional()

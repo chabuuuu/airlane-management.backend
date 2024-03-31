@@ -3,8 +3,8 @@
         "limit": "100kb"
     },
     "server": {
-        "port":  80,
-        "host": "3.1.220.207"
+        "port":  4000,
+        "host": "https://airlane-management-backend.onrender.com"
     },
     "cors": {
         "origin": "*",

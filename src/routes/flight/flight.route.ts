@@ -27,7 +27,7 @@ flightRouter
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/CreateFlightSuccessResponse"
+ *               $ref: "#/components/schemas/CreateSuccess"
  */
 .post('/', classValidate(CreateFlightDto))
 

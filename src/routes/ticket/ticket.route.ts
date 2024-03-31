@@ -1,19 +1,19 @@
-import { CreateAirportDto } from '@/dto/airport/create-airport.dto'
-import { UpdateAirportDto } from '@/dto/airport/update-airport.dto'
+import { CreateTicketDto } from '@/dto/ticket/create-ticket.dto'
+import { UpdateTicketDto } from '@/dto/ticket/update-ticket.dto'
 import { classValidate } from '@/middleware/class-validate.middleware'
 import express from 'express'
 
-const airportRouter = express.Router()
+const ticketRouter = express.Router()
 
-airportRouter
+ticketRouter
 
 /**
  * @openapi
- * /airport:
+ * /ticket:
  *   post:
- *     summary: "Create a new airport"
+ *     summary: "Create a new ticket"
  *     tags: 
- *      - airport 
+ *      - ticket 
  *     description: ""
  *     parameters: []
  *     requestBody:
@@ -21,7 +21,7 @@ airportRouter
  *       content:
  *         application/json:
  *           schema:
- *             $ref: "#/components/schemas/CreateAirportDto"
+ *             $ref: "#/components/schemas/CreateTicketDto"
  *     responses:
  *       "200":
  *         description: OK
@@ -30,29 +30,30 @@ airportRouter
  *             schema:
  *               $ref: "#/components/schemas/CreateSuccess"
  */
-.post('/', classValidate(CreateAirportDto))
+.post('/', classValidate(CreateTicketDto))
+
 
 /**
  * @openapi
- * /airport/{:id}:
+ * /ticket/{:id}:
  *   put:
- *     summary: "Update a airport by id"
+ *     summary: "Update a ticket by id"
  *     tags: 
- *      - airport 
- *     description: "Update airport infomation by id"
+ *      - ticket 
+ *     description: "Update ticket infomation by id"
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: integer
  *         required: true
- *         description: airport ID to update
+ *         description: ticket ID to update
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: "#/components/schemas/UpdateAirportDto"
+ *             $ref: "#/components/schemas/UpdateTicketDto"
  *     responses:
  *       "200":
  *         description: OK
@@ -61,23 +62,24 @@ airportRouter
  *             schema:
  *               $ref: "#/components/schemas/UpdateSuccess"
  */
-.put('/:id', classValidate(UpdateAirportDto))
+.put('/:id', classValidate(UpdateTicketDto))
+
 
 /**
  * @openapi
- * /airport/{:id}:
+ * /ticket/{:ticketId}:
  *   delete:
- *     summary: "Delete a airport by id"
+ *     summary: "Delete a ticket by id"
  *     tags:
- *       - airport
+ *       - ticket
  *     description: ""
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: ticketId
  *         schema:
- *           type: integer
+ *           type: string
  *         required: true
- *         description: airport ID to delete
+ *         description: ticket ID to delete
  *     responses:
  *       "200":
  *         description: OK
@@ -86,41 +88,41 @@ airportRouter
  *             schema:
  *               $ref: "#/components/schemas/DeleteSuccess"
  */
-.delete('/:id', classValidate(UpdateAirportDto))
+.delete('/:id')
 
 /**
  * @openapi
- * /airport/{:id}:
+ * /ticket/{:ticketId}:
  *   get:
- *     summary: "Get a airport info by id"
+ *     summary: "Get a ticket info by id"
  *     tags: 
- *      - airport 
+ *      - ticket 
  *     description: ""
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: ticketId
  *         schema:
  *           type: integer
  *         required: true
- *         description: airport ID to get
+ *         description: ticket ID to get
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/GetAirportById"
+ *               $ref: "#/components/schemas/GetTicketById"
  */
 .get('/:id')
 
 /**
  * @openapi
- * /airport:
+ * /ticket:
  *   get:
- *     summary: "Get all airports"
- *     tags:
- *       - airport
- *     description: "Get all airports"
+ *     summary: "Get all tickets"
+ *     tags: 
+ *      - ticket 
+ *     description: "Get all tickets"
  *     responses:
  *       "200":
  *         description: OK
@@ -129,8 +131,8 @@ airportRouter
  *             schema:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/GetAirportById"
+ *                 $ref: "#/components/schemas/GetTicketById"
  */
 .get('/')
 
-export default airportRouter
+export default ticketRouter

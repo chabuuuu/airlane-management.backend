@@ -3,6 +3,9 @@ const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const { SwaggerTheme, SwaggerThemeNameEnum } = require("swagger-themes");
 const theme = new SwaggerTheme();
+import { validationMetadatasToSchemas } from "class-validator-jsonschema";
+const fs = require("fs");
+
 const options = {
   definition: {
     openapi: "3.1.0",
@@ -28,9 +31,16 @@ const options = {
   },
   apis: ["./src/routes/**/*.ts", "./src/dto/**/*.ts"],
 };
-
 const specs = swaggerJsdoc(options);
 export function swaggerInit(app: any, root_api: any, port: any) {
+  const schemas = validationMetadatasToSchemas();
+  fs.writeFile("dto_swagger.json", JSON.stringify(schemas), (err: any) => {
+    if (err) {
+      console.error("Lỗi khi ghi vào file:", err);
+      return;
+    }
+    console.log("Chuỗi đã được ghi vào file thành công.");
+  });
   //Swagger init
   app.use(
     `${root_api}/api-docs`,

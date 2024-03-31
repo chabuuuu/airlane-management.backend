@@ -34,6 +34,19 @@ components:
           type: string
       type: object
 
+    DeleteSuccess:
+      properties:
+        deleteData:
+          type: object
+          description: "Data of deleted item, example: {id: 1, name: 'John Doe'}"
+        where:
+          type: object
+          description: "Where condition of deleted item, example: {id: 1}"
+      type: object
+
+
+
+
 paths:
   /test:
     get:

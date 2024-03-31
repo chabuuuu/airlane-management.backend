@@ -13,5 +13,5 @@
     },
     "helmet": true,
     "enviroment": "production",
-    "swagger": false
+    "swagger": true
 }

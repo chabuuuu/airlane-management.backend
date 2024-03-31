@@ -15,6 +15,9 @@
     "migration:sync": "npm run build && npx typeorm schema:sync -d ./dist/database/db.datasource.js",
     "migration:revert": "npm run typeorm -- migration:revert"
   },
+  "nodemonConfig": {
+    "ignore": ["*.json"]
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

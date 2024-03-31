@@ -1,18 +1,19 @@
-import { CreateFlightDto } from '@/dto/flight/create-flight.dto'
-import { UpdateFlightDto } from '@/dto/flight/update-flight.dto'
+import { CreateAirportDto } from '@/dto/airport/create-airport.dto'
+import { UpdateAirportDto } from '@/dto/airport/update-airport.dto'
 import { classValidate } from '@/middleware/class-validate.middleware'
 import express from 'express'
 
-const flightRouter = express.Router()
+const airportRouter = express.Router()
 
-flightRouter
+airportRouter
+
 /**
  * @openapi
- * /flight:
+ * /airport:
  *   post:
- *     summary: "Create a new flight"
+ *     summary: "Create a new airport"
  *     tags: 
- *      - flight 
+ *      - airport 
  *     description: ""
  *     parameters: []
  *     requestBody:
@@ -20,38 +21,38 @@ flightRouter
  *       content:
  *         application/json:
  *           schema:
- *             $ref: "#/components/schemas/CreateFlightDto"
+ *             $ref: "#/components/schemas/CreateAirportDto"
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/CreateFlightSuccessResponse"
+ *               $ref: "#/components/schemas/CreateAirportSuccess"
  */
-.post('/', classValidate(CreateFlightDto))
+.post('/', classValidate(CreateAirportDto))
 
 /**
  * @openapi
- * /flight/{:id}:
+ * /airport/{:id}:
  *   put:
- *     summary: "Update a flight by id"
+ *     summary: "Update a airport by id"
  *     tags: 
- *      - flight 
- *     description: "Update flight infomation by id"
+ *      - airport 
+ *     description: "Update airport infomation by id"
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: integer
  *         required: true
- *         description: Flight ID to update
+ *         description: airport ID to update
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: "#/components/schemas/UpdateFlightDto"
+ *             $ref: "#/components/schemas/UpdateAirportDto"
  *     responses:
  *       "200":
  *         description: OK
@@ -60,15 +61,15 @@ flightRouter
  *             schema:
  *               $ref: "#/components/schemas/UpdateSuccess"
  */
-.put('/:id', classValidate(UpdateFlightDto))
+.put('/:id', classValidate(UpdateAirportDto))
 
 /**
  * @openapi
- * /flight/{:id}:
+ * /airport/{:id}:
  *   delete:
- *     summary: "Delete a flight by id"
- *     tags: 
- *      - flight 
+ *     summary: "Delete a airport by id"
+ *     tags:
+ *       - airport
  *     description: ""
  *     parameters:
  *       - in: path
@@ -76,7 +77,7 @@ flightRouter
  *         schema:
  *           type: integer
  *         required: true
- *         description: Flight ID to delete
+ *         description: airport ID to delete
  *     responses:
  *       "200":
  *         description: OK
@@ -85,15 +86,15 @@ flightRouter
  *             schema:
  *               $ref: "#/components/schemas/DeleteSuccess"
  */
-.delete('/:id', classValidate(CreateFlightDto))
+.delete('/:id', classValidate(UpdateAirportDto))
 
 /**
  * @openapi
- * /flight/{:id}:
+ * /airport/{:id}:
  *   get:
- *     summary: "Get a flight info by id"
+ *     summary: "Get a airport info by id"
  *     tags: 
- *      - flight 
+ *      - airport 
  *     description: ""
  *     parameters:
  *       - in: path
@@ -101,25 +102,25 @@ flightRouter
  *         schema:
  *           type: integer
  *         required: true
- *         description: Flight ID to get
+ *         description: airport ID to get
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/GetOneFlightSuccessResponse"
+ *               $ref: "#/components/schemas/GetAirportById"
  */
 .get('/:id')
 
 /**
  * @openapi
- * /flight:
+ * /airport:
  *   get:
- *     summary: "Get all flights"
- *     tags: 
- *      - flight 
- *     description: "Get all flights"
+ *     summary: "Get all airports"
+ *     tags:
+ *       - airport
+ *     description: "Get all airports"
  *     responses:
  *       "200":
  *         description: OK
@@ -128,8 +129,8 @@ flightRouter
  *             schema:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/GetOneFlightSuccessResponse"
+ *                 $ref: "#/components/schemas/GetAirportById"
  */
 .get('/')
 
-export default flightRouter;
+export default airportRouter

@@ -3,7 +3,7 @@ import BaseError from "@/utils/error/base.error";
 
 function haveAccess(userRole: string, subject: string, action: string) {
     if (roles.hasOwnProperty(subject)) {
-        if ((roles)[userRole].level < (roles)[subject].level) {
+        if ((roles)[userRole].level <= (roles)[subject].level) {
             return true;
         }
     }

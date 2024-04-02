@@ -21,7 +21,7 @@ export class Staff {
   @Column({ type: 'date' })
   birthday!: Date;
 
-  @Column({ type: 'enum', enum: ["Staff_LV1", "Staff_LV2"], default: "Staff_LV1" })
+  @Column({ type: 'enum', enum: ["Staff_LV1", "Staff_LV2"], default: "Staff_LV2" })
   role!: "Staff_LV1" | "Staff_LV2";
 
   @CreateDateColumn()

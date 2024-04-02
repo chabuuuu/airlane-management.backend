@@ -1,7 +1,9 @@
 {
     "server": {
         "port":  3001,
-        "host": "localhost"
+        "host": "localhost",
+        "verify_email": "http://localhost:3001"
+
     },
     "request-limit": {
         "limit": "100kb"

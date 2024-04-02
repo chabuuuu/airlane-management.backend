@@ -36,10 +36,10 @@ export function swaggerInit(app: any, root_api: any, port: any) {
   const schemas = validationMetadatasToSchemas();
   fs.writeFile("dto_swagger.json", JSON.stringify(schemas), (err: any) => {
     if (err) {
-      console.error("Lỗi khi ghi vào file:", err);
+      console.error("Error when write down class dto to json file: ", err);
       return;
     }
-    console.log("Chuỗi đã được ghi vào file thành công.");
+    console.log("Write down class dto to json file successfully!");
   });
   //Swagger init
   app.use(

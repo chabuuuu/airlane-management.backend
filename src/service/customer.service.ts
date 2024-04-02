@@ -110,7 +110,7 @@ export class CustomerService
       redis.set(user.email, token, "EX", fiveMinuteInSeconds);
       const server_config = config.get('server');
       const api_version = config.get('API_VERSION');
-      const root_url = `http://${server_config.host}:${server_config.port}${api_version}`
+      const root_url = `${server_config.verify_email}${api_version}`
       const mailOptions = {
         from: {
           name: "CS Airlines",

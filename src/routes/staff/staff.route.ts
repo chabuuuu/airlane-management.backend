@@ -54,7 +54,7 @@ staffRouter
   .get(
     "/",
     authenticateJWT,
-    checkRole("read", Subject.Staff_LV2),
+    checkRole("read", Subject.Staff_LV1),
     staffController.findAll.bind(staffController)
   );
 

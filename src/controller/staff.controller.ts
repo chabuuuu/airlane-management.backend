@@ -59,4 +59,15 @@ export class StaffController extends BaseController implements IStaffController<
             next(error);
         }
     }
+    async findOne(req: any, res: any, next: any): Promise<any> {
+        try {
+            if (!req.params.id) throw new Error("Id is required");
+            if (req.user.role !== 'Staff_LV1') throw new BaseError(403, 'fail', 'Forbidden');
+            const id = req.params.id;
+            const result = await this.service.findOne({ where: { staffId: id }});
+            res.json(result);
+        } catch (error) {
+            next(error);
+        }
+    }
 }

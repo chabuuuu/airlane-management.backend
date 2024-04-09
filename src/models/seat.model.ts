@@ -6,6 +6,9 @@ export class Seat {
   @PrimaryColumn({ type: 'varchar' })
   seatId!: string;
 
+  @Column()
+  seat_index!: number;
+
   @OneToMany(() => SeatAirplane, seatAirplane => seatAirplane.seat) 
   seatAirplanes!: SeatAirplane[];  
 }

@@ -62,6 +62,8 @@ export class CustomerController
   }
   async sendVertificationEmail(req: any, res: any, next: any): Promise<any> {
     try {
+      console.log('request body: ', req.body);
+      
       const email = req.body.email;
       const result = await this.service.sendVertificationEmail(email);
       return res.json(result);

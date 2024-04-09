@@ -2,6 +2,7 @@ import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn, OneToOne } from '
 import { Airplane } from '@/models/airplane.model';
 import { Seat } from '@/models/seat.model';
 import { Ticket } from '@/models/ticket.model';
+import { SeatClass } from '@/enums/seat-class.enum';
 
 @Entity()
 export class SeatAirplane {
@@ -14,8 +15,11 @@ export class SeatAirplane {
   @Column({ type: 'uuid', unique: true, nullable: true })
   ticketId?: string;
 
-  @Column({ type: 'enum', enum: ['Economy', 'Business'], default: 'Economy' })
+  @Column({ type: 'enum', enum: SeatClass, default: SeatClass.ECONOMY })
   class!: 'Economy' | 'Business';
+
+  @Column({default: false})
+  isAvailable!: boolean;
 
   //FKs:
   @ManyToOne(() => Airplane, (airplane) => airplane.seatAirplanes)

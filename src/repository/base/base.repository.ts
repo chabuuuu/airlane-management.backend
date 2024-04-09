@@ -10,6 +10,18 @@ export class BaseRepository<T extends any> implements IBaseRepository<T> {
   constructor(model: any) {
     this._model = model;
   }
+  async _exists(params: any): Promise<boolean> {
+    try {
+      const { where } = params;
+
+      return await this._model.exists({
+        where
+      })
+    } catch (error) {
+      throw error;
+    }
+
+  }
   async _update(params: { where: any; data: any }): Promise<any> {
     try {
       const { where, data } = params;
@@ -73,11 +85,11 @@ export class BaseRepository<T extends any> implements IBaseRepository<T> {
   async _create(params: { data: any }): Promise<any> {
     try {
       const { data } = params;
-      const newInstance = await this._model.create(data);
+      const newInstance = await this._model.create(data);            
       const result = await this._model.save(newInstance);
       if (result.hasOwnProperty("password")){
         delete result.password
-      }
+      }      
       return result
     } catch (error) {      
       throw error
@@ -94,5 +106,5 @@ export class BaseRepository<T extends any> implements IBaseRepository<T> {
       } catch (error) {
         throw error
       }
-}
+    }
 }

@@ -3,4 +3,6 @@ export enum Subject {
     Staff_LV1 = 'Staff_LV1',
     Staff_LV2 = 'Staff_LV2',
     Flight = 'Flight',
+    Airplane = 'Airplane',
+    SeatAirplane = 'SeatAirplane',
 }

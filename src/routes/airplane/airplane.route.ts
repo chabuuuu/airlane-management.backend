@@ -1,7 +1,10 @@
+import { Subject } from "@/auth/subjects";
 import { airplaneController } from "@/container/airplane.container";
 import { CreateAirplaneDto } from "@/dto/airplane/create-airplane.dto";
 import { UpdateAirplaneDto } from "@/dto/airplane/update-airplane.dto";
 import { UpdateSeatClassDto } from "@/dto/airplane/update-seat-class.dto";
+import { ActionAuth } from "@/enums/action.auth.enum";
+import { checkRole } from "@/middleware/check-role.middleware";
 import { classValidate } from "@/middleware/class-validate.middleware";
 import { authenticateJWT } from "@/middleware/jwt.authenticate.middleware";
 import express from "express";
@@ -36,11 +39,15 @@ airplaneRouter
   .post(
     "/",
     classValidate(CreateAirplaneDto),
+    authenticateJWT,
+    checkRole(ActionAuth.CREATE, Subject.Airplane),
     airplaneController.create.bind(airplaneController)
   )
 
   .put(
     "/update-seat-class",
+    authenticateJWT,
+    checkRole(ActionAuth.UPDATE, Subject.SeatAirplane),
     classValidate(UpdateSeatClassDto),
     airplaneController.updateSeatClass.bind(airplaneController)
   )
@@ -76,6 +83,8 @@ airplaneRouter
    */
   .put(
     "/:id",
+    authenticateJWT,
+    checkRole(ActionAuth.UPDATE, Subject.Airplane),
     classValidate(UpdateAirplaneDto),
     airplaneController.update.bind(airplaneController)
   )
@@ -103,7 +112,10 @@ airplaneRouter
    *             schema:
    *               $ref: "#/components/schemas/AirplaneSuccessResponse"
    */
-  .delete("/:id", airplaneController.delete.bind(airplaneController))
+  .delete("/:id", 
+  authenticateJWT,
+  checkRole(ActionAuth.DELETE, Subject.Airplane),
+  airplaneController.delete.bind(airplaneController))
 
   .get("/seats", airplaneController.getSeats.bind(airplaneController))
 

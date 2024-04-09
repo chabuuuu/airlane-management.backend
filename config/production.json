@@ -5,7 +5,8 @@
     "server": {
         "port":  4000,
         "host": "https://airlane-management-backend.onrender.com",
-        "verify_email": "https://airlane-management-backend.onrender.com"
+        "verify_email": "https://airlane-management-backend.onrender.com",
+        "media_root": "https://airlane-management-backend.onrender.com"
     },
     "cors": {
         "origin": "*",

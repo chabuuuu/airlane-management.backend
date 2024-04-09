@@ -15,6 +15,23 @@ export class CustomerController
   constructor(@inject(ITYPES.Service) service: ICustomerService<any>) {
     super(service);
   }
+  async uploadProfilePicture(req: any, res: any, next: any): Promise<any> {
+    try {
+      const pictureName = req.imagename;
+      console.log('pictureName:', pictureName);
+      
+      const root = process.cwd();
+      const pictureURL = `${root}/storage/media/customer-profile-picture/${pictureName}`;
+      console.log('pictureURL', pictureURL);
+      res.json({
+        message: 'Upload ảnh thành công',
+        picture_url: pictureURL,
+      })
+    } catch (error) {
+      
+    }
+  }
+  
   async loginWithGoogleCallback(req: any, res: any, next: any): Promise<any> {
     try {
       const query = req.query

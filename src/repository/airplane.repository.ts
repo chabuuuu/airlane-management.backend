@@ -21,6 +21,9 @@ export class AirplaneRepository extends BaseRepository<Airplane> implements IAir
                         flightId: true,
                         airplaneModel: true,
                         airlines: true,
+                        total_seat: true,
+                        total_business_seat: true,
+                        total_economy_seat: true,
                         seatAirplanes: {
                             seatId: true,
                             ticketId: true,

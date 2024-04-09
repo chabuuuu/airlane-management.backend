@@ -1,6 +1,7 @@
 import { airplaneController } from "@/container/airplane.container";
 import { CreateAirplaneDto } from "@/dto/airplane/create-airplane.dto";
 import { UpdateAirplaneDto } from "@/dto/airplane/update-airplane.dto";
+import { UpdateSeatClassDto } from "@/dto/airplane/update-seat-class.dto";
 import { classValidate } from "@/middleware/class-validate.middleware";
 import { authenticateJWT } from "@/middleware/jwt.authenticate.middleware";
 import express from "express";
@@ -36,6 +37,12 @@ airplaneRouter
     "/",
     classValidate(CreateAirplaneDto),
     airplaneController.create.bind(airplaneController)
+  )
+
+  .put(
+    "/update-seat-class",
+    classValidate(UpdateSeatClassDto),
+    airplaneController.updateSeatClass.bind(airplaneController)
   )
 
   /**

@@ -22,7 +22,9 @@ export class SeatAirplane {
   isAvailable!: boolean;
 
   //FKs:
-  @ManyToOne(() => Airplane, (airplane) => airplane.seatAirplanes)
+  @ManyToOne(() => Airplane, (airplane) => airplane.seatAirplanes, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'airplaneId' })
   airplane!: Airplane;
 

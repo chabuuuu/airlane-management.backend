@@ -1,5 +1,6 @@
 import { MAX_TOTAL_SEATS } from "@/constants/total-seat.constants";
 import { seatAirplaneService } from "@/container/seat-airplane.container";
+import { UpdateSeatClassDto } from "@/dto/airplane/update-seat-class.dto";
 import { Seat } from "@/models/seat.model";
 import { IAirplaneRepository } from "@/repository/interface/i.airplane.repository";
 import { ISeatRepository } from "@/repository/interface/i.seat.repository";
@@ -25,6 +26,27 @@ export class AirplaneService
   ) {
     super(repository);
     this.seatAirplaneService = seatAirplaneService;
+  }
+  async updateSeatClass(params: UpdateSeatClassDto): Promise<any> {
+    try {
+      const { airplaneId, total_seat, total_business_seat, total_economy_seat } = params;
+      if (total_seat !== total_business_seat + total_economy_seat) {
+        throw new BaseError(400, 'fail', 'Total seat must be equal to total business seat + total economy seat');
+      }
+      if (total_seat > MAX_TOTAL_SEATS) {
+        throw new BaseError(400, 'fail', 'Total seat must not be greater than 200');
+      }
+      await this.repository._update({ where: { airplaneId: airplaneId }, data: { total_seat, total_business_seat, total_economy_seat } });
+      await this.seatAirplaneService.updateSeatClass(airplaneId, total_seat, total_business_seat, total_economy_seat);
+      return {
+        status: 'success',
+        total_business_seat: total_business_seat,
+        total_economy_seat: total_economy_seat,
+        total_seat: total_seat,
+      }
+    } catch (error) {
+      throw error;
+    }
   }
   async getSeats(airplaneId: string): Promise<any> {
     try {

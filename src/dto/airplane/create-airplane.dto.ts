@@ -1,5 +1,7 @@
 // src/dto/create-airplane.dto.ts
-import { IsNotEmpty, IsOptional, IsString, IsUUID, Max } from 'class-validator';
+import { MAX_TOTAL_SEATS } from '@/constants/total-seat.constants';
+import { Type } from 'class-transformer';
+import { IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, Max, MaxLength, Min } from 'class-validator';
 
 /**
  * @openapi
@@ -52,11 +54,32 @@ export class CreateAirplaneDto {
 
   @IsString()
   @IsNotEmpty()
-  @Max(20)
+  @MaxLength(20)
   airplaneModel!: string;
 
   @IsString()
   @IsNotEmpty()
-  @Max(30)
+  @MaxLength(30)
   airlines!: string;
+
+  @IsNotEmpty()
+  @Type(() => Number)
+  @IsNumber()
+  @Max(MAX_TOTAL_SEATS)
+  @Min(1)
+  total_seat!: number;
+
+  @IsNotEmpty()
+  @Type(() => Number)
+  @IsNumber()
+  @Max(MAX_TOTAL_SEATS)
+  @Min(1)
+  total_business_seat!: number;
+
+  @IsNotEmpty()
+  @Type(() => Number)
+  @IsNumber()
+  @Max(MAX_TOTAL_SEATS)
+  @Min(1)
+  total_economy_seat!: number;
 }

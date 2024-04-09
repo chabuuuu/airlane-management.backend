@@ -121,23 +121,14 @@ export class CustomerService
         text: `Hãy nhấn vào đường link này để xác thực email của bạn: ${root_url}/customer/verify-email-token?email=${email}&token=${token}`,
       };
 
-      await transporter.sendMail(mailOptions, (error: any, info: any) => {
-        if (error) {
-          console.log(error);
-          throw new BaseError(
-            StatusCodes.INTERNAL_SERVER_ERROR,
-            "fail",
-            "Error sending verification email."
-          );
-        } else {
-          console.log("Email sent: " + info.response);
-        }
-      });
+      const result = await transporter.sendMail(mailOptions);
+      console.log("Email sent: ",result);
+
       return {
         status: "suscess",
         message: `Email was sent to ${email}`,
       } as any;
-    } catch (error) {
+    } catch (error) {      
       throw error;
     }
   }

@@ -3,7 +3,7 @@ import { plainToInstance } from "class-transformer";
 import { validate } from "class-validator";
 
 export const classValidate = (Dto: any) => async (req: any, res: any, next: any) => {
-    try {
+    try {        
         const dtoInstance = plainToInstance(Dto, req.body);
         const validateErrors = await validate(dtoInstance, { validationError: { target: false, value: false } })
         if (validateErrors.length > 0) {

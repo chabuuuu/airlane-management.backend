@@ -2,8 +2,8 @@
     "server": {
         "port":  3001,
         "host": "localhost",
-        "verify_email": "http://localhost:3001"
-
+        "verify_email": "http://localhost:3001",
+        "media_root": "http://localhost:3001"
     },
     "request-limit": {
         "limit": "100kb"

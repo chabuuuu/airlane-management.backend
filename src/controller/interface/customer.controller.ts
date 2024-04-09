@@ -8,4 +8,5 @@ export interface ICustomerController<T> extends IBaseController<T>{
     loginWithGoogle(req: any, res: any, next: any): Promise<any>
     loginWithGoogleCallback(req: any, res: any, next: any): Promise<any>
     uploadProfilePicture(req: any, res: any, next: any): Promise<any>
+    getProfilePicture(req: any, res: any, next: any): Promise<any>
 }

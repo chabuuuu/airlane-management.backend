@@ -13,6 +13,7 @@ import express from "express";
 const customerRouter = express.Router();
 
 customerRouter
+.get("/profile-picture/:pictureName", customerController.getProfilePicture.bind(customerController))
 .get(
     "/google-oauth2callback",
     customerController.loginWithGoogleCallback.bind(customerController)

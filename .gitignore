@@ -4,3 +4,5 @@ node_modules
 swagger.temp.yml
 swagger.yml
 dto_swagger.json
+storage/media/customer-profile-picture/*.png
+storage/media/customer-profile-picture/*.png

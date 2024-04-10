@@ -7,7 +7,7 @@ import { UpdateCustomerDto } from "@/dto/customer/update-customer.dto";
 import { checkRole } from "@/middleware/check-role.middleware";
 import { classValidate } from "@/middleware/class-validate.middleware";
 import { authenticateJWT } from "@/middleware/jwt.authenticate.middleware";
-import { uploadPicture } from "@/utils/media/upload-picture.multer";
+import { uploadCustomerPorfilePicture } from "@/utils/media/upload-customer-profile-picture";
 import express from "express";
 
 const customerRouter = express.Router();
@@ -19,7 +19,7 @@ customerRouter
     customerController.loginWithGoogleCallback.bind(customerController)
   )
   .post("/upload-profile-picture",
-    uploadPicture("customer-profile-picture"),
+    uploadCustomerPorfilePicture,
     customerController.uploadProfilePicture.bind(customerController)
     )
   .post(

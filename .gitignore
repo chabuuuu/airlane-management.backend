@@ -7,3 +7,7 @@ dto_swagger.json
 storage/media/customer-profile-picture/*.png
 storage/media/customer-profile-picture/*.jpg
 storage/media/customer-profile-picture/*.jpeg
+
+storage/media/airport-picture/*.jpeg
+storage/media/airport-picture/*.jpg
+storage/media/airport-picture/*.png

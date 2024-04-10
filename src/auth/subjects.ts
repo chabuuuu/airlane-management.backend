@@ -5,4 +5,5 @@ export enum Subject {
     Flight = 'Flight',
     Airplane = 'Airplane',
     SeatAirplane = 'SeatAirplane',
+    Airport = 'Airport',
 }

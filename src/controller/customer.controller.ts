@@ -45,7 +45,9 @@ export class CustomerController
         message: "Upload ảnh thành công",
         picture_url: pictureURL,
       });
-    } catch (error) {}
+    } catch (error) {
+      next(error);
+    }
   }
 
   async loginWithGoogleCallback(req: any, res: any, next: any): Promise<any> {

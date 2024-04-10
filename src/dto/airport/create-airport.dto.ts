@@ -147,10 +147,10 @@ import { IsNotEmpty, IsString, MaxLength, IsOptional, MAX, IsEnum } from 'class-
  */
 
 export class CreateAirportDto {
-  @IsString()
-  @MaxLength(5)
-  @IsNotEmpty()
-  airportCode!: string;
+  // @IsString()
+  // @MaxLength(5)
+  // @IsNotEmpty()
+  // airportCode!: string;
 
   @IsString()
   @IsNotEmpty()

@@ -2,10 +2,10 @@
 import { IsEnum, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class UpdateAirportDto {
-  @IsString()
-  @MaxLength(5)
-  @IsOptional()
-  airportCode!: string;
+  // @IsString()
+  // @MaxLength(5)
+  // @IsOptional()
+  // airportCode!: string;
 
   @IsString()
   @IsOptional()

@@ -7,7 +7,7 @@ export class Airport {
   @PrimaryGeneratedColumn()
   airportId!: number;
 
-  @Column({ type: 'varchar', length: 5, unique: true })
+  @Column({ type: 'varchar', length: 100, unique: true })
   airportCode!: string;
 
   @Column({ type: 'varchar', length: 255 })

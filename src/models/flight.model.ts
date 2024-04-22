@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 import { Airport } from '@/models/airport.model';
 import { IntermediateAirport } from '@/models/intermediate_airport.model';
 import { Ticket } from '@/models/ticket.model';
+import { FlightStatus } from '@/enums/flight-status.enum';
 
 @Entity()
 export class Flight {
@@ -31,13 +32,16 @@ export class Flight {
   @Column({ type: 'decimal' })
   flightDuration!: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 0 })
-  economyPrice!: number;
+  // @Column({ type: 'decimal', precision: 10, scale: 0 })
+  // economyPrice!: number;
+
+  // @Column({ type: 'decimal', precision: 10, scale: 0 })
+  // businessPrice!: number;
 
   @Column({ type: 'decimal', precision: 10, scale: 0 })
-  businessPrice!: number;
+  price!: number;
 
-  @Column({ type: 'varchar', length: 20, default: 'Chưa khởi hành' })
+  @Column({ type: 'enum', enum: FlightStatus, default: FlightStatus.NotStarted })
   status!: string;
 
   @Column({ type: 'text', nullable: true })

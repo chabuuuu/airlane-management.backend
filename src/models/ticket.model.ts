@@ -2,6 +2,7 @@ import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, Many
 import { Flight } from '@/models/flight.model';
 import { Staff } from '@/models/staff.model';
 import { Customer } from '@/models/customer.model';
+import { TicketStatus } from '@/enums/ticket-status.enum';
 
 @Entity()
 export class Ticket {
@@ -20,11 +21,11 @@ export class Ticket {
   @Column()
   sellerId!: string
 
-  @Column({ type: 'enum', enum: ['Booked', 'Selled', 'Cancelled'] })
-  status!: 'Booked' | 'Selled' | 'Cancelled';
+  @Column({ type: 'enum', enum: TicketStatus, default: TicketStatus.Pending })
+  status!: string;
 
-  @CreateDateColumn({ type: 'datetime' })
-  sellAt!: Date;
+  @Column({ type: 'datetime', nullable: true })
+  sellAt?: Date;
 
   @UpdateDateColumn({ type: 'datetime' })
   updateAt!: Date;

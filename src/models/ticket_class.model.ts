@@ -10,7 +10,7 @@ export class TicketClass {
     @Column({ type: 'decimal', precision: 4, scale: 2 })
     priceBonusInterest!: string;
 
-    @Column({ type: 'int' , length: MAX_TOTAL_SEATS})
+    @Column({ type: 'int' })
     seatAmount!: number;
 
     @Column({ type: 'varchar' })

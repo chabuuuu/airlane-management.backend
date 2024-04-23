@@ -9,8 +9,8 @@ export class Flight {
   @PrimaryGeneratedColumn('increment')
   flightId!: number;
 
-  @Column({ unique: true })
-  flightCode!: string;
+  // @Column({ unique: true })
+  // flightCode!: string;
 
   @ManyToOne(() => Airport, (airport) => airport.departures)
   @JoinColumn({ name: 'departureAirportId' })
@@ -29,7 +29,7 @@ export class Flight {
   @Column({ type: 'datetime' })
   departureTime!: Date;
 
-  @Column({ type: 'decimal' })
+  @Column({ type: 'decimal', precision: 5, scale: 2})
   flightDuration!: number;
 
   // @Column({ type: 'decimal', precision: 10, scale: 0 })

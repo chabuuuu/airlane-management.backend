@@ -27,7 +27,9 @@ export class IntermediateAirport {
   @JoinColumn({ name: 'flightId' })
   flight!: Flight;
 
-  @ManyToOne(() => Airport, (airport) => airport.intermediateStops)
+  @ManyToOne(() => Airport, (airport) => airport.intermediateStops, {
+    eager: true
+  })
   @JoinColumn({ name: 'airportId' })
   airport!: Airport;
 }

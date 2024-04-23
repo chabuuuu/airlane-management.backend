@@ -1,4 +1,5 @@
 // src/dto/update-flight.dto.ts
+import { FlightStatus } from '@/enums/flight-status.enum';
 import { Type } from 'class-transformer';
 import { IsDateString, IsDecimal, IsEnum, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
 
@@ -145,9 +146,6 @@ import { IsDateString, IsDecimal, IsEnum, IsNumber, IsOptional, IsString, IsUUID
  */
 
 export class UpdateFlightDto {
-  @IsString()
-  @IsOptional()
-  flightCode?: string;
 
   
   @IsOptional()
@@ -175,16 +173,10 @@ export class UpdateFlightDto {
   @IsOptional()
   @Type(() => Number)
   @IsNumber()
-  economyPrice?: number;
-
-
-  @IsOptional()
-  @Type(() => Number)
-  @IsNumber()
-  businessPrice?: number;
+  price?: number;
 
   @IsOptional()
-  @IsEnum(['Chưa khởi hành', 'Đang bay', 'Đã hoàn thành'])
+  @IsEnum(FlightStatus)
   status?: string;
 
   @IsOptional()

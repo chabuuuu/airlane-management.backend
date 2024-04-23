@@ -17,6 +17,9 @@ Staff_LV2[Subject.SeatAirplane] = [ActionAuth.UPDATE]
 //Airport
 Staff_LV1[Subject.Airport] = [ActionAuth.FULL_CONTROL]
 
+//Flight
+Staff_LV2[Subject.Flight] = [ActionAuth.FULL_CONTROL] //FUll control
+
 
 const roles : any = {Staff_LV1, Staff_LV2, Customer}
 

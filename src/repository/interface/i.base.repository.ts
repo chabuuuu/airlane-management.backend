@@ -5,4 +5,5 @@ export interface IBaseRepository<T> {
     _findOne(params: any): Promise<T>;
     _findAll(params: any): Promise<any>;
     _exists(params: any): Promise<boolean>;
+    _count(): Promise<number>
 }

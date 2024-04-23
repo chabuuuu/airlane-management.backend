@@ -25,16 +25,24 @@ export class BaseController implements IBaseController<any>{
         try {
             let skip 
             let take
-            const {page} = req.query;
+            let {page} = req.query;
             if (page) {
+                page = Number(page);
                 skip = (page - 1) * 10;
                 take = 10;
-            }
+              }
+            const totalRecords = await this.service.count();
             const result = await this.service.findAll({
                 skip,
                 take
             });
-            res.json(result);
+            res.json({
+                data: result,
+                dataTotal: result.length,
+                page: page || 1,
+                perPage: 10,
+                pageTotal: Math.ceil(totalRecords / 10),
+              });
         } catch (error) {
             next(error)
         }

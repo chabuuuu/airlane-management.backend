@@ -1,6 +1,8 @@
 // src/dto/create-flight.dto.ts
+import { FlightStatus } from '@/enums/flight-status.enum';
 import { Type } from 'class-transformer';
 import { IsDateString, IsDecimal, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
+import { Column } from 'typeorm';
 
 /**
  * @openapi
@@ -97,9 +99,9 @@ import { IsDateString, IsDecimal, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsSt
  */
 
 export class CreateFlightDto {
-  @IsString()
-  @IsNotEmpty()
-  flightCode!: string;
+  // @IsString()
+  // @IsNotEmpty()
+  // flightCode!: string;
 
   
   @IsNotEmpty()
@@ -123,20 +125,13 @@ export class CreateFlightDto {
   @IsNumber()
   flightDuration!: number;
 
-
   @IsNotEmpty()
   @Type(() => Number)
   @IsNumber()
-  economyPrice!: number;
-
-
-  @IsNotEmpty()
-  @Type(() => Number)
-  @IsNumber()
-  businessPrice!: number;
+  price!: number;
 
   @IsOptional()
-  @IsEnum(['Chưa khởi hành', 'Đang bay', 'Đã hoàn thành'])
+  @IsEnum(FlightStatus)
   status?: string;
 
   @IsOptional()

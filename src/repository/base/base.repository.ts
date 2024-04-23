@@ -49,11 +49,13 @@ export class BaseRepository<T extends any> implements IBaseRepository<T> {
     }
 
   }
-  async _findOne(params: { where?: any }): Promise<any> {
+  async _findOne(params: { where?: any, select?: any, relations?: any }): Promise<any> {
     try {
-      const { where } = params;
+      const { where , select, relations} = params;
       const result = await this._model.findOne({
         where,
+        select,
+        relations
       });
       if (result && result.hasOwnProperty("password")){
         delete result.password
@@ -68,15 +70,19 @@ export class BaseRepository<T extends any> implements IBaseRepository<T> {
     take?: number;
     where?: any;
     order?: any;
+    relations?: any;
+    select?: any;
   }): Promise<any> {
     try {
-      const { skip, take, where, order } = params;
+      const { skip, take, where, order, relations, select } = params;
 
       return this._model.find({
         skip,
         take,
         where,
         order,
+        relations,
+        select
       })
     } catch (error) {
       throw error
@@ -103,6 +109,14 @@ export class BaseRepository<T extends any> implements IBaseRepository<T> {
           where,
         });
         return result
+      } catch (error) {
+        throw error
+      }
+    }
+  
+    async _count(): Promise<number>{
+      try {
+        return await this._model.count();
       } catch (error) {
         throw error
       }

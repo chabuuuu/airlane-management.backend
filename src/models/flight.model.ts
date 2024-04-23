@@ -2,14 +2,16 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 import { Airport } from '@/models/airport.model';
 import { IntermediateAirport } from '@/models/intermediate_airport.model';
 import { Ticket } from '@/models/ticket.model';
+import { FlightStatus } from '@/enums/flight-status.enum';
+import { SeatFlight } from '@/models/seat_flight.model.';
 
 @Entity()
 export class Flight {
   @PrimaryGeneratedColumn('increment')
   flightId!: number;
 
-  @Column({ unique: true })
-  flightCode!: string;
+  // @Column({ unique: true })
+  // flightCode!: string;
 
   @ManyToOne(() => Airport, (airport) => airport.departures)
   @JoinColumn({ name: 'departureAirportId' })
@@ -28,16 +30,19 @@ export class Flight {
   @Column({ type: 'datetime' })
   departureTime!: Date;
 
-  @Column({ type: 'decimal' })
+  @Column({ type: 'decimal', precision: 5, scale: 2})
   flightDuration!: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 0 })
-  economyPrice!: number;
+  // @Column({ type: 'decimal', precision: 10, scale: 0 })
+  // economyPrice!: number;
+
+  // @Column({ type: 'decimal', precision: 10, scale: 0 })
+  // businessPrice!: number;
 
   @Column({ type: 'decimal', precision: 10, scale: 0 })
-  businessPrice!: number;
+  price!: number;
 
-  @Column({ type: 'varchar', length: 20, default: 'Chưa khởi hành' })
+  @Column({ type: 'enum', enum: FlightStatus, default: FlightStatus.NotStarted })
   status!: string;
 
   @Column({ type: 'text', nullable: true })
@@ -55,4 +60,7 @@ export class Flight {
 
   @OneToMany(() => Ticket, ticket => ticket.flight) 
   tickets!: Ticket[]; 
+
+  @OneToMany(() => SeatFlight, seatFlight => seatFlight.flight) 
+  seatFlights!: SeatFlight[]; 
 }

@@ -1,3 +1,4 @@
+import { Booking } from "@/models/booking.model";
 import { Ticket } from "@/models/ticket.model";
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
 
@@ -48,4 +49,7 @@ export class Customer {
     //FKs:
     @OneToMany(() => Ticket, ticket => ticket.passenger)
     tickets!: Ticket[];
+
+    @OneToMany(() => Booking, booking => booking.passenger)
+    bookings!: Booking[];
 }

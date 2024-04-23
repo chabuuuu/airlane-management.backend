@@ -5,6 +5,7 @@ import { Ticket } from '@/models/ticket.model';
 import { SeatClass } from '@/enums/seat-class.enum';
 import { Booking } from '@/models/booking.model';
 import { TicketClass } from '@/models/ticket_class.model';
+import { Flight } from '@/models/flight.model';
 
 @Entity()
 export class SeatFlight {
@@ -12,7 +13,7 @@ export class SeatFlight {
   seatId!: string;
 
   @PrimaryColumn()
-  flightId!: string;
+  flightId!: number;
 
   @Column({ type: 'uuid', unique: true, nullable: true })
   ticketId?: string;
@@ -40,6 +41,12 @@ export class SeatFlight {
   })
   @JoinColumn({ name: 'class' })
   ticketClass!: TicketClass;
+
+  @ManyToOne(() => Flight, (flight) => flight.seatFlights, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'flightId' })
+  flight!: Flight;
 
   @ManyToOne(() => Seat, (seat) => seat.seatAirplanes)
   @JoinColumn({ name: 'seatId' })

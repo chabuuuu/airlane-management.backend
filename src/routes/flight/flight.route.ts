@@ -42,6 +42,34 @@ flightRouter
     flightController.create.bind(flightController)
   )
 
+  .put(
+    "/set-not-started/:id",
+    authenticateJWT,
+    checkRole(ActionAuth.UPDATE, Subject.Flight),
+    flightController.updateFlightOnNotStart.bind(flightController)
+  )
+
+  .put(
+    "/set-finish/:id",
+    authenticateJWT,
+    checkRole(ActionAuth.UPDATE, Subject.Flight),
+    flightController.updateFlightOnFinish.bind(flightController)
+  )
+
+  .put(
+    "/set-in-progress/:id",
+    authenticateJWT,
+    checkRole(ActionAuth.UPDATE, Subject.Flight),
+    flightController.updateFlightOnProcess.bind(flightController)
+  )
+
+  .put(
+    "/set-cancel/:id",
+    authenticateJWT,
+    checkRole(ActionAuth.UPDATE, Subject.Flight),
+    flightController.updateFlightOnCancel.bind(flightController)
+  )
+
   /**
    * @openapi
    * /flight/{:id}:
@@ -77,36 +105,6 @@ flightRouter
     checkRole(ActionAuth.UPDATE, Subject.Flight),
     classValidate(UpdateFlightDto),
     flightController.update.bind(flightController)
-  )
-
-  /**
-   * @openapi
-   * /flight/{:id}:
-   *   delete:
-   *     summary: "Delete a flight by id"
-   *     tags:
-   *      - flight
-   *     description: ""
-   *     parameters:
-   *       - in: path
-   *         name: id
-   *         schema:
-   *           type: integer
-   *         required: true
-   *         description: Flight ID to delete
-   *     responses:
-   *       "200":
-   *         description: OK
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: "#/components/schemas/DeleteSuccess"
-   */
-  .delete(
-    "/:id",
-    authenticateJWT,
-    checkRole(ActionAuth.DELETE, Subject.Flight),
-    flightController.delete.bind(flightController)
   )
 
   .get(

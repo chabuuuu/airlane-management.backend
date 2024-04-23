@@ -113,4 +113,12 @@ export class BaseRepository<T extends any> implements IBaseRepository<T> {
         throw error
       }
     }
+  
+    async _count(): Promise<number>{
+      try {
+        return await this._model.count();
+      } catch (error) {
+        throw error
+      }
+    }
 }

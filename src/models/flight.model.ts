@@ -3,6 +3,7 @@ import { Airport } from '@/models/airport.model';
 import { IntermediateAirport } from '@/models/intermediate_airport.model';
 import { Ticket } from '@/models/ticket.model';
 import { FlightStatus } from '@/enums/flight-status.enum';
+import { SeatFlight } from '@/models/seat_flight.model.';
 
 @Entity()
 export class Flight {
@@ -59,4 +60,7 @@ export class Flight {
 
   @OneToMany(() => Ticket, ticket => ticket.flight) 
   tickets!: Ticket[]; 
+
+  @OneToMany(() => SeatFlight, seatFlight => seatFlight.flight) 
+  seatFlights!: SeatFlight[]; 
 }

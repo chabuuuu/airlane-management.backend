@@ -3,6 +3,8 @@ import { airportController } from "@/container/airport.container";
 import { CreateAirportDto } from "@/dto/airport/create-airport.dto";
 import { UpdateAirportDto } from "@/dto/airport/update-airport.dto";
 import { ActionAuth } from "@/enums/action.auth.enum";
+import { getCityOfCountryCaching } from "@/middleware/cache/city-of-country.cache.middleware";
+import { getCountryCodeCaching } from "@/middleware/cache/country.cache.middleware";
 import { checkRole } from "@/middleware/check-role.middleware";
 import { classValidate } from "@/middleware/class-validate.middleware";
 import { authenticateJWT } from "@/middleware/jwt.authenticate.middleware";
@@ -122,9 +124,9 @@ airportRouter
 
   .get("/picture/:pictureName", airportController.getPicture.bind(airportController))
 
-  .get("/city", airportController.getCityOfCountry.bind(airportController))
+  .get("/city", getCityOfCountryCaching, airportController.getCityOfCountry.bind(airportController))
 
-  .get("/country", airportController.getCountry.bind(airportController))
+  .get("/country", getCountryCodeCaching, airportController.getCountry.bind(airportController))
 
   /**
    * @openapi

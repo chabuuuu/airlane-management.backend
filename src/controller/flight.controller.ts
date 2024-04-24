@@ -6,6 +6,7 @@ import { IFlightService } from "@/service/interface/i.flight.service";
 import { ITYPES } from "@/types/interface.types";
 import { classValidateUtil } from "@/utils/class-validate/class-validate.util";
 import BaseError from "@/utils/error/base.error";
+import redis from "@/utils/redis/redis.instance.util";
 import { StatusCodes } from "http-status-codes";
 import { inject } from "inversify";
 import moment from "moment";
@@ -17,6 +18,8 @@ export class FlightController
 {
   readonly flightService: IFlightService<any>;
   private numberPerPage = 10;
+  private fiveMinutesInSeconds = 300;
+
   constructor(@inject(ITYPES.Service) service: IFlightService<any>) {
     super(service);
     this.flightService = service;
@@ -128,13 +131,18 @@ export class FlightController
         skip,
         take
       });
-      res.json({
+      const responses = {
         data: result,
         dataTotal: result.length,
         page: page || 1,
         perPage: this.numberPerPage,
         pageTotal: Math.ceil(totalFlights / this.numberPerPage),
-      });
+      }
+      
+      //Caching
+      redis.set("flight_query:" + JSON.stringify(query), JSON.stringify(responses), "EX", this.fiveMinutesInSeconds);
+      
+      res.json(responses);
     } catch (error) {
       next(error);
     }
@@ -176,18 +184,24 @@ export class FlightController
           skip = (page - 1) * this.numberPerPage;
           take = this.numberPerPage;
         }
+        let query = req.query;        
       const totalRecords = await this.service.count();
       const result = await this.flightService.findAllInclueAirportsAndSeat({
         skip,
         take,
       });
-      res.json({
+      const response = {
         data: result,
         dataTotal: result.length,
         page: page || 1,
         perPage: this.numberPerPage,
         pageTotal: Math.ceil(totalRecords / this.numberPerPage),
-      });
+      }
+
+      //Caching
+      redis.set("flight_query:" + JSON.stringify(query), JSON.stringify(response), "EX", this.fiveMinutesInSeconds);
+      
+      res.json(response);
     } catch (error) {
       next(error);
     }

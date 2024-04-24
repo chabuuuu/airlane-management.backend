@@ -3,6 +3,7 @@ import { flightController } from "@/container/flight.container";
 import { CreateFlightDto } from "@/dto/flight/create-flight.dto";
 import { UpdateFlightDto } from "@/dto/flight/update-flight.dto";
 import { ActionAuth } from "@/enums/action.auth.enum";
+import { getFlightsCaching } from "@/middleware/cache/flight.cache.middleware";
 import { checkRole } from "@/middleware/check-role.middleware";
 import { classValidate } from "@/middleware/class-validate.middleware";
 import { authenticateJWT } from "@/middleware/jwt.authenticate.middleware";
@@ -109,6 +110,7 @@ flightRouter
 
   .get(
     "/find-available-flight",
+    getFlightsCaching,
     flightController.findAvailableFlight.bind(flightController)
   )
 
@@ -160,6 +162,7 @@ flightRouter
    */
   .get(
     "/",
+    getFlightsCaching,
     flightController.findAll.bind(flightController)
   );
 

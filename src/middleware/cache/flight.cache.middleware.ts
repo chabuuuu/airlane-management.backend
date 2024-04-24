@@ -8,7 +8,7 @@ export const getFlightsCaching = async (req: any, res: any, next: any) => {
     
     const cacheResults = await redis.get("flight_query:" + query.toString());
     if (cacheResults) {
-      res.json({ from: "cache", data: JSON.parse(cacheResults) });
+      res.json(JSON.parse(cacheResults));
     } else {
       next();
     }

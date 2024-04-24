@@ -5,6 +5,7 @@ import { ITYPES } from "@/types/interface.types";
 import { isValidCityName } from "@/utils/city/check-valid-city-name.util";
 import { findCountryCode } from "@/utils/country/check-valid-country-name.util";
 import BaseError from "@/utils/error/base.error";
+import redis from "@/utils/redis/redis.instance.util";
 import { StatusCodes } from "http-status-codes";
 import { inject, injectable } from "inversify";
 const fs = require("fs-extra");
@@ -117,12 +118,15 @@ export class AirportController
   async getCityOfCountry(req: any, res: any, next: any): Promise<any> {
     try {
       const { country } = req.query;
+      const thirtyMinuteInSecond = 1800;
       if (!country) {
         throw new BaseError(400, "fail", "Country code is required");
       }
       const filePath = "./cities.json";
       const cities = await fs.readJson(filePath);
-      res.json(cities[country].cities);
+      const result = cities[country].cities
+      redis.set("city_of_" + country, JSON.stringify(result), "EX", thirtyMinuteInSecond);
+      res.json(result);
     } catch (error) {
       if (error instanceof TypeError) {
         next(new BaseError(400, "fail", "Country code is invalid"));
@@ -135,6 +139,7 @@ export class AirportController
     try {
       const filePath = "./countries.json";
       const countries = await fs.readJson(filePath);
+      await redis.set("country_code", JSON.stringify(countries));
       return res.json(countries);
     } catch (error) {
       next(error);

@@ -1,7 +1,7 @@
 // src/dto/update-flight.dto.ts
 import { FlightStatus } from '@/enums/flight-status.enum';
 import { Type } from 'class-transformer';
-import { IsDateString, IsDecimal, IsEnum, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsDateString, IsDecimal, IsEnum, IsNumber, IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
 
 /**
  * @openapi
@@ -163,6 +163,10 @@ export class UpdateFlightDto {
   @IsOptional()
   departureTime?: Date;
 
+  @IsOptional()
+  @IsString()
+  @MaxLength(30)
+  airlines!: string;
 
   @IsOptional()
   @Type(() => Number)

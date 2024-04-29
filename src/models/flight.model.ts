@@ -45,6 +45,9 @@ export class Flight {
   @Column({ type: 'enum', enum: FlightStatus, default: FlightStatus.NotStarted })
   status!: string;
 
+  @Column({ type: 'varchar', length: 30 })
+  airlines!: string;
+
   @Column({ type: 'text', nullable: true })
   description!: string | null;
 

@@ -1,6 +1,6 @@
 import { MAX_TOTAL_SEATS } from "@/constants/total-seat.constants";
 import { SeatFlight } from "@/models/seat_flight.model.";
-import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn } from "typeorm";
 
 @Entity()
 export class TicketClass {
@@ -8,13 +8,19 @@ export class TicketClass {
     className!: string;
 
     @Column({ type: 'decimal', precision: 4, scale: 2 })
-    priceBonusInterest!: string;
+    priceBonusInterest!: number;
 
-    @Column({ type: 'int' })
-    seatAmount!: number;
+    // @Column({ type: 'int' })
+    // seatAmount!: number;
 
     @Column({ type: 'varchar' })
     color!: string;
+
+    @Column({default: false})
+    isDefaultClass!: boolean;
+
+    @CreateDateColumn()
+    createdAt!: Date;
 
     //FKs:
     @OneToMany(() => SeatFlight, seatFlight => seatFlight.ticketClass)

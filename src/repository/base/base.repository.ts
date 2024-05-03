@@ -49,13 +49,14 @@ export class BaseRepository<T extends any> implements IBaseRepository<T> {
     }
 
   }
-  async _findOne(params: { where?: any, select?: any, relations?: any }): Promise<any> {
+  async _findOne(params: { where?: any, select?: any, relations?: any, order?: any }): Promise<any> {
     try {
-      const { where , select, relations} = params;
+      const { where , select, relations, order} = params;
       const result = await this._model.findOne({
         where,
         select,
-        relations
+        relations,
+        order
       });
       if (result && result.hasOwnProperty("password")){
         delete result.password

@@ -1,7 +1,11 @@
+import { seatFlightService } from "@/container/seat-flight.container";
+import { SeatFlight } from "@/models/seat_flight.model.";
 import { IFlightRepository } from "@/repository/interface/i.flight.repository";
 import { BaseService } from "@/service/base/base.service";
 import { IFlightService } from "@/service/interface/i.flight.service";
+import { ISeatFlightService } from "@/service/interface/i.seat-flight.service";
 import { ITYPES } from "@/types/interface.types";
+import { SERVICE_TYPES } from "@/types/service.types";
 import { deleteRedisKeyMatch } from "@/utils/redis/delete-key-match.util";
 import redis from "@/utils/redis/redis.instance.util";
 import { inject, injectable } from "inversify";
@@ -9,9 +13,14 @@ import { inject, injectable } from "inversify";
 @injectable()
 export class FlightService extends BaseService implements IFlightService<any>{
     protected flightRepository: IFlightRepository<any>;
-    constructor(@inject(ITYPES.Repository) repository: IFlightRepository<any>) {
+    private seatFlightService: ISeatFlightService<SeatFlight>;
+    constructor(
+        @inject(ITYPES.Repository) repository: IFlightRepository<any>,
+        @inject(SERVICE_TYPES.SeatFlight) seatFlightService: ISeatFlightService<SeatFlight>
+    ) {
         super(repository);
         this.flightRepository = repository;
+        this.seatFlightService = seatFlightService;
     }
     async update(params: any): Promise<any> {
         const result = await this.repository._update(params);
@@ -31,6 +40,8 @@ export class FlightService extends BaseService implements IFlightService<any>{
         try {
             const result =  await this.repository._create(data);
             deleteRedisKeyMatch("flight*");
+            const flightId = result.flightId;
+            await this.seatFlightService.defaultGenerateSeatForAirplane(flightId);
             return result;
         } catch (error) {
             throw error;

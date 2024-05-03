@@ -4,6 +4,7 @@ import { IntermediateAirport } from '@/models/intermediate_airport.model';
 import { Ticket } from '@/models/ticket.model';
 import { FlightStatus } from '@/enums/flight-status.enum';
 import { SeatFlight } from '@/models/seat_flight.model.';
+import moment from 'moment-timezone';
 
 @Entity()
 export class Flight {
@@ -27,7 +28,16 @@ export class Flight {
   @Column()
   arrivalAirportId!: number;
 
-  @Column({ type: 'datetime' })
+  @Column({ type: 'datetime', 
+    transformer: {
+        to: (value: Date) => value,
+        from: (value: string) => {
+            const raw = moment(value)
+            const vn = raw.clone().tz('Asia/Ho_Chi_Minh');
+            return vn.format("DD-MM-YYYY HH:mm:ss");
+        }
+    }
+ })
   departureTime!: Date;
 
   @Column({ type: 'decimal', precision: 5, scale: 2})
@@ -51,10 +61,28 @@ export class Flight {
   @Column({ type: 'text', nullable: true })
   description!: string | null;
 
-  @CreateDateColumn()
+  @CreateDateColumn({
+    transformer: {
+      to: (value: Date) => value,
+      from: (value: string) => {
+          const raw = moment(value)
+          const vn = raw.clone().tz('Asia/Ho_Chi_Minh');
+          return vn.format("DD-MM-YYYY HH:mm:ss");
+      }
+  }
+  })
   createAt!: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({
+    transformer: {
+      to: (value: Date) => value,
+      from: (value: string) => {
+          const raw = moment(value)
+          const vn = raw.clone().tz('Asia/Ho_Chi_Minh');
+          return vn.format("DD-MM-YYYY HH:mm:ss");
+      }
+  }
+  })
   updateAt!: Date;
 
   //FKs:

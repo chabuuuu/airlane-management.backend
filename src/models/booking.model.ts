@@ -2,6 +2,7 @@ import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, Many
 import { Ticket } from '@/models/ticket.model';
 import { BookingStatus } from '@/enums/booking-status.enum';
 import { Customer } from '@/models/customer.model';
+import moment from 'moment-timezone';
 
 @Entity()
 export class Booking {
@@ -23,10 +24,28 @@ export class Booking {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   price!: number;
 
-  @CreateDateColumn({ type: 'datetime' })
+  @CreateDateColumn({ type: 'datetime', 
+  transformer: {
+    to: (value: Date) => value,
+    from: (value: string) => {
+        const raw = moment(value)
+        const vn = raw.clone().tz('Asia/Ho_Chi_Minh');
+        return vn.format("DD-MM-YYYY HH:mm:ss");
+    }
+}
+   })
   bookedAt!: Date;
 
-  @UpdateDateColumn({ type: 'datetime' })
+  @UpdateDateColumn({ type: 'datetime', 
+  transformer: {
+    to: (value: Date) => value,
+    from: (value: string) => {
+        const raw = moment(value)
+        const vn = raw.clone().tz('Asia/Ho_Chi_Minh');
+        return vn.format("DD-MM-YYYY HH:mm:ss");
+    }
+}
+   })
   updateAt!: Date;
 
   // //FKs:

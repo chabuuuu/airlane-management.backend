@@ -27,6 +27,7 @@ export class SeatFlight {
   @Column({default: true})
   isEmpty!: boolean;
 
+
   //FKs:
   @OneToOne(() => Ticket) 
   @JoinColumn({ name: 'ticketId' })

@@ -3,6 +3,7 @@ const SERVICE_TYPES = {
     Role: Symbol.for("Role"),
     Customer: Symbol.for("Customer"),
     SeatAirplane: Symbol.for("SeatAirplane"),
+    SeatFlight: Symbol.for("SeatFlight"),
 };
 
 export { SERVICE_TYPES };

@@ -53,7 +53,8 @@ export class BookingService
       if (!await this.checkAvailableSeat({ flightId: data.seatFlight.flightId, seatId: data.seatFlight.seatId })) {
         throw new BaseError(400, "fail", "Seat is not available");
       }
-      data.price = await this.seatFlightService.geSeatFinalPrice(data.seatFlight.flightId, data.seatFlight.seatId);
+      const seatPrice = await this.seatFlightService.geSeatFinalPrice(data.seatFlight.flightId, data.seatFlight.seatId);
+      data.price = seatPrice.finalPrice;
       console.log(data);
 
       //Update seatFlight

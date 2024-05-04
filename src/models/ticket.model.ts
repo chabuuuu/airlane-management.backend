@@ -26,7 +26,7 @@ export class Ticket {
   @Column({ type: 'enum', enum: TicketStatus, default: TicketStatus.Pending })
   status!: string;
 
-  @Column({ type: 'datetime', nullable: true, 
+  @CreateDateColumn({
   transformer: {
     to: (value: Date) => value,
     from: (value: string) => {
@@ -36,7 +36,7 @@ export class Ticket {
     }
 }
    })
-  sellAt?: Date;
+  sellAt!: Date;
 
   @UpdateDateColumn({ type: 'datetime',     transformer: {
     to: (value: Date) => value,
@@ -61,7 +61,8 @@ export class Ticket {
   @JoinColumn({name: 'flightId'})
   flight!: Flight;
 
-  @OneToOne(()=>SeatFlight, (seatFlight) => seatFlight.ticket)
+  @OneToOne(()=>SeatFlight, (seatFlight) => seatFlight.ticket, 
+{cascade: ["update"]})
   seatFlight!: SeatFlight;
 }
 

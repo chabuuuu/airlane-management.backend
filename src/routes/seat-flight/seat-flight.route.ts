@@ -9,6 +9,7 @@ const seatFlightRouter = express.Router();
 
 seatFlightRouter
 
+  .get("/detail", seatFlightController.getSeatDetail.bind(seatFlightController))
   .get(
     "/seat-list",
     seatFlightController.findAllByFlightId.bind(seatFlightController)

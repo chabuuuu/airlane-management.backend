@@ -14,6 +14,25 @@ export class SeatFlightRepository
     super(dataSource.getRepository(SeatFlight));
     this.seatFlightModel = dataSource.getRepository(SeatFlight);
   }
+    async _getSeatIncludeClassAndFlight(flightId: number, seatId: string): Promise<any> {
+        try {
+            const result = await this.seatFlightModel.findOne({
+                where: {
+                    flightId: flightId,
+                    seatId: seatId
+                },
+                relations: {
+                    ticketClass: true,
+                    flight: true,
+                },
+            });
+            console.log(result);
+            return result;
+            
+        } catch (error) {
+            throw error;
+        }
+    }
 
   //This will return:
   /*

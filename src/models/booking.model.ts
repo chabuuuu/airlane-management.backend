@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
+import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Ticket } from '@/models/ticket.model';
 import { BookingStatus } from '@/enums/booking-status.enum';
 import { Customer } from '@/models/customer.model';
@@ -7,7 +7,7 @@ import { SeatFlight } from '@/models/seat_flight.model.';
 
 @Entity()
 export class Booking {
-  @PrimaryColumn({ type: 'uuid' })
+  @PrimaryGeneratedColumn('uuid')
   bookingId!: string;
 
   // @Column({nullable: true})
@@ -58,6 +58,9 @@ export class Booking {
   @JoinColumn({ name: 'passengerId' })
   passenger!: Customer;
 
-  @OneToOne(()=>SeatFlight, (seatFlight) => seatFlight.booking)
+  @OneToOne(()=>SeatFlight, (seatFlight) => seatFlight.booking ,
+{
+  "cascade":  ["update"]
+})
   seatFlight!: SeatFlight;
 }

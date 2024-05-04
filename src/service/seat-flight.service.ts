@@ -25,6 +25,19 @@ export class SeatFlightService extends BaseService implements ISeatFlightService
         this.seatRepository = seatRepository;
         this.ticketClassRepository = ticketClassRepository;
     }
+    async geSeatFinalPrice(flightId: number, seatId: string): Promise<number> {
+        try {
+            const seatIncludeClassAndFlight = await this.repository._getSeatIncludeClassAndFlight(flightId, seatId);
+            if (!seatIncludeClassAndFlight) {
+                throw new BaseError(StatusCodes.NOT_FOUND, 'fail', 'Cannot find seat');
+            }
+            const rawPrice = Number(seatIncludeClassAndFlight.flight.price);
+            const priceBonusInterest = Number(seatIncludeClassAndFlight.ticketClass.priceBonusInterest);
+            return rawPrice + priceBonusInterest*rawPrice;
+        } catch (error) {
+            throw error;
+        }
+    }
     async getSeatsAmountEachClass(flightId: string): Promise<any> {
         try {
             return await this.repository._getSeatsAmountEachClass(flightId);

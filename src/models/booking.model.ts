@@ -3,6 +3,7 @@ import { Ticket } from '@/models/ticket.model';
 import { BookingStatus } from '@/enums/booking-status.enum';
 import { Customer } from '@/models/customer.model';
 import moment from 'moment-timezone';
+import { SeatFlight } from '@/models/seat_flight.model.';
 
 @Entity()
 export class Booking {
@@ -56,4 +57,7 @@ export class Booking {
   @ManyToOne(() => Customer, (passenger) => passenger.bookings) 
   @JoinColumn({ name: 'passengerId' })
   passenger!: Customer;
+
+  @OneToOne(()=>SeatFlight, (seatFlight) => seatFlight.booking)
+  seatFlight!: SeatFlight;
 }

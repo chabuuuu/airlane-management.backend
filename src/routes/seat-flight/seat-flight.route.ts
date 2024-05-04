@@ -13,6 +13,7 @@ seatFlightRouter
     "/seat-list",
     seatFlightController.findAllByFlightId.bind(seatFlightController)
   )
+  .get("/seat-amount", seatFlightController.getSeatsAmountEachClass.bind(seatFlightController))
   .put(
     "/change-class",
     authenticateJWT,

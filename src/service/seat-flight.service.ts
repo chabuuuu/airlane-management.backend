@@ -25,6 +25,13 @@ export class SeatFlightService extends BaseService implements ISeatFlightService
         this.seatRepository = seatRepository;
         this.ticketClassRepository = ticketClassRepository;
     }
+    async getSeatsAmountEachClass(flightId: string): Promise<any> {
+        try {
+            return await this.repository._getSeatsAmountEachClass(flightId);
+        } catch (error) {
+            throw error;
+        }
+    }
     async defaultGenerateSeatForAirplane(flightId: string): Promise<any> {
         try {
             const total_seat = MAX_TOTAL_SEATS;

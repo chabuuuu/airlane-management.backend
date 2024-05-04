@@ -16,6 +16,22 @@ export class SeatFlightController
   constructor(@inject(ITYPES.Service) service: ISeatFlightService<any>) {
     super(service);
   }
+  async getSeatsAmountEachClass(req: any, res: any, next: any): Promise<any> {
+    try {
+      if (!req.query.flightId)
+        throw new BaseError(
+          StatusCodes.BAD_REQUEST,
+          "fail",
+          "Flight Id is required"
+        );
+      const result = await this.service.getSeatsAmountEachClass(
+        req.query.flightId
+      );
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
   async findAllByFlightId(req: any, res: any, next: any): Promise<any> {
     try {
       let skip;

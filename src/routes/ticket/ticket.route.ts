@@ -1,6 +1,8 @@
+import { ticketController } from '@/container/ticket.container'
 import { CreateTicketDto } from '@/dto/ticket/create-ticket.dto'
 import { UpdateTicketDto } from '@/dto/ticket/update-ticket.dto'
 import { classValidate } from '@/middleware/class-validate.middleware'
+import { authenticateJWT } from '@/middleware/jwt.authenticate.middleware'
 import express from 'express'
 
 const ticketRouter = express.Router()
@@ -30,7 +32,7 @@ ticketRouter
  *             schema:
  *               $ref: "#/components/schemas/CreateSuccess"
  */
-.post('/', classValidate(CreateTicketDto))
+.post('/', classValidate(CreateTicketDto), authenticateJWT, ticketController.create.bind(ticketController))
 
 
 /**
@@ -89,6 +91,8 @@ ticketRouter
  *               $ref: "#/components/schemas/DeleteSuccess"
  */
 .delete('/:id')
+
+.get('/print', ticketController.printTicket.bind(ticketController))
 
 /**
  * @openapi

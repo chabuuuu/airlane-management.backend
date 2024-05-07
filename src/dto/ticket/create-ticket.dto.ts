@@ -1,5 +1,6 @@
 // src/dto/create-ticket.dto.ts
-import { Type } from 'class-transformer';
+import { UpdateSeatFLight } from '@/dto/booking/create-booking.dto';
+import { Expose, Type } from 'class-transformer';
 import { IsDate, IsDateString, IsDecimal, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
 
 /**
@@ -108,30 +109,47 @@ enum TicketStatus {
   Cancelled = 'Cancelled'
 }
 
+
+export class UpdateTicketSeatFLight {
+  seatId!: string;
+  flightId!: number;
+  isEmpty?: boolean;
+}
+
 export class CreateTicketDto {
-  @IsString()
   @IsNotEmpty()
-  flightId!: string;
+  @Type(() => Number)
+  @IsNumber()
+  flightId!: number;
+
+  @IsNotEmpty()
+  @IsString()
+  seatId!: string;
 
   @IsString()
   @IsNotEmpty()
   passengerId!: string;
 
+  seatFlight?: UpdateTicketSeatFLight;
 
-  @IsNotEmpty()
-  @Type(() => Number)
-  @IsNumber()
-  price!: number;
-
-  @IsString()
-  @IsNotEmpty()
-  sellerId!: string;
-
-  @IsEnum(TicketStatus)
-  @IsNotEmpty()
-  status!: TicketStatus;
+  sellerId?: string;
 
   @IsDateString()
   @IsOptional()
   sellAt?: string; // Optional because it might not be sold immediately upon creation
+}
+
+export class CreateTicketServiceDto {
+  @Expose()
+  flightId!: string;
+  @Expose()
+  passengerId!: string;
+  @Expose()
+  price!: number;
+  @Expose()
+  sellerId!: string;
+  @Expose()
+  sellAt?: Date;
+  @Expose()
+  seatFlight!: UpdateTicketSeatFLight;
 }

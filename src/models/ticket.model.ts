@@ -1,9 +1,10 @@
-import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
 import { Flight } from '@/models/flight.model';
 import { Staff } from '@/models/staff.model';
 import { Customer } from '@/models/customer.model';
 import { TicketStatus } from '@/enums/ticket-status.enum';
 import moment from 'moment-timezone';
+import { SeatFlight } from '@/models/seat_flight.model.';
 
 @Entity()
 export class Ticket {
@@ -25,7 +26,7 @@ export class Ticket {
   @Column({ type: 'enum', enum: TicketStatus, default: TicketStatus.Pending })
   status!: string;
 
-  @Column({ type: 'datetime', nullable: true, 
+  @CreateDateColumn({
   transformer: {
     to: (value: Date) => value,
     from: (value: string) => {
@@ -35,7 +36,7 @@ export class Ticket {
     }
 }
    })
-  sellAt?: Date;
+  sellAt!: Date;
 
   @UpdateDateColumn({ type: 'datetime',     transformer: {
     to: (value: Date) => value,
@@ -59,5 +60,9 @@ export class Ticket {
   @ManyToOne(() => Flight, (flight) => flight.tickets)
   @JoinColumn({name: 'flightId'})
   flight!: Flight;
+
+  @OneToOne(()=>SeatFlight, (seatFlight) => seatFlight.ticket, 
+{cascade: ["update"]})
+  seatFlight!: SeatFlight;
 }
 

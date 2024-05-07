@@ -1,6 +1,7 @@
 import accountRouter from "@/routes/account/account.route";
 import airplaneRouter from "@/routes/airplane/airplane.route";
 import airportRouter from "@/routes/airport/airport.route";
+import bookingRouter from "@/routes/booking/booking.route";
 import customerRouter from "@/routes/customer/customer.route";
 import flightRouter from "@/routes/flight/flight.route";
 import roleRouter from "@/routes/role/role.route";
@@ -24,6 +25,7 @@ export function route (app : any, root_api: string){
     app.use(`${root_api}/staff`, staffRouter)
     app.use(`${root_api}/seat-flight`, seatFlightRouter)
     app.use(`${root_api}/ticket-class`, ticketClassRouter)
+    app.use(`${root_api}/booking`, bookingRouter)
     app.all('*', (req: any, res: any, next: any) => {
         const status = 'fail';
         const statusCode = 404;

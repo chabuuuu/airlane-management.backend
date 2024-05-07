@@ -14,12 +14,22 @@ seatFlightRouter
     "/seat-list",
     seatFlightController.findAllByFlightId.bind(seatFlightController)
   )
-  .get("/seat-amount", seatFlightController.getSeatsAmountEachClass.bind(seatFlightController))
+  .get(
+    "/seat-amount",
+    seatFlightController.getSeatsAmountEachClass.bind(seatFlightController)
+  )
   .put(
     "/change-class",
     authenticateJWT,
     classValidate(ChangeSeatsClassDto),
     seatFlightController.changeSeatsClass.bind(seatFlightController)
+  )
+  .post(
+    "/generate-seat",
+    authenticateJWT,
+    seatFlightController.defaultGenerateSeatForAirplane.bind(
+      seatFlightController
+    )
   );
 
 export default seatFlightRouter;

@@ -19,6 +19,24 @@ export class SeatFlightController
     super(service);
     this.seatFlightService = service;
   }
+  async defaultGenerateSeatForAirplane(req: any, res: any, next: any): Promise<any> {
+    try {
+      const { flightIds } = req.body;
+      if (!flightIds) {
+        throw new BaseError(
+          StatusCodes.BAD_REQUEST,
+          "fail",
+          "Flight Id is required"
+        );
+      }
+      for (let flightId of flightIds) {
+        await this.seatFlightService.defaultGenerateSeatForAirplane(flightId);
+      }
+      res.json({ message: "Generate seat success" });
+    } catch (error) {
+      next(error);
+    }
+  }
   async getSeatDetail(req: any, res: any, next: any): Promise<any> {
     try {
       if (!req.query.flightId)

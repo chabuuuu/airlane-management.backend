@@ -12,7 +12,7 @@ export class Ticket {
   ticketId!: string;
 
   @Column()
-  flightId!: number
+  flightId!: string
 
   @Column()
   passengerId!: string;

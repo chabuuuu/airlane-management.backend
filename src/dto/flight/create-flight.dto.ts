@@ -103,6 +103,9 @@ export class CreateFlightDto {
   // @IsNotEmpty()
   // flightCode!: string;
 
+  @IsNotEmpty()
+  @IsString()
+  flightId!: string;
   
   @IsNotEmpty()
   @Type(() => Number)

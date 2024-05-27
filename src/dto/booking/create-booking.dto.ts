@@ -11,7 +11,7 @@ enum BookingStatus {
 
 export class UpdateSeatFLight {
   seatId!: string;
-  flightId!: number;
+  flightId!: string;
   isEmpty?: boolean;
 }
 
@@ -26,9 +26,8 @@ export class CreateBookingDto {
   seatId!: string;
 
   @IsNotEmpty()
-  @Type(() => Number)
-  @IsNumber()
-  flightId!: number;
+  @IsString()
+  flightId!: string;
 }
 
 export class CreateBookingServiceDto {

@@ -30,7 +30,7 @@ export class SeatFlightService
     this.ticketClassRepository = ticketClassRepository;
   }
   async geSeatFinalPrice(
-    flightId: number,
+    flightId: string,
     seatId: string
   ): Promise<{
     rawPrice: number;

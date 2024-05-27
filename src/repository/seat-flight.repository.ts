@@ -14,7 +14,7 @@ export class SeatFlightRepository
     super(dataSource.getRepository(SeatFlight));
     this.seatFlightModel = dataSource.getRepository(SeatFlight);
   }
-    async _getSeatIncludeClassAndFlight(flightId: number, seatId: string): Promise<any> {
+    async _getSeatIncludeClassAndFlight(flightId: string, seatId: string): Promise<any> {
         try {
             const result = await this.seatFlightModel.findOne({
                 where: {

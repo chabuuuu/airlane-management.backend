@@ -28,7 +28,7 @@ export class BookingService
     this.seatFlightService = seatFlightService;
   }
   async checkAvailableSeat(data: {
-    flightId: number;
+    flightId: string;
     seatId: string;
   }): Promise<Boolean> {
     try {

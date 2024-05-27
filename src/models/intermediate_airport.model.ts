@@ -5,7 +5,7 @@ import { Airport } from '@/models/airport.model';
 @Entity()
 export class IntermediateAirport {
   @PrimaryColumn()
-  flightId!: number;
+  flightId!: string;
 
   @PrimaryColumn()
   airportId!: number;

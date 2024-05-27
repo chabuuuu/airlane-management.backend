@@ -53,8 +53,8 @@ export class SeatFlightController
         );
       }
       const { flightId, seatId } = req.query;
-      const finalPrice = (await this.seatFlightService.geSeatFinalPrice(Number(flightId), seatId)).finalPrice;
-      const rawPrice = (await this.seatFlightService.geSeatFinalPrice(Number(flightId), seatId)).rawPrice;
+      const finalPrice = (await this.seatFlightService.geSeatFinalPrice(flightId, seatId)).finalPrice;
+      const rawPrice = (await this.seatFlightService.geSeatFinalPrice(flightId, seatId)).rawPrice;
       const seat = await this.seatFlightService.findOne({
         where: {
           flightId: flightId,

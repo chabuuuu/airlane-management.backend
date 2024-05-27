@@ -9,7 +9,7 @@ export class Airplane {
   airplaneId!: string;
 
   @Column({ unique: true, nullable: true })
-  flightId!: number;
+  flightId!: string;
 
   @Column({ type: 'varchar', length: 20 })
   airplaneModel!: string;

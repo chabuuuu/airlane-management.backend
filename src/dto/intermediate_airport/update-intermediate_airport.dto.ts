@@ -5,15 +5,13 @@ import { IsDecimal, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from 'c
 export class UpdateIntermediateAirportDto {
 
   @IsOptional()
-  @Type(() => Number)
-  @IsNumber()
-  flightID?: number;
+  @IsString()
+  flightId?: string;
 
 
   @IsOptional()
-  @Type(() => Number)
-  @IsNumber()
-  airportID?: number;
+  @IsString()
+  airportId?: number;
 
 
   @IsOptional()

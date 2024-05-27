@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
 import { Airport } from '@/models/airport.model';
 import { IntermediateAirport } from '@/models/intermediate_airport.model';
 import { Ticket } from '@/models/ticket.model';
@@ -8,8 +8,8 @@ import moment from 'moment-timezone';
 
 @Entity()
 export class Flight {
-  @PrimaryGeneratedColumn('increment')
-  flightId!: number;
+  @PrimaryColumn()
+  flightId!: string;
 
   // @Column({ unique: true })
   // flightCode!: string;

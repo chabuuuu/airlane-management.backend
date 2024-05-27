@@ -61,7 +61,7 @@ export class TicketService extends BaseService implements ITicketService<Ticket>
         }
     }
       async checkAvailableSeat(data: {
-        flightId: number;
+        flightId: string;
         seatId: string;
       }): Promise<Boolean> {
         try {

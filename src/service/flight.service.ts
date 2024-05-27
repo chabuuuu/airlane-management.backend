@@ -49,7 +49,7 @@ export class FlightService extends BaseService implements IFlightService<any>{
     }
 
     //Get seat {occupied/total seat} of a flight
-    async getSeatInformation(flightId: number): Promise<{totalSeats: number, notEmptySeats: number}> {
+    async getSeatInformation(flightId: string): Promise<{totalSeats: number, notEmptySeats: number}> {
         try {
             let totalSeats = await this.flightRepository._countTotalSeatsOfFlight(flightId);
             let notEmptySeats = await this.flightRepository._countNotEmptySeatsOfFlight(flightId);
@@ -63,7 +63,7 @@ export class FlightService extends BaseService implements IFlightService<any>{
     }
 
     //Get available seat of a flight
-    async countAvailableSeatsOfFlight(flightId: number): Promise<number> {
+    async countAvailableSeatsOfFlight(flightId: string): Promise<number> {
         try {
             return await this.flightRepository._countAvailableSeatsOfFlight(flightId);
         } catch (error) {

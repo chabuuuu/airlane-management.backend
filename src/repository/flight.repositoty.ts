@@ -39,7 +39,7 @@ export class FlightRepository
     this.flightRepository = dataSource.getRepository(Flight);
     this.seatFlightsRepository = dataSource.getRepository(SeatFlight);
   }
-    async _countAvailableSeatsOfFlight(flightId: number): Promise<number> {
+    async _countAvailableSeatsOfFlight(flightId: string): Promise<number> {
         try {
             return await this.seatFlightsRepository.count({
                 where: {
@@ -51,7 +51,7 @@ export class FlightRepository
             throw error;
         }
     }
-    async _countNotEmptySeatsOfFlight(flightId: number): Promise<number> {
+    async _countNotEmptySeatsOfFlight(flightId: string): Promise<number> {
         try {
             return await this.seatFlightsRepository.count({
                 where: {
@@ -63,7 +63,7 @@ export class FlightRepository
             throw error;
         }
     }
-  async _countTotalSeatsOfFlight(flightId: number): Promise<any> {
+  async _countTotalSeatsOfFlight(flightId: string): Promise<any> {
     try {        
         return await this.seatFlightsRepository.count({
             where: {

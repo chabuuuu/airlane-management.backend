@@ -4,9 +4,8 @@ import { ArrayMinSize, IsArray, IsNotEmpty, IsNumber, IsString } from "class-val
 export class ChangeSeatsClassDto {
 
     @IsNotEmpty()
-    @Type(() => Number)
-    @IsNumber()
-    flightId!: number;
+    @IsString()
+    flightId!: string;
 
     @IsArray()
     @IsString({each: true})

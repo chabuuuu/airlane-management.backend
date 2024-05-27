@@ -112,15 +112,14 @@ enum TicketStatus {
 
 export class UpdateTicketSeatFLight {
   seatId!: string;
-  flightId!: number;
+  flightId!: string;
   isEmpty?: boolean;
 }
 
 export class CreateTicketDto {
   @IsNotEmpty()
-  @Type(() => Number)
-  @IsNumber()
-  flightId!: number;
+  @IsString()
+  flightId!: string;
 
   @IsNotEmpty()
   @IsString()

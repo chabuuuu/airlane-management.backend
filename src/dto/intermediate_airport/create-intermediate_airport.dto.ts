@@ -5,9 +5,8 @@ import { IsDecimal, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from 'c
 export class CreateIntermediateAirportDto {
 
   @IsNotEmpty()
-  @Type(() => Number)
-  @IsNumber()
-  flightID!: number;
+  @IsString()
+  flightID!: string;
 
 
   @IsNotEmpty()

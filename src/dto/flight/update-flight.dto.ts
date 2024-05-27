@@ -147,7 +147,10 @@ import { IsDateString, IsDecimal, IsEnum, IsNumber, IsOptional, IsString, IsUUID
 
 export class UpdateFlightDto {
 
-  
+  @IsOptional()
+  @IsString()
+  flightId!: string;
+
   @IsOptional()
   @Type(() => Number)
   @IsNumber()

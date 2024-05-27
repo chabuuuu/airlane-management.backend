@@ -13,7 +13,7 @@ export class SeatFlight {
   seatId!: string;
 
   @PrimaryColumn()
-  flightId!: number;
+  flightId!: string;
 
   @Column({ type: 'uuid', unique: true, nullable: true })
   ticketId?: string;

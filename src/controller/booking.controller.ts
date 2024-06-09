@@ -37,6 +37,9 @@ export class BookingController
         const result = await this.bookingService.findAll({
             where: {
                 passengerId: userId
+            },
+            relations: {
+              seatFlight: true
             }
         });
         res.json(result);
@@ -65,17 +68,32 @@ export class BookingController
         throw new BaseError(400, "fail", "User Id is required");
       }
       data.passengerId = userId;
-      data.seatFlight = {
-        seatId: data.seatId,
-        flightId: data.flightId,
-      };      
-      const insertData: CreateBookingServiceDto = plainToInstance(
-        CreateBookingServiceDto,
-        data,
-        { excludeExtraneousValues: true }
-      );
-      const result = await this.service.create({ data: insertData });
-      res.json(result);
+      //Checking all seat of booking list is available
+      for (let seatId of data.seatIdList) {
+        if (!await this.bookingService.checkAvailableSeat({ flightId: data.flightId, seatId: seatId })) {
+          throw new BaseError(400, "fail", `Sorry, seat: ${seatId} is not available`);
+        }
+      }
+      // Create booking for each seat
+      let bookedList : Array<any> = [];
+      for (let seatId of data.seatIdList) {
+        data.seatFlight = {
+          seatId: seatId,
+          flightId: data.flightId,
+        };      
+        const insertData: CreateBookingServiceDto = plainToInstance(
+          CreateBookingServiceDto,
+          data,
+          { excludeExtraneousValues: true }
+        );
+        let createdBooking = await this.service.create({ data: insertData });
+        bookedList.push(createdBooking);
+      }
+
+      res.json({
+        message: "Booking is created",
+        bookedList: bookedList
+      });
     } catch (error) {
       next(error);
     }

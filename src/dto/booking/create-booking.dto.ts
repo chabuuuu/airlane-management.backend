@@ -1,7 +1,7 @@
 // src/dto/create-booking.dto.ts
 import { SeatFlight } from '@/models/seat_flight.model.';
 import { Expose, Type } from 'class-transformer';
-import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
+import { ArrayMinSize, IsArray, IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
 
 enum BookingStatus {
   Booked = 'Đã lấy vé',
@@ -21,9 +21,15 @@ export class CreateBookingDto {
   price!: number;
   seatFlight!: UpdateSeatFLight;
 
+  // @IsNotEmpty()
+  // @IsString()
+  // seatId!: string;
+
+  @IsArray()
+  @IsString({each: true})
+  @ArrayMinSize(1)
   @IsNotEmpty()
-  @IsString()
-  seatId!: string;
+  seatIdList!: string[];
 
   @IsNotEmpty()
   @IsString()

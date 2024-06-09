@@ -63,17 +63,24 @@ export class TicketService extends BaseService implements ITicketService<Ticket>
       async checkAvailableSeat(data: {
         flightId: string;
         seatId: string;
+        customerId: string;
       }): Promise<Boolean> {
         try {
-          const { flightId, seatId } = data;
-          const seat = await this.seatFlightService.findOne({
+          const { flightId, seatId, customerId } = data;
+          const seat : SeatFlight = await this.seatFlightService.findOne({
             where: {
               flightId: flightId,
               seatId: seatId,
             },
+            relations: {
+              booking: true
+            }
           });
           if (!seat){
             return false;
+          }
+          if (seat.booking.passengerId === customerId && !seat.ticketId) {
+            return true;
           }
           return seat.isEmpty;
         } catch (error) {
@@ -83,7 +90,7 @@ export class TicketService extends BaseService implements ITicketService<Ticket>
       async create(payload: { data: CreateTicketServiceDto }): Promise<any> {
         try {
           let { data } = payload;      
-          if (!await this.checkAvailableSeat({ flightId: data.seatFlight.flightId, seatId: data.seatFlight.seatId })) {
+          if (!await this.checkAvailableSeat({ flightId: data.seatFlight.flightId, seatId: data.seatFlight.seatId, customerId: data.passengerId})) {
             throw new BaseError(400, "fail", "Seat is not available");
           }
           const seatPrice = await this.seatFlightService.geSeatFinalPrice(data.seatFlight.flightId, data.seatFlight.seatId);

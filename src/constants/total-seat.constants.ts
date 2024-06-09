@@ -1,1 +1,1 @@
-export const MAX_TOTAL_SEATS = 90;
+export const MAX_TOTAL_SEATS = 48;

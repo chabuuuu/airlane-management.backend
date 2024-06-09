@@ -10,6 +10,7 @@ import { ITYPES } from "@/types/interface.types";
 import { REPOSITORY_TYPES } from "@/types/repository.types";
 import { SERVICE_TYPES } from "@/types/service.types";
 import BaseError from "@/utils/error/base.error";
+import { deleteRedisKeyMatch } from "@/utils/redis/delete-key-match.util";
 import { inject, injectable } from "inversify";
 
 @injectable()
@@ -59,7 +60,9 @@ export class BookingService
 
       //Update seatFlight
       data.seatFlight.isEmpty = false;
-      return await this.bookingRepository._create({data});
+      const result = await this.bookingRepository._create({data});
+      deleteRedisKeyMatch("flight*");
+      return result;
     } catch (error) {
       throw error;
     }

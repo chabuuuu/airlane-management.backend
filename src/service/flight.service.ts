@@ -74,8 +74,8 @@ export class FlightService extends BaseService implements IFlightService<any>{
     async findAllInclueAirportsAndSeat(params: any): Promise<any> {
         try {
             let result =  await this.flightRepository._findAllInclueAirports(params);
-            for (let flight of result) {
-                flight.seatsAvailable = await this.countAvailableSeatsOfFlight(result.flightId);
+            for (let flight of result) {                
+                flight.seatsAvailable = await this.countAvailableSeatsOfFlight(flight.flightId);
             }
             return result;
         } catch (error) {

@@ -37,6 +37,9 @@ export class BookingController
         const result = await this.bookingService.findAll({
             where: {
                 passengerId: userId
+            },
+            relations: {
+              seatFlight: true
             }
         });
         res.json(result);

@@ -1,3 +1,4 @@
+import { MAX_TOTAL_SEATS } from "@/constants/total-seat.constants";
 import { seatFlightService } from "@/container/seat-flight.container";
 import { SeatFlight } from "@/models/seat_flight.model.";
 import { IFlightRepository } from "@/repository/interface/i.flight.repository";
@@ -76,7 +77,8 @@ export class FlightService extends BaseService implements IFlightService<any>{
             let result =  await this.flightRepository._findAllInclueAirports(params);
             for (let flight of result) {                
                 flight.seatsAvailable = await this.countAvailableSeatsOfFlight(flight.flightId);
-            }
+                flight.seatsTotal = MAX_TOTAL_SEATS;
+            }            
             return result;
         } catch (error) {
             throw error;
@@ -86,6 +88,7 @@ export class FlightService extends BaseService implements IFlightService<any>{
         try {
             const result = await this.flightRepository._findOneIncludeAirports(params);
             result.seatsAvailable = await this.countAvailableSeatsOfFlight(result.flightId);
+            result.seatsTotal = MAX_TOTAL_SEATS;
             return result;
         } catch (error) {
             throw error;

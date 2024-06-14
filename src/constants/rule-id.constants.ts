@@ -1,2 +1,1 @@
-export const BookingRuleID = 'available_rule'
-export const AirportRuleID = 'available_rule'
+export const RuleID = 'available_rule'

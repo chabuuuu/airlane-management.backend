@@ -6,4 +6,5 @@ export interface IFlightController<T> extends IBaseController<T> {
     updateFlightOnFinish(req: any, res: any, next: any): Promise<any>
     updateFlightOnCancel(req: any, res: any, next: any): Promise<any>
     updateFlightOnNotStart(req: any, res: any, next: any): Promise<any>
+    addIntermediateAirport(req: any, res: any, next: any): Promise<any>
 }

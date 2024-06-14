@@ -1,11 +1,12 @@
 import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class AirportRule {
+export class Rules {
 
     @PrimaryColumn()
-    airportRuleId!: string;
+    ruleId!: string;
 
+    //Airport Rule
     @Column({ type: 'decimal', precision: 5, scale: 2, 
         transformer: {
             to: (value: number) => value,
@@ -13,7 +14,7 @@ export class AirportRule {
         }
     }
     )
-    minFlightDuration!: number; //In minutes, ex: 2.5h, 5.5h,...
+    minFlightDuration!: number; //In hour, ex: 2.5h, 5.5h,...
 
     @Column({type: 'integer'})
     maxIntermediateAirport!: number
@@ -23,4 +24,12 @@ export class AirportRule {
 
     @Column({ type: 'integer'})
     maxIntermediateAirportStopDelay!: number; //In minutes, ex: 20m, 30m,...
+
+
+    //Booking Rule
+    @Column({type: 'integer'})
+    minBookingTime!: number; //In day
+
+    @Column({type: 'integer'})
+    minCancelBookingTime!: number; //In day
 }

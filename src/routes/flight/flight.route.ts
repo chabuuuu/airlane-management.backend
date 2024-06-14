@@ -1,5 +1,6 @@
 import { Subject } from "@/auth/subjects";
 import { flightController } from "@/container/flight.container";
+import { AddIntermediateAirportDto } from "@/dto/flight/add-intermidiate-airport.dto";
 import { CreateFlightDto } from "@/dto/flight/create-flight.dto";
 import { UpdateFlightDto } from "@/dto/flight/update-flight.dto";
 import { ActionAuth } from "@/enums/action.auth.enum";
@@ -35,6 +36,14 @@ flightRouter
    *             schema:
    *               $ref: "#/components/schemas/CreateSuccess"
    */
+
+  .post('/add-intermediate-airport',
+    authenticateJWT,
+    checkRole(ActionAuth.UPDATE, Subject.Flight),
+    classValidate(AddIntermediateAirportDto),
+    flightController.addIntermediateAirport.bind(flightController)
+  )
+
   .post(
     "/",
     authenticateJWT,

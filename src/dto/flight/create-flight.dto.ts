@@ -1,7 +1,7 @@
 // src/dto/create-flight.dto.ts
 import { FlightStatus } from '@/enums/flight-status.enum';
 import { Type } from 'class-transformer';
-import { IsDateString, IsDecimal, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
+import { ArrayMinSize, IsArray, IsDateString, IsDecimal, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
 import { Column } from 'typeorm';
 
 /**
@@ -145,5 +145,12 @@ export class CreateFlightDto {
   @IsOptional()
   @IsString()
   description?: string;
+
+  @IsArray()
+  @Type(() => Array<Number>)
+  @IsNumber({}, {each: true})
+  @ArrayMinSize(1)
+  @IsOptional()
+  intermediateIdList?: number[];
 }
 

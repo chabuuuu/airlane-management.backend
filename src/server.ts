@@ -6,6 +6,9 @@ import { errorHanlder } from '@/middleware/error.middleware';
 import { route } from '@/routes';
 import { AppDataSource } from '@/database/db.datasource';
 import { swaggerInit } from '@/utils/documentation/swagger.util';
+import { ruleRepository } from '@/container/rule.container';
+import { RuleID } from '@/constants/rule-id.constants';
+import { syncRulesToCache } from '@/utils/utils/sync-rules.util';
 const cors = require('cors')
 const config = require('config');
 const session = require('express-session')
@@ -50,6 +53,10 @@ AppDataSource
   .initialize()
   .then(async () => {
     console.log('Database is connected');
+    
+    //Update rules to cache
+    syncRulesToCache();
+
     const port = server_config.port || 3000;  
     app.listen(port, () => {
       console.log(`Server is running on http://localhost:${port} in ${enviroment} mode`)

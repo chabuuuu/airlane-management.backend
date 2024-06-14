@@ -23,6 +23,9 @@ Staff_LV2[Subject.Flight] = [ActionAuth.FULL_CONTROL] //FUll control
 //Booking
 Staff_LV2[Subject.Booking] = [ActionAuth.FULL_CONTROL] //FUll control
 
+//Rule
+Staff_LV1[Subject.Rule] = [ActionAuth.FULL_CONTROL]
+
 const roles : any = {Staff_LV1, Staff_LV2, Customer}
 
 export default roles

@@ -4,6 +4,7 @@ const SERVICE_TYPES = {
     Customer: Symbol.for("Customer"),
     SeatAirplane: Symbol.for("SeatAirplane"),
     SeatFlight: Symbol.for("SeatFlight"),
+    Flight : Symbol.for("Flight"),
 };
 
 export { SERVICE_TYPES };

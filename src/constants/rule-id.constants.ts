@@ -1,0 +1,1 @@
+export const RuleID = 'available_rule'

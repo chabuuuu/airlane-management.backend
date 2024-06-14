@@ -7,4 +7,5 @@ export enum Subject {
     SeatAirplane = 'SeatAirplane',
     Airport = 'Airport',
     Booking = 'Booking',
+    Rule = 'Rule',
 }

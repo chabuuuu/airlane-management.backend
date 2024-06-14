@@ -1,12 +1,16 @@
 import { BaseController } from "@/controller/base/base.controller";
 import { IFlightController } from "@/controller/interface/i.flight.controller";
+import { AddIntermediateAirportDto } from "@/dto/flight/add-intermidiate-airport.dto";
+import { CreateFlightDto } from "@/dto/flight/create-flight.dto";
 import { FindFlightDto } from "@/dto/flight/find-flight.dto";
 import { FlightStatus } from "@/enums/flight-status.enum";
+import { Flight } from "@/models/flight.model";
 import { IFlightService } from "@/service/interface/i.flight.service";
 import { ITYPES } from "@/types/interface.types";
 import { classValidateUtil } from "@/utils/class-validate/class-validate.util";
 import BaseError from "@/utils/error/base.error";
 import redis from "@/utils/redis/redis.instance.util";
+import { getRules } from "@/utils/utils/get-rules.util";
 import { StatusCodes } from "http-status-codes";
 import { inject } from "inversify";
 import moment from "moment";
@@ -24,6 +28,89 @@ export class FlightController
     super(service);
     this.flightService = service;
   }
+
+  async addIntermediateAirport(req: any, res: any, next: any): Promise<any> {
+    try {
+      if (!req.body) throw new Error("Data is required");
+      const data: AddIntermediateAirportDto = req.body;
+      console.log("data: ", data);
+      const flightId = data.flightId;
+      const flight = await this.flightService.findOneIncludeAirportsAndSeat({
+        where: {
+          flightId: flightId,
+        },
+      });
+      const departureAirportId = flight.departureAirportId;
+      const arrivalAirportId = flight.arrivalAirportId;
+      const intermediateAirportId = data.airportId;
+
+      if (
+        intermediateAirportId === departureAirportId ||
+        intermediateAirportId === arrivalAirportId
+      ) {
+        throw new BaseError(
+          StatusCodes.BAD_REQUEST,
+          "fail",
+          "Intermediate airport must be different from departure and arrival airport"
+        );
+      }
+      console.log("flight", flight);
+
+      const currentIntermidiateAirportsAmount =
+        flight.intermediateAirports.length;
+      const rules = await getRules();
+      if (currentIntermidiateAirportsAmount >= rules.maxIntermediateAirport) {
+        throw new BaseError(
+          StatusCodes.BAD_REQUEST,
+          "fail",
+          "Max intermediate must be less than " + rules.maxIntermediateAirport
+        );
+      }
+
+      const maxIntermediateAirportStopDelay =
+        rules.maxIntermediateAirportStopDelay;
+      const minIntermediateAirportStopDelay =
+        rules.minIntermediateAirportStopDelay;
+      const intermediateAirportStopDelay = data.duration;
+
+      if (
+        intermediateAirportStopDelay > maxIntermediateAirportStopDelay ||
+        intermediateAirportStopDelay < minIntermediateAirportStopDelay
+      ) {
+        throw new BaseError(
+          StatusCodes.BAD_REQUEST,
+          "fail",
+          "Intermediate airport stop delay must be between " +
+            minIntermediateAirportStopDelay +
+            " minutes and " +
+            maxIntermediateAirportStopDelay +
+            " minutes"
+        );
+      }
+
+      const result = await this.flightService.addIntermediateAirport({ data });
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async create(req: any, res: any, next: any): Promise<any> {
+    try {
+        if (!req.body) throw new Error("Data is required");
+        const data : CreateFlightDto = req.body;
+        const rules = await getRules();
+        const minFlightDuration = rules.minFlightDuration;
+        if (data.flightDuration < minFlightDuration) {
+            throw new BaseError(StatusCodes.BAD_REQUEST, "fail", "Flight duration must be greater than " + minFlightDuration + " minutes");
+        }
+        const result = await this.service.create({data});
+        res.json(result);
+    } catch (error) {
+        next(error);
+    }
+}
+
   async updateFlightOnNotStart(req: any, res: any, next: any): Promise<any> {
     try {
       if (!req.params.id) throw new Error("Id is required");
@@ -129,7 +216,7 @@ export class FlightController
           departureTime: "ASC",
         },
         skip,
-        take
+        take,
       });
       const responses = {
         data: result,
@@ -137,11 +224,16 @@ export class FlightController
         page: page || 1,
         perPage: this.numberPerPage,
         pageTotal: Math.ceil(totalFlights / this.numberPerPage),
-      }
-      
+      };
+
       //Caching
-      redis.set("flight_query:" + JSON.stringify(query), JSON.stringify(responses), "EX", this.fiveMinutesInSeconds);
-      
+      redis.set(
+        "flight_query:" + JSON.stringify(query),
+        JSON.stringify(responses),
+        "EX",
+        this.fiveMinutesInSeconds
+      );
+
       res.json(responses);
     } catch (error) {
       next(error);
@@ -176,15 +268,15 @@ export class FlightController
   }
   async findAll(req: any, res: any, next: any): Promise<any> {
     try {
-      let skip 
-      let take
-      let {page} = req.query;
+      let skip;
+      let take;
+      let { page } = req.query;
       if (page) {
-          page = Number(page);
-          skip = (page - 1) * this.numberPerPage;
-          take = this.numberPerPage;
-        }
-        let query = req.query;        
+        page = Number(page);
+        skip = (page - 1) * this.numberPerPage;
+        take = this.numberPerPage;
+      }
+      let query = req.query;
       const totalRecords = await this.service.count();
       const result = await this.flightService.findAllInclueAirportsAndSeat({
         skip,
@@ -196,11 +288,16 @@ export class FlightController
         page: page || 1,
         perPage: this.numberPerPage,
         pageTotal: Math.ceil(totalRecords / this.numberPerPage),
-      }
+      };
 
       //Caching
-      redis.set("flight_query:" + JSON.stringify(query), JSON.stringify(response), "EX", this.fiveMinutesInSeconds);
-      
+      redis.set(
+        "flight_query:" + JSON.stringify(query),
+        JSON.stringify(response),
+        "EX",
+        this.fiveMinutesInSeconds
+      );
+
       res.json(response);
     } catch (error) {
       next(error);

@@ -6,11 +6,16 @@ import {
 } from "@/dto/booking/create-booking.dto";
 import { BookingStatus } from "@/enums/booking-status.enum";
 import { Booking } from "@/models/booking.model";
+import { Flight } from "@/models/flight.model";
 import { IBookingService } from "@/service/interface/i.booking.service";
+import { IFlightService } from "@/service/interface/i.flight.service";
 import { ITYPES } from "@/types/interface.types";
+import { SERVICE_TYPES } from "@/types/service.types";
 import BaseError from "@/utils/error/base.error";
+import { getRules } from "@/utils/utils/get-rules.util";
 import { plainToInstance } from "class-transformer";
 import { inject, injectable } from "inversify";
+import moment from "moment";
 
 @injectable()
 export class BookingController
@@ -18,9 +23,14 @@ export class BookingController
   implements IBookingController<Booking>
 {
     private bookingService: IBookingService<Booking>;
-  constructor(@inject(ITYPES.Service) service: IBookingService<Booking>) {
+    private flightService: IFlightService<Flight>;
+  constructor(
+    @inject(ITYPES.Service) service: IBookingService<Booking>,
+    @inject(SERVICE_TYPES.Flight) flightService: IFlightService<Flight>
+  ) {
     super(service);
     this.bookingService = service;
+    this.flightService = flightService;
   }
   async getAllBooking(req: any, res: any, next: any): Promise<any> {
     try {
@@ -51,6 +61,16 @@ export class BookingController
     try {
         if (!req.params.id) throw new Error("Id is required");
         const id = req.params.id;
+        const rules = await getRules();
+        const minCancelBookingTime = rules.minCancelBookingTime;
+        const booking = await this.bookingService.findOne({ where: { bookingId: id } });
+        const departureTime = moment(booking.seatFlight.flight.departureTime, "DD-MM-YYYY HH:mm:ss");
+        const currentTime = moment();
+        const daysDiff = departureTime.diff(currentTime, "days");
+        if (daysDiff < minCancelBookingTime) {
+            throw new BaseError(400, "fail", `Sorry, you can only cancel booking before ${minCancelBookingTime} days`);
+        }
+
         await this.bookingService.update({ where: { bookingId: id }, data: {bookingStatus: BookingStatus.CANCELLED} });
         res.json({message: "Booking is cancelled"});
     } catch (error) {
@@ -68,6 +88,26 @@ export class BookingController
         throw new BaseError(400, "fail", "User Id is required");
       }
       data.passengerId = userId;
+
+      //Check rules
+      const rules = await getRules();
+      const minBookingTime = rules.minBookingTime;
+      const flight = await this.flightService.findOne({ where: { flightId: data.flightId } });
+      const departureTime = moment(flight.departureTime, "DD-MM-YYYY HH:mm:ss");
+      const currentTime = moment();
+      const daysDiff = departureTime.diff(currentTime, "days");
+
+      console.log({
+        minBookingTime,
+        daysDiff,
+        departureTime: departureTime,
+      });
+      
+
+      if (daysDiff < minBookingTime) {
+        throw new BaseError(400, "fail", `Sorry, you can only book flight before ${minBookingTime} days`);
+      }
+
       //Checking all seat of booking list is available
       for (let seatId of data.seatIdList) {
         if (!await this.bookingService.checkAvailableSeat({ flightId: data.flightId, seatId: seatId })) {

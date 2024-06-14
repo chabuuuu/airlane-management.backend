@@ -10,8 +10,8 @@ export class IntermediateAirport {
   @PrimaryColumn()
   airportId!: number;
 
-  @Column({ type: 'decimal', precision: 5, scale: 1 })
-  duration!: number;
+  @Column({ type: 'integer'})
+  duration!: number; //Phút dừng ở sân bay
 
   @Column({ type: 'text', nullable: true })
   notes!: string | null;

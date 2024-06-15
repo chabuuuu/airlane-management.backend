@@ -29,6 +29,20 @@ export class FlightController
     this.flightService = service;
   }
 
+  //Soft delete flight by id
+  async softDeleteFlight(req: any, res: any, next: any): Promise<any> {
+    try {
+      if (!req.params.id) throw new Error("Id is required");
+      const id = req.params.id;
+      const result = await this.flightService.softDeleteFlight(id);
+      res.json({
+        message: "Soft delete flight successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async addIntermediateAirport(req: any, res: any, next: any): Promise<any> {
     try {
       if (!req.body) throw new Error("Data is required");

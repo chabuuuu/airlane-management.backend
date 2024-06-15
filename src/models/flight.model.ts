@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany, PrimaryColumn, DeleteDateColumn } from 'typeorm';
 import { Airport } from '@/models/airport.model';
 import { IntermediateAirport } from '@/models/intermediate_airport.model';
 import { Ticket } from '@/models/ticket.model';
@@ -84,6 +84,9 @@ export class Flight {
   }
   })
   updateAt!: Date;
+
+  @DeleteDateColumn({ name: 'deletedAt', nullable: true })
+  public deletedAt?: Date
 
   //FKs:
   @OneToMany(() => IntermediateAirport, intermediate => intermediate.flight) 

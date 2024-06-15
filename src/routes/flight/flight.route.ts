@@ -117,6 +117,14 @@ flightRouter
     flightController.update.bind(flightController)
   )
 
+  // Soft delete flight by id
+  .delete(
+    "/:id",
+    authenticateJWT,
+    checkRole(ActionAuth.DELETE, Subject.Flight),
+    flightController.softDeleteFlight.bind(flightController)
+  )
+
   .get(
     "/find-available-flight",
     getFlightsCaching,

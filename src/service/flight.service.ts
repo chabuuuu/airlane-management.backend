@@ -36,6 +36,13 @@ export class FlightService extends BaseService implements IFlightService<any>{
         this.rulesRepository = rulesRepository;
         this.intermediateAirportRepository = intermediateAirportRepository;
     }
+    async softDeleteFlight(flightId: string): Promise<any> {
+        try {
+            return await this.flightRepository._softDeleteFlight(flightId);
+        } catch (error) {
+            throw error;
+        }
+    }
     async addIntermediateAirport(params: any): Promise<any> {
         try {
             const {data} = params;

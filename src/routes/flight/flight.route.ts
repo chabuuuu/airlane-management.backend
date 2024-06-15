@@ -117,6 +117,14 @@ flightRouter
     flightController.update.bind(flightController)
   )
 
+  //Hard delete flight by id
+  .delete(
+    "/hard/:id",
+    authenticateJWT,
+    checkRole(ActionAuth.DELETE, Subject.Flight),
+    flightController.delete.bind(flightController)
+  )
+
   // Soft delete flight by id
   .delete(
     "/:id",

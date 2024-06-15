@@ -29,6 +29,18 @@ export class FlightController
     this.flightService = service;
   }
 
+  //Hard delete flight by id
+  async delete(req: any, res: any, next: any): Promise<any> {
+    try {
+        if (!req.params.id) throw new Error("Id is required");
+        const id = req.params.id;
+        const result = await this.service.delete({ where: { flightId: id }});
+        res.json(result);
+    } catch (error) {
+        next(error);
+    }
+}
+
   //Soft delete flight by id
   async softDeleteFlight(req: any, res: any, next: any): Promise<any> {
     try {

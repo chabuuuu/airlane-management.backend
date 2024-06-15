@@ -39,41 +39,50 @@ export class FlightRepository
     this.flightRepository = dataSource.getRepository(Flight);
     this.seatFlightsRepository = dataSource.getRepository(SeatFlight);
   }
-    async _countAvailableSeatsOfFlight(flightId: string): Promise<number> {
-        try {
-            return await this.seatFlightsRepository.count({
-                where: {
-                    flightId: flightId,
-                    isEmpty: true,
-                },
-              });
-        } catch (error) {
-            throw error;
-        }
-    }
-    async _countNotEmptySeatsOfFlight(flightId: string): Promise<number> {
-        try {
-            return await this.seatFlightsRepository.count({
-                where: {
-                    flightId: flightId,
-                    isEmpty: false,
-                },
-              });
-        } catch (error) {
-            throw error;
-        }
-    }
-  async _countTotalSeatsOfFlight(flightId: string): Promise<any> {
-    try {        
-        return await this.seatFlightsRepository.count({
-            where: {
-              flightId: flightId,
-            },
-          });
-    } catch (error) {
-        throw error;
-    }
 
+  //Soft delete flight by id
+  async _softDeleteFlight(flightId: string): Promise<any> {
+    try {
+      return await this.flightRepository.softDelete(flightId);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async _countAvailableSeatsOfFlight(flightId: string): Promise<number> {
+    try {
+      return await this.seatFlightsRepository.count({
+        where: {
+          flightId: flightId,
+          isEmpty: true,
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+  async _countNotEmptySeatsOfFlight(flightId: string): Promise<number> {
+    try {
+      return await this.seatFlightsRepository.count({
+        where: {
+          flightId: flightId,
+          isEmpty: false,
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+  async _countTotalSeatsOfFlight(flightId: string): Promise<any> {
+    try {
+      return await this.seatFlightsRepository.count({
+        where: {
+          flightId: flightId,
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 
   async _findAllInclueAirports(params: {
@@ -100,7 +109,7 @@ export class FlightRepository
   async _findOneIncludeAirports(params: { where?: any }): Promise<any> {
     const { where } = params;
     console.log(where);
-    
+
     return await super._findOne({
       where,
       relations: {

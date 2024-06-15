@@ -6,4 +6,5 @@ export interface IFlightService<T> extends IBaseService<T>{
     getSeatInformation(flightId: string): Promise<{totalSeats: number, notEmptySeats: number}> 
     countAvailableSeatsOfFlight(flightId: string): Promise<number>
     addIntermediateAirport(params: any): Promise<any>
+    softDeleteFlight(flightId: string): Promise<any>
 }

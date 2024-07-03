@@ -29,10 +29,16 @@ export class CreateBookingDto {
   passengerId!: string;
   price!: number;
   seatFlight!: UpdateSeatFLight;
+  fullName!: string;
+  phoneNumber!: string;
+  email!: string;
+  cccd!: string;
 
   // @IsNotEmpty()
   // @IsString()
   // seatId!: string;
+
+  //Passenger info-------------------
 
   @IsArray()
   @IsString({ each: true })
@@ -44,7 +50,27 @@ export class CreateBookingDto {
   @IsString({ each: true })
   @ArrayMinSize(1)
   @IsNotEmpty()
-  full_nameList!: string[];
+  fullNameList!: string[];
+
+  @IsArray()
+  @IsString({ each: true })
+  @ArrayMinSize(1)
+  @IsNotEmpty()
+  phoneNumberList!: string[];
+
+  @IsArray()
+  @IsString({ each: true })
+  @ArrayMinSize(1)
+  @IsNotEmpty()
+  emailList!: string[];
+
+  @IsArray()
+  @IsString({ each: true })
+  @ArrayMinSize(1)
+  @IsNotEmpty()
+  cccdList!: string[];
+
+  //--------------------------------
 
   @IsNotEmpty()
   @IsString()
@@ -54,10 +80,24 @@ export class CreateBookingDto {
 export class CreateBookingServiceDto {
   @Expose()
   passengerId!: string;
+
   @Expose()
   price!: number;
+
   @Expose()
   seatFlight!: UpdateSeatFLight;
+
+  @Expose()
+  fullName!: string;
+
+  @Expose()
+  phoneNumber!: string;
+
+  @Expose()
+  email!: string;
+
+  @Expose()
+  cccd!: string;
 
   paymentStatus?: boolean;
 }

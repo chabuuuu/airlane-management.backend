@@ -36,7 +36,12 @@ export class BookingController
     try {
       if (!req.params.id) throw new Error("Id is required");
       const id = req.params.id;
-      const result = await this.service.findOne({ where: { bookingId: id } });
+      const result = await this.service.findOne({
+        where: { bookingId: id },
+        relations: {
+          seatFlight: true,
+        },
+      });
       res.json(result);
     } catch (error) {
       next(error);

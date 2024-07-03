@@ -1,7 +1,17 @@
 // src/dto/create-ticket.dto.ts
-import { UpdateSeatFLight } from '@/dto/booking/create-booking.dto';
-import { Expose, Type } from 'class-transformer';
-import { IsDate, IsDateString, IsDecimal, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
+import { UpdateSeatFLight } from "@/dto/booking/create-booking.dto";
+import { Expose, Type } from "class-transformer";
+import {
+  IsDate,
+  IsDateString,
+  IsDecimal,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from "class-validator";
 
 /**
  * @openapi
@@ -43,7 +53,7 @@ import { IsDate, IsDateString, IsDecimal, IsEnum, IsNotEmpty, IsNumber, IsOption
  *         - price
  *         - sellerId
  *         - status
- * 
+ *
  *     UpdateTicketDto:
  *       properties:
  *         flightId:
@@ -64,7 +74,7 @@ import { IsDate, IsDateString, IsDecimal, IsEnum, IsNotEmpty, IsNumber, IsOption
  *         sellAt:
  *           type: string
  *       type: object
- * 
+ *
  *     GetTicketById:
  *       properties:
  *         flightId:
@@ -104,11 +114,10 @@ import { IsDate, IsDateString, IsDecimal, IsEnum, IsNotEmpty, IsNumber, IsOption
  */
 
 enum TicketStatus {
-  Booked = 'Booked',
-  Selled = 'Selled',
-  Cancelled = 'Cancelled'
+  Booked = "Booked",
+  Selled = "Selled",
+  Cancelled = "Cancelled",
 }
-
 
 export class UpdateTicketSeatFLight {
   seatId!: string;
@@ -128,6 +137,11 @@ export class CreateTicketDto {
   @IsString()
   @IsNotEmpty()
   passengerId!: string;
+
+  fullName?: string;
+  email?: string;
+  phoneNumber?: string;
+  cccd?: string;
 
   seatFlight?: UpdateTicketSeatFLight;
 
@@ -149,6 +163,14 @@ export class CreateTicketServiceDto {
   sellerId!: string;
   @Expose()
   sellAt?: Date;
+  @Expose()
+  fullName?: string;
+  @Expose()
+  email?: string;
+  @Expose()
+  phoneNumber?: string;
+  @Expose()
+  cccd?: string;
   @Expose()
   seatFlight!: UpdateTicketSeatFLight;
 }

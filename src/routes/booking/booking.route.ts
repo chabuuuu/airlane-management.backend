@@ -17,7 +17,16 @@ bookingRouter
     checkRole(ActionAuth.READ, Subject.Booking),
     bookingController.getAllBooking.bind(bookingController)
   )
-  .get("/me", authenticateJWT, bookingController.getMyBooking.bind(bookingController))
+  .get(
+    "/me",
+    authenticateJWT,
+    bookingController.getMyBooking.bind(bookingController)
+  )
+  .get(
+    "/detail/:id",
+    authenticateJWT,
+    bookingController.findOne.bind(bookingController)
+  )
   .post(
     "/create",
     classValidate(CreateBookingDto),

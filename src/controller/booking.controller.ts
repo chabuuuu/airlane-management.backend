@@ -32,6 +32,16 @@ export class BookingController
     this.bookingService = service;
     this.flightService = flightService;
   }
+  async findOne(req: any, res: any, next: any): Promise<any> {
+    try {
+      if (!req.params.id) throw new Error("Id is required");
+      const id = req.params.id;
+      const result = await this.service.findOne({ where: { bookingId: id } });
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
   async getAllBooking(req: any, res: any, next: any): Promise<any> {
     try {
       const result = await this.bookingService.findAll({});

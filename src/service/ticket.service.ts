@@ -48,7 +48,7 @@ export class TicketService
       const payload = {
         code: ticket.ticketId,
         classType: ticket.seatFlight.class,
-        passengerName: ticket.passenger.fullname,
+        passengerName: ticket.fullName || ticket.passenger.fullname,
         flightCode: ticket.flight.flightId.toString(),
         originCity: ticket.flight.departureAirport.city,
         destinationCity: ticket.flight.arrivalAirport.city,

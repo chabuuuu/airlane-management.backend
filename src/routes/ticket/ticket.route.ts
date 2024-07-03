@@ -4,7 +4,6 @@ import { UpdateTicketDto } from "@/dto/ticket/update-ticket.dto";
 import { classValidate } from "@/middleware/class-validate.middleware";
 import { authenticateJWT } from "@/middleware/jwt.authenticate.middleware";
 import express from "express";
-import { auth } from "googleapis/build/src/apis/abusiveexperiencereport";
 
 const ticketRouter = express.Router();
 

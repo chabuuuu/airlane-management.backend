@@ -3,13 +3,12 @@ import { ICustomerService } from "@/service/interface/i.customer.service";
 import { ITYPES } from "@/types/interface.types";
 import { transporter } from "@/utils/email-sender/transporter.nodemailer";
 import BaseError from "@/utils/error/base.error";
-import oauth2Client from "@/utils/google-api/google-oauth2.client.util";
 import redis from "@/utils/redis/redis.instance.util";
 import { StatusCodes } from "http-status-codes";
 import { inject, injectable } from "inversify";
 import axios from "axios";
 const jwt = require("jsonwebtoken");
-const config = require('config');
+const config = require("config");
 var CryptoJS = require("crypto-js");
 
 @injectable()
@@ -20,43 +19,45 @@ export class CustomerService
   constructor(@inject(ITYPES.Repository) repository: ICustomerService<any>) {
     super(repository);
   }
-  async loginWithGoogleCallback(tokens: any): Promise<any> {
-    const {access_token} = tokens
-    if (!access_token){
-      throw new BaseError(StatusCodes.BAD_REQUEST, 'fail', 'Login by google failed! Can not get access token')
-    }
-    const {data} = await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${access_token}`);         
-    console.log('data:', data);
-    if (!data.hasOwnProperty("email")){
-      throw new BaseError(StatusCodes.BAD_REQUEST, 'fail', 'Login by google failed! Account does not exists')
-    }
-    const email = data.email;
-    const user = await this.repository._findOneIncludePassword({ where: { email: email } });
-    if (!user){
-      throw new BaseError(StatusCodes.BAD_REQUEST, 'fail', 'Login by google failed! Account does not exists')
-    }
-    return await this.login({email: user.email, password: user.password})
-  } 
-  async loginWithGoogle(): Promise<any> {
-    try {
-      const token = CryptoJS.lib.WordArray.random(16).toString();
-      const scopes = [
-        'https://www.googleapis.com/auth/userinfo.email'
-      ];
-      
-      const authorizationUrl = oauth2Client.generateAuthUrl({
-        access_type: 'offline',
-        scope: scopes,
-        include_granted_scopes: true,
-        state: token
-      });
-      console.log('Authorization URL:', authorizationUrl);
-      
-        return {token, authorizationUrl}
-    } catch (error) {
-      throw error
-    }
-  }
+
+  // async loginWithGoogleCallback(tokens: any): Promise<any> {
+  //   const {access_token} = tokens
+  //   if (!access_token){
+  //     throw new BaseError(StatusCodes.BAD_REQUEST, 'fail', 'Login by google failed! Can not get access token')
+  //   }
+  //   const {data} = await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${access_token}`);
+  //   console.log('data:', data);
+  //   if (!data.hasOwnProperty("email")){
+  //     throw new BaseError(StatusCodes.BAD_REQUEST, 'fail', 'Login by google failed! Account does not exists')
+  //   }
+  //   const email = data.email;
+  //   const user = await this.repository._findOneIncludePassword({ where: { email: email } });
+  //   if (!user){
+  //     throw new BaseError(StatusCodes.BAD_REQUEST, 'fail', 'Login by google failed! Account does not exists')
+  //   }
+  //   return await this.login({email: user.email, password: user.password})
+  // }
+  // async loginWithGoogle(): Promise<any> {
+  //   try {
+  //     const token = CryptoJS.lib.WordArray.random(16).toString();
+  //     const scopes = [
+  //       'https://www.googleapis.com/auth/userinfo.email'
+  //     ];
+
+  //     const authorizationUrl = oauth2Client.generateAuthUrl({
+  //       access_type: 'offline',
+  //       scope: scopes,
+  //       include_granted_scopes: true,
+  //       state: token
+  //     });
+  //     console.log('Authorization URL:', authorizationUrl);
+
+  //       return {token, authorizationUrl}
+  //   } catch (error) {
+  //     throw error
+  //   }
+  // }
+
   async verifyEmailToken(email: string, token: string): Promise<any> {
     try {
       const tokenInRedis = await redis.get(email);
@@ -79,11 +80,11 @@ export class CustomerService
       });
       redis.del(email);
       return {
-        status: 'suscess',
-        message: 'Email verified! You can login now.',
+        status: "suscess",
+        message: "Email verified! You can login now.",
       };
     } catch (error) {
-      throw error
+      throw error;
     }
   }
   async sendVertificationEmail(email: string): Promise<any> {
@@ -108,9 +109,9 @@ export class CustomerService
         );
       const fiveMinuteInSeconds = 60 * 5;
       redis.set(user.email, token, "EX", fiveMinuteInSeconds);
-      const server_config = config.get('server');
-      const api_version = config.get('API_VERSION');
-      const root_url = `${server_config.verify_email}${api_version}`
+      const server_config = config.get("server");
+      const api_version = config.get("API_VERSION");
+      const root_url = `${server_config.verify_email}${api_version}`;
       const mailOptions = {
         from: {
           name: "CS Airlines",
@@ -122,13 +123,13 @@ export class CustomerService
       };
 
       const result = await transporter.sendMail(mailOptions);
-      console.log("Email sent: ",result);
+      console.log("Email sent: ", result);
 
       return {
         status: "suscess",
         message: `Email was sent to ${email}`,
       } as any;
-    } catch (error) {      
+    } catch (error) {
       throw error;
     }
   }

@@ -3,7 +3,6 @@ import { ICustomerController } from "@/controller/interface/customer.controller"
 import { ICustomerService } from "@/service/interface/i.customer.service";
 import { ITYPES } from "@/types/interface.types";
 import BaseError from "@/utils/error/base.error";
-import oauth2Client from "@/utils/google-api/google-oauth2.client.util";
 import { StatusCodes } from "http-status-codes";
 import { inject, injectable } from "inversify";
 const config = require("config");
@@ -25,9 +24,9 @@ export class CustomerController
           "fail",
           "Picture name is required"
         );
-        const root = process.cwd();
-        const path = `${root}/storage/media/customer-profile-picture/${pictureName}`;
-        res.sendFile(path);
+      const root = process.cwd();
+      const path = `${root}/storage/media/customer-profile-picture/${pictureName}`;
+      res.sendFile(path);
     } catch (error) {
       next(error);
     }
@@ -50,42 +49,42 @@ export class CustomerController
     }
   }
 
-  async loginWithGoogleCallback(req: any, res: any, next: any): Promise<any> {
-    try {
-      const query = req.query;
-      console.log("query:", query);
-      console.log("callback state: ", query.state);
-      const callBackToken = req.query.state;
-      const sessionToken = req.session.loginWithGoogleToken;
-      if (callBackToken !== sessionToken) {
-        throw new BaseError(
-          StatusCodes.BAD_REQUEST,
-          "fail",
-          "Login by google failed! Invalid state"
-        );
-      }
-      if (query.error) {
-        console.log("Error:" + query.error);
-        res.status(400).json({ error: query.error });
-      }
-      let { tokens } = await oauth2Client.getToken(query.code);
-      console.log("token:::", tokens);
-      console.log("session state:::", req.session.loginWithGoogleToken);
-      const result = await this.service.loginWithGoogleCallback(tokens);
-      return res.json(result);
-    } catch (error) {
-      next(error);
-    }
-  }
-  async loginWithGoogle(req: any, res: any, next: any): Promise<any> {
-    try {
-      const { token, authorizationUrl } = await this.service.loginWithGoogle();
-      req.session.loginWithGoogleToken = token;
-      res.redirect(authorizationUrl);
-    } catch (error) {
-      next(error);
-    }
-  }
+  // async loginWithGoogleCallback(req: any, res: any, next: any): Promise<any> {
+  //   try {
+  //     const query = req.query;
+  //     console.log("query:", query);
+  //     console.log("callback state: ", query.state);
+  //     const callBackToken = req.query.state;
+  //     const sessionToken = req.session.loginWithGoogleToken;
+  //     if (callBackToken !== sessionToken) {
+  //       throw new BaseError(
+  //         StatusCodes.BAD_REQUEST,
+  //         "fail",
+  //         "Login by google failed! Invalid state"
+  //       );
+  //     }
+  //     if (query.error) {
+  //       console.log("Error:" + query.error);
+  //       res.status(400).json({ error: query.error });
+  //     }
+  //     let { tokens } = await oauth2Client.getToken(query.code);
+  //     console.log("token:::", tokens);
+  //     console.log("session state:::", req.session.loginWithGoogleToken);
+  //     const result = await this.service.loginWithGoogleCallback(tokens);
+  //     return res.json(result);
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // }
+  // async loginWithGoogle(req: any, res: any, next: any): Promise<any> {
+  //   try {
+  //     const { token, authorizationUrl } = await this.service.loginWithGoogle();
+  //     req.session.loginWithGoogleToken = token;
+  //     res.redirect(authorizationUrl);
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // }
 
   //Recieve email from client and send verification email to that email
   async verifyEmailToken(req: any, res: any, next: any): Promise<any> {

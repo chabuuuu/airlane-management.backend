@@ -13,22 +13,18 @@ import express from "express";
 const customerRouter = express.Router();
 
 customerRouter
-.get("/profile-picture/:pictureName", customerController.getProfilePicture.bind(customerController))
-.get(
-    "/google-oauth2callback",
-    customerController.loginWithGoogleCallback.bind(customerController)
+  .get(
+    "/profile-picture/:pictureName",
+    customerController.getProfilePicture.bind(customerController)
   )
-  .post("/upload-profile-picture",
+  .post(
+    "/upload-profile-picture",
     uploadCustomerPorfilePicture,
     customerController.uploadProfilePicture.bind(customerController)
-    )
+  )
   .post(
     "/send-verify-email",
     customerController.sendVertificationEmail.bind(customerController)
-  )
-  .get(
-    "/login-with-google",
-    customerController.loginWithGoogle.bind(customerController)
   )
   .post(
     "/login",

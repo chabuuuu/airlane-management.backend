@@ -29,10 +29,10 @@ export class Ticket {
 
   //Passenger info-------------------
   @Column({ nullable: true })
-  full_name?: string;
+  fullName?: string;
 
   @Column({ nullable: true })
-  phone_number?: string;
+  phoneNumber?: string;
 
   @Column({ nullable: true })
   email?: string;

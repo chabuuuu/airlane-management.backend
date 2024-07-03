@@ -40,6 +40,12 @@ export class CreateBookingDto {
   @IsNotEmpty()
   seatIdList!: string[];
 
+  @IsArray()
+  @IsString({ each: true })
+  @ArrayMinSize(1)
+  @IsNotEmpty()
+  full_nameList!: string[];
+
   @IsNotEmpty()
   @IsString()
   flightId!: string;

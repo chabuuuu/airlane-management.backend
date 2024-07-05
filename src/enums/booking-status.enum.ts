@@ -1,4 +1,5 @@
 export enum BookingStatus {
-    BOOKED = 'BOOKED',
-    CANCELLED = 'CANCELLED'
+  TICKET_PRINTED = "TICKET_PRINTED",
+  BOOKED = "BOOKED",
+  CANCELLED = "CANCELLED",
 }

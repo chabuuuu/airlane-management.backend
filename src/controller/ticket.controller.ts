@@ -6,6 +6,7 @@ import {
   CreateTicketDto,
   CreateTicketServiceDto,
 } from "@/dto/ticket/create-ticket.dto";
+import { BookingStatus } from "@/enums/booking-status.enum";
 import { Booking } from "@/models/booking.model";
 import { SeatFlight } from "@/models/seat_flight.model.";
 import { Ticket } from "@/models/ticket.model";
@@ -119,7 +120,19 @@ export class TicketController
       );
       console.log(insertData);
 
+      //Create ticket
       const result = await this.service.create({ data: insertData });
+
+      //Update booking status to "TICKET_PRINTED"
+      await bookingService.update({
+        where: {
+          bookingId: bookingId,
+        },
+        data: {
+          bookingStatus: BookingStatus.TICKET_PRINTED,
+        },
+      });
+
       const pathPdf = await this.service.printTicket(result.ticketId);
       var fs = require("fs");
       var file = fs.createReadStream(pathPdf);
@@ -156,6 +169,7 @@ export class TicketController
     }
   }
 
+  //Manually create ticket
   async create(req: any, res: any, next: any): Promise<any> {
     try {
       if (!req.body) throw new Error("Data is required");
@@ -171,6 +185,9 @@ export class TicketController
         flightId: data.flightId,
         isEmpty: false,
       };
+
+      //Set passengerId to empty because this is manual create ticket
+      data.passengerId = "";
       const insertData: CreateTicketServiceDto = plainToInstance(
         CreateTicketServiceDto,
         data,

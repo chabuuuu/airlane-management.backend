@@ -135,15 +135,24 @@ export class CreateTicketDto {
   seatId!: string;
 
   @IsString()
-  @IsNotEmpty()
-  passengerId!: string;
-
+  @IsOptional()
   fullName?: string;
+
+  @IsString()
+  @IsOptional()
   email?: string;
+
+  @IsString()
+  @IsOptional()
   phoneNumber?: string;
+
+  @IsString()
+  @IsOptional()
   cccd?: string;
 
   seatFlight?: UpdateTicketSeatFLight;
+
+  passengerId?: string;
 
   sellerId?: string;
 

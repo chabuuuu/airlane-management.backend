@@ -80,6 +80,10 @@ export class TicketService
           booking: true,
         },
       });
+
+      console.log("seat", seat);
+      console.log("customerId", customerId);
+
       if (!seat) {
         return false;
       }

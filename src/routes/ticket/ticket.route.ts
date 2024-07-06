@@ -96,8 +96,7 @@ ticketRouter
   .delete("/:id")
 
   .get(
-    "/create-and-print/by-booking-id/:bookingId",
-    authenticateJWT,
+    "/create-and-print/by-booking-id",
     ticketController.createAndPrintTicketByBookingId.bind(ticketController)
   )
 
@@ -107,6 +106,12 @@ ticketRouter
     "/list",
     authenticateJWT,
     ticketController.findAll.bind(ticketController)
+  )
+
+  .get(
+    "/detail/:id",
+    authenticateJWT,
+    ticketController.findOne.bind(ticketController)
   )
 
   /**

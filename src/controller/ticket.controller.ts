@@ -1,3 +1,4 @@
+import { anonymousUserId } from "@/constants/user.constants";
 import { bookingService } from "@/container/booking.container";
 import { seatFlightService } from "@/container/seat-flight.container";
 import { BaseController } from "@/controller/base/base.controller";
@@ -71,9 +72,11 @@ export class TicketController
   ): Promise<any> {
     try {
       if (!req.body) throw new Error("Data is required");
-      const bookingId = req.params.bookingId;
+      const bookingId = req.query.bookingId;
+      const staffId = req.query.staffId;
       if (!bookingId)
         throw new BaseError(400, "fail", "Booking Id is required");
+      if (!staffId) throw new BaseError(400, "fail", "Staff Id is required");
       const booking = await bookingService.findOne({
         where: {
           bookingId: bookingId,
@@ -83,12 +86,6 @@ export class TicketController
         },
       });
       console.log("booking", booking);
-
-      const user = req.user;
-      const userId = user.staffId;
-      if (!userId) {
-        throw new BaseError(400, "fail", "User Id is required");
-      }
 
       const flightId = booking.seatFlight.flightId;
       const seatId = booking.seatFlight.seatId;
@@ -107,7 +104,7 @@ export class TicketController
         email: email,
         cccd: cccd,
       };
-      data.sellerId = userId;
+      data.sellerId = staffId;
       data.seatFlight = {
         seatId: data.seatId,
         flightId: data.flightId,
@@ -187,7 +184,7 @@ export class TicketController
       };
 
       //Set passengerId to empty because this is manual create ticket
-      data.passengerId = "";
+      data.passengerId = anonymousUserId;
       const insertData: CreateTicketServiceDto = plainToInstance(
         CreateTicketServiceDto,
         data,
@@ -195,6 +192,22 @@ export class TicketController
       );
       console.log(insertData);
       const result = await this.service.create({ data: insertData });
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async findOne(req: any, res: any, next: any): Promise<any> {
+    try {
+      if (!req.params.id) throw new Error("Id is required");
+      const id = req.params.id;
+      const result = await this.service.findOne({
+        where: { ticketId: id },
+        relations: {
+          seatFlight: true,
+        },
+      });
       res.json(result);
     } catch (error) {
       next(error);

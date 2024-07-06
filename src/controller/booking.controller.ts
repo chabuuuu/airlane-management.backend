@@ -39,7 +39,11 @@ export class BookingController
       const result = await this.service.findOne({
         where: { bookingId: id },
         relations: {
-          seatFlight: true,
+          seatFlight: {
+            flight: {
+              intermediateAirports: true,
+            },
+          },
         },
       });
       res.json(result);
@@ -49,7 +53,13 @@ export class BookingController
   }
   async getAllBooking(req: any, res: any, next: any): Promise<any> {
     try {
-      const result = await this.bookingService.findAll({});
+      const result = await this.bookingService.findAll({
+        relations: {
+          seatFlight: {
+            flight: true,
+          },
+        },
+      });
       res.json(result);
     } catch (error) {
       next(error);
@@ -64,7 +74,9 @@ export class BookingController
           passengerId: userId,
         },
         relations: {
-          seatFlight: true,
+          seatFlight: {
+            flight: true,
+          },
         },
       });
       res.json(result);

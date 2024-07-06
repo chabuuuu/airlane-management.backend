@@ -24,8 +24,8 @@ export class Ticket {
   @Column()
   flightId!: string;
 
-  @Column({ nullable: true })
-  passengerId?: string;
+  @Column()
+  passengerId!: string;
 
   //Passenger info-------------------
   @Column({ nullable: true })

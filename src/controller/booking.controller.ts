@@ -80,7 +80,14 @@ export class BookingController
       const minCancelBookingTime = rules.minCancelBookingTime;
       const booking = await this.bookingService.findOne({
         where: { bookingId: id },
+        relations: {
+          seatFlight: {
+            flight: true,
+          },
+        },
       });
+      console.log("booking", booking);
+
       const departureTime = moment(
         booking.seatFlight.flight.departureTime,
         "DD-MM-YYYY HH:mm:ss"

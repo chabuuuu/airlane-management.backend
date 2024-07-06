@@ -1,3 +1,4 @@
+import { anonymousUserId } from "@/constants/user.constants";
 import { BaseController } from "@/controller/base/base.controller";
 import { ICustomerController } from "@/controller/interface/customer.controller";
 import { ICustomerService } from "@/service/interface/i.customer.service";
@@ -6,6 +7,7 @@ import BaseError from "@/utils/error/base.error";
 import oauth2Client from "@/utils/google-api/google-oauth2.client.util";
 import { StatusCodes } from "http-status-codes";
 import { inject, injectable } from "inversify";
+import { Not } from "typeorm";
 const config = require("config");
 
 @injectable()
@@ -16,6 +18,37 @@ export class CustomerController
   constructor(@inject(ITYPES.Service) service: ICustomerService<any>) {
     super(service);
   }
+  //Find all customers - exclude anonymous user
+  async findAll(req: any, res: any, next: any): Promise<any> {
+    try {
+      let skip;
+      let take;
+      let { page } = req.query;
+      if (page) {
+        page = Number(page);
+        skip = (page - 1) * 10;
+        take = 10;
+      }
+      const totalRecords = await this.service.count();
+      const result = await this.service.findAll({
+        skip,
+        take,
+        where: {
+          customerId: Not(anonymousUserId),
+        },
+      });
+      res.json({
+        data: result,
+        dataTotal: result.length,
+        page: page || 1,
+        perPage: 10,
+        pageTotal: Math.ceil(totalRecords / 10),
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async getProfilePicture(req: any, res: any, next: any): Promise<any> {
     try {
       const pictureName = req.params.pictureName;
@@ -25,9 +58,9 @@ export class CustomerController
           "fail",
           "Picture name is required"
         );
-        const root = process.cwd();
-        const path = `${root}/storage/media/customer-profile-picture/${pictureName}`;
-        res.sendFile(path);
+      const root = process.cwd();
+      const path = `${root}/storage/media/customer-profile-picture/${pictureName}`;
+      res.sendFile(path);
     } catch (error) {
       next(error);
     }

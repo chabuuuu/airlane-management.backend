@@ -29,7 +29,12 @@
 
 - Back end web application framework: ExpressJS (NodeJS)
 - Client - Server Communicate: Restful API
-- Backend (ExpressJS) repository: https://github.com/chabuuuu/airlane-management.backend
+- Database: MySQL
+- Caching: Redis
+- PDF Print Server: JSReport
+- Server: AWS EC2
+- Docker
+- Frontend (NextJS) repository: https://github.com/chabuuuu/airline-management.frontend
 
 # About the final product
 

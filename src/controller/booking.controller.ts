@@ -14,6 +14,7 @@ import { SERVICE_TYPES } from "@/types/service.types";
 import BaseError from "@/utils/error/base.error";
 import { getRules } from "@/utils/utils/get-rules.util";
 import { plainToInstance } from "class-transformer";
+import { Request } from "express";
 import { inject, injectable } from "inversify";
 import moment from "moment";
 
@@ -119,6 +120,53 @@ export class BookingController
         data: { bookingStatus: BookingStatus.CANCELLED },
       });
       res.json({ message: "Booking is cancelled" });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * * Checking can booking or not
+   * @param req
+   * @param res
+   * @param next
+   */
+  async checkBooking(
+    req: Request<null, null, null, { flightId: string }>,
+    res: any,
+    next: any
+  ): Promise<any> {
+    try {
+      const flightId = req.query.flightId;
+      if (!flightId) {
+        throw new BaseError(400, "fail", "Flight Id is required");
+      }
+      //Check rules
+      const rules = await getRules();
+      const minBookingTime = rules.minBookingTime;
+      const flight = await this.flightService.findOne({
+        where: { flightId: flightId },
+      });
+      const departureTime = moment(flight.departureTime, "DD-MM-YYYY HH:mm:ss");
+      const currentTime = moment();
+      const daysDiff = departureTime.diff(currentTime, "days");
+
+      console.log({
+        minBookingTime,
+        daysDiff,
+        departureTime: departureTime,
+      });
+
+      if (daysDiff < minBookingTime) {
+        throw new BaseError(
+          400,
+          "fail",
+          `Sorry, you can only book flight before ${minBookingTime} days`
+        );
+      }
+      res.json({
+        message: "You can book this flight",
+      });
     } catch (error) {
       next(error);
     }

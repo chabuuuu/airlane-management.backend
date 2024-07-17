@@ -27,6 +27,7 @@ bookingRouter
     authenticateJWT,
     bookingController.findOne.bind(bookingController)
   )
+  .get("/check-booking", bookingController.checkBooking.bind(bookingController))
   .post(
     "/create",
     classValidate(CreateBookingDto),

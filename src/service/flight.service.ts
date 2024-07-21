@@ -19,117 +19,180 @@ import redis from "@/utils/redis/redis.instance.util";
 import { inject, injectable } from "inversify";
 
 @injectable()
-export class FlightService extends BaseService implements IFlightService<any>{
-    protected flightRepository: IFlightRepository<any>;
-    private seatFlightService: ISeatFlightService<SeatFlight>;
-    private intermediateAirportRepository: IIntermediateAirportRepository<IntermediateAirport>;
-    private rulesRepository: IRulesRepository<Rules>;
-    constructor(
-        @inject(ITYPES.Repository) repository: IFlightRepository<any>,
-        @inject(SERVICE_TYPES.SeatFlight) seatFlightService: ISeatFlightService<SeatFlight>,
-        @inject(REPOSITORY_TYPES.Rules) rulesRepository: IRulesRepository<Rules>,
-        @inject(REPOSITORY_TYPES.IntermediateAirport) intermediateAirportRepository: IIntermediateAirportRepository<IntermediateAirport>
-    ) {
-        super(repository);
-        this.flightRepository = repository;
-        this.seatFlightService = seatFlightService;
-        this.rulesRepository = rulesRepository;
-        this.intermediateAirportRepository = intermediateAirportRepository;
-    }
-    async softDeleteFlight(flightId: string): Promise<any> {
-        try {
-            return await this.flightRepository._softDeleteFlight(flightId);
-        } catch (error) {
-            throw error;
-        }
-    }
-    async addIntermediateAirport(params: any): Promise<any> {
-        try {
-            const {data} = params;
-            const duplicateIntermediateAirport = await this.intermediateAirportRepository._exists({
-                where: {
-                    flightId: data.flightId,
-                    airportId: data.airportId
-                }
-            })
+export class FlightService extends BaseService implements IFlightService<any> {
+  protected flightRepository: IFlightRepository<any>;
+  private seatFlightService: ISeatFlightService<SeatFlight>;
+  private intermediateAirportRepository: IIntermediateAirportRepository<IntermediateAirport>;
+  private rulesRepository: IRulesRepository<Rules>;
+  constructor(
+    @inject(ITYPES.Repository) repository: IFlightRepository<any>,
+    @inject(SERVICE_TYPES.SeatFlight)
+    seatFlightService: ISeatFlightService<SeatFlight>,
+    @inject(REPOSITORY_TYPES.Rules) rulesRepository: IRulesRepository<Rules>,
+    @inject(REPOSITORY_TYPES.IntermediateAirport)
+    intermediateAirportRepository: IIntermediateAirportRepository<IntermediateAirport>
+  ) {
+    super(repository);
+    this.flightRepository = repository;
+    this.seatFlightService = seatFlightService;
+    this.rulesRepository = rulesRepository;
+    this.intermediateAirportRepository = intermediateAirportRepository;
+  }
 
-            if (duplicateIntermediateAirport) {
-                throw new BaseError(400, "fail", "Intermediate airport already exists")
-            }
-            return await this.intermediateAirportRepository._create(params);
-        } catch (error) {
-            throw error;
-        }
+  /**
+   * * Soft delete a flight
+   * @param flightId
+   * @returns
+   */
+  async softDeleteFlight(flightId: string): Promise<any> {
+    try {
+      return await this.flightRepository._softDeleteFlight(flightId);
+    } catch (error) {
+      throw error;
     }
-    async update(params: any): Promise<any> {
-        const result = await this.repository._update(params);
-        deleteRedisKeyMatch("flight*");
-        return result;
-    }
-    async delete(params: any): Promise<any> {
-        try {
-            const result = await this.repository._delete(params);
-            deleteRedisKeyMatch("flight*");
-            return result;
-        } catch (error) {
-            throw error;
-        }
-    }
-    async create(data: any): Promise<any> {     
-        try {
-            const result =  await this.repository._create(data);
-            deleteRedisKeyMatch("flight*");
-            const flightId = result.flightId;
-            await this.seatFlightService.defaultGenerateSeatForAirplane(flightId);
-            return result;
-        } catch (error) {
-            throw error;
-        }   
-    }
+  }
 
-    //Get seat {occupied/total seat} of a flight
-    async getSeatInformation(flightId: string): Promise<{totalSeats: number, notEmptySeats: number}> {
-        try {
-            let totalSeats = await this.flightRepository._countTotalSeatsOfFlight(flightId);
-            let notEmptySeats = await this.flightRepository._countNotEmptySeatsOfFlight(flightId);
-            return {
-                totalSeats: totalSeats,
-                notEmptySeats: notEmptySeats
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
+  /**
+   * * Add intermediate airport to a flight
+   * @param params
+   * @returns
+   */
+  async addIntermediateAirport(params: any): Promise<any> {
+    try {
+      const { data } = params;
+      const duplicateIntermediateAirport =
+        await this.intermediateAirportRepository._exists({
+          where: {
+            flightId: data.flightId,
+            airportId: data.airportId,
+          },
+        });
 
-    //Get available seat of a flight
-    async countAvailableSeatsOfFlight(flightId: string): Promise<number> {
-        try {
-            return await this.flightRepository._countAvailableSeatsOfFlight(flightId);
-        } catch (error) {
-            throw error;
-        }
+      if (duplicateIntermediateAirport) {
+        throw new BaseError(400, "fail", "Intermediate airport already exists");
+      }
+      return await this.intermediateAirportRepository._create(params);
+    } catch (error) {
+      throw error;
     }
+  }
 
-    async findAllInclueAirportsAndSeat(params: any): Promise<any> {
-        try {
-            let result =  await this.flightRepository._findAllInclueAirports(params);
-            for (let flight of result) {                
-                flight.seatsAvailable = await this.countAvailableSeatsOfFlight(flight.flightId);
-                flight.seatsTotal = MAX_TOTAL_SEATS;
-            }            
-            return result;
-        } catch (error) {
-            throw error;
-        }
+  /**
+   * * Update flight information
+   * @param params
+   * @returns
+   */
+  async update(params: any): Promise<any> {
+    const result = await this.repository._update(params);
+    deleteRedisKeyMatch("flight*");
+    return result;
+  }
+
+  /**
+   * * Hard delete a flight
+   * @param params
+   * @returns
+   */
+  async delete(params: any): Promise<any> {
+    try {
+      const result = await this.repository._delete(params);
+      deleteRedisKeyMatch("flight*");
+      return result;
+    } catch (error) {
+      throw error;
     }
-    async findOneIncludeAirportsAndSeat(params: any): Promise<any> {
-        try {
-            const result = await this.flightRepository._findOneIncludeAirports(params);
-            result.seatsAvailable = await this.countAvailableSeatsOfFlight(result.flightId);
-            result.seatsTotal = MAX_TOTAL_SEATS;
-            return result;
-        } catch (error) {
-            throw error;
-        }
+  }
+
+  /**
+   * * Create new flight
+   * @param data
+   * @returns
+   */
+  async create(data: any): Promise<any> {
+    try {
+      const result = await this.repository._create(data);
+      deleteRedisKeyMatch("flight*");
+      const flightId = result.flightId;
+      await this.seatFlightService.defaultGenerateSeatForAirplane(flightId);
+      return result;
+    } catch (error) {
+      throw error;
     }
+  }
+
+  /**
+   * * Get seat {occupied/total seat} of a flight
+   * @param flightId
+   * @returns {totalSeats, notEmptySeats}
+   */
+  async getSeatInformation(
+    flightId: string
+  ): Promise<{ totalSeats: number; notEmptySeats: number }> {
+    try {
+      let totalSeats = await this.flightRepository._countTotalSeatsOfFlight(
+        flightId
+      );
+      let notEmptySeats =
+        await this.flightRepository._countNotEmptySeatsOfFlight(flightId);
+      return {
+        totalSeats: totalSeats,
+        notEmptySeats: notEmptySeats,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   * * Fer available seat of flight
+   * @param flightId
+   * @returns number
+   */
+  async countAvailableSeatsOfFlight(flightId: string): Promise<number> {
+    try {
+      return await this.flightRepository._countAvailableSeatsOfFlight(flightId);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   * * Find all flight include airport and seat
+   * @param params
+   * @returns
+   */
+  async findAllInclueAirportsAndSeat(params: any): Promise<any> {
+    try {
+      let result = await this.flightRepository._findAllInclueAirports(params);
+      for (let flight of result) {
+        flight.seatsAvailable = await this.countAvailableSeatsOfFlight(
+          flight.flightId
+        );
+        flight.seatsTotal = MAX_TOTAL_SEATS;
+      }
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   * * Find one include airport and seat
+   * @param params
+   * @returns
+   */
+  async findOneIncludeAirportsAndSeat(params: any): Promise<any> {
+    try {
+      const result = await this.flightRepository._findOneIncludeAirports(
+        params
+      );
+      result.seatsAvailable = await this.countAvailableSeatsOfFlight(
+        result.flightId
+      );
+      result.seatsTotal = MAX_TOTAL_SEATS;
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
